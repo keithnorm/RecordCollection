@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="eBa-Y8-tx8" customClass="Player">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="52"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Change The World" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Aj-tK-M7H">
+                    <rect key="frame" x="89" y="8" width="143" height="21"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sungha and Akiro" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5vu-eY-HY3">
+                    <rect key="frame" x="92" y="32" width="137" height="21"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Gz4-15-5Cn" customClass="PlayPauseButton">
+                    <rect key="frame" x="8" y="11" width="30" height="29"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="5vu-eY-HY3" firstAttribute="top" secondItem="6Aj-tK-M7H" secondAttribute="bottom" constant="3" id="0FV-SO-yvQ"/>
+                <constraint firstItem="6Aj-tK-M7H" firstAttribute="top" secondItem="eBa-Y8-tx8" secondAttribute="top" constant="8" id="ffT-pg-iOz"/>
+                <constraint firstAttribute="centerX" secondItem="6Aj-tK-M7H" secondAttribute="centerX" id="nKH-d3-1VJ"/>
+                <constraint firstAttribute="centerX" secondItem="5vu-eY-HY3" secondAttribute="centerX" id="oMv-hD-3tp"/>
+            </constraints>
+            <connections>
+                <outlet property="artistName" destination="5vu-eY-HY3" id="mmO-vS-yEp"/>
+                <outlet property="playPauseButton" destination="Gz4-15-5Cn" id="z5v-Wn-hUT"/>
+                <outlet property="songName" destination="6Aj-tK-M7H" id="TkX-hg-agx"/>
+            </connections>
+        </view>
+    </objects>
+</document>
