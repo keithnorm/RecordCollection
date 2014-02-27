@@ -161,7 +161,7 @@
                                     <action selector="tapAddToCollection:" destination="cdb-0X-8gN" eventType="touchUpInside" id="J78-u8-95R"/>
                                 </connections>
                             </button>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="di7-T8-xQT">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="di7-T8-xQT" customClass="ParallaxTableView">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -186,6 +186,7 @@
                             <constraint firstItem="Rb1-JG-mjS" firstAttribute="top" secondItem="EKV-aS-GHO" secondAttribute="bottom" constant="-300" id="zUa-7u-U8T"/>
                         </constraints>
                         <connections>
+                            <outlet property="addToCollectionBtn" destination="0ud-JN-7NI" id="R2J-jq-1Yc"/>
                             <outlet property="image" destination="EKV-aS-GHO" id="T3G-XM-a5t"/>
                             <outlet property="trackList" destination="di7-T8-xQT" id="gDI-dH-8ie"/>
                         </connections>

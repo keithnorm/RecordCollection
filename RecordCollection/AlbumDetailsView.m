@@ -19,6 +19,8 @@
 
 @property (nonatomic, weak) IBOutlet UIImageView *image;
 @property (nonatomic, weak) IBOutlet UITableView *trackList;
+@property (nonatomic, weak) IBOutlet UIButton *addToCollectionBtn;
+
 
 @end
 
@@ -41,7 +43,11 @@
 - (void)awakeFromNib {
     self.trackList.delegate = self;
     self.trackList.dataSource = self;
-    self.trackList.contentInset = UIEdgeInsetsMake(0, 0, 150, 0);
+//    self.trackList.contentInset = UIEdgeInsetsMake(0, 0, 150, 0);
+    UIView *tableHeader = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.trackList.bounds.size.width, self.image.bounds.size.height - 20)];
+    self.trackList.backgroundColor = [UIColor clearColor];
+    self.trackList.tableHeaderView = tableHeader;
+    self.trackList.contentInset = UIEdgeInsetsMake(0, 0, 50, 0);
 }
 
 - (void)setAlbum:(SPAlbum *)album {
@@ -56,7 +62,6 @@
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    self.trackList.frame = CGRectMake(0, 320, 320, self.trackList.bounds.size.height);
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
@@ -86,15 +91,21 @@
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-//    scrollView.contentInset = UIEdgeInsetsMake(-scrollView.contentOffset.y, 0, 0, 0);
-    CGRect frame = scrollView.frame;
-    CGFloat target = frame.origin.y - scrollView.contentOffset.y;
-//    NSLog(@"offset is %f target is %f", scrollView.contentOffset.y, target);
-    if (target >= 0 && target <= 320) {
-        scrollView.contentOffset = CGPointMake(0, 0);
-        frame.origin.y = target;
-        scrollView.frame = frame;
+    CGFloat offset = scrollView.contentOffset.y;
+    if (offset < 0) {
+        CGRect imageFrame = self.image.frame;
+        imageFrame.size.height = 320 + -offset * .2;
+        imageFrame.size.width = 320 + -offset * .2;
+        self.image.frame = imageFrame;
     }
+    
+    if (offset >= 0) {
+        CGRect imageFrame = self.image.frame;
+        imageFrame.origin.y = 0 - offset * .2;
+        self.image.frame = imageFrame;
+    }
+    [self fireEvent:@"didScroll" withObject:@(offset)];
+    
 }
 
 #pragma mark UITableViewDataSource
@@ -125,5 +136,14 @@
 
 - (IBAction)tapAddToCollection:(id)sender {
     [self fireEvent:@"didAddAlbumToCollection" withObject:self.album];
+}
+
+- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
+{
+    UIView *view = [super hitTest:point withEvent:event];
+    if (view == self.trackList) {
+        return nil;
+    }
+    return view;
 }
 @end

@@ -80,6 +80,17 @@ static const size_t g_appkey_size = sizeof(g_appkey);
     [main.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[player]|" options:0 metrics:nil views:@{@"player": player}]];
     [main.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[player]|" options:0 metrics:nil views:@{@"player": player}]];
     self.window.tintColor = [UIColor blackColor];
+    
+    for (NSString* family in [UIFont familyNames])
+    {
+        NSLog(@"%@", family);
+        
+        for (NSString* name in [UIFont fontNamesForFamilyName: family])
+        {
+            NSLog(@"  %@", name);
+        }
+    }
+    
     return YES;
 }
 							

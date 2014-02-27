@@ -38,10 +38,6 @@ const NSUInteger kSearchTextLengthThreshold = 4;
 {
     [super viewDidLoad];
     SPSession *session = [SPSession sharedSession];
-//    [self.albumsCollectionView registerClass:[SearchHeader class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"SearchHeader"];
-//    UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *)self.albumsCollectionView.collectionViewLayout;
-//    layout.headerReferenceSize = CGSizeMake(320, 50);
-//    self.navigationController.navigationBarHidden = YES;
     self.title = @"Most Played";
     
     User *user = [User first];
@@ -51,6 +47,7 @@ const NSUInteger kSearchTextLengthThreshold = 4;
         SPLoginViewController *controller = [SPLoginViewController loginControllerForSession:session];
         [self.navigationController presentViewController:controller animated:YES completion:nil];
     }
+    self.albumsCollectionView.contentInset = UIEdgeInsetsMake(0, 0, 50, 0);
 }
 
 - (void)viewDidAppear:(BOOL)animated {

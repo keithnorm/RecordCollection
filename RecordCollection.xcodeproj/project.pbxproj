@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1CE60BE5F8444377BD96875D /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EFEB862B14B49B68BC01F41 /* libPods.a */; };
+		4E235A5E18BF9441005F31C2 /* AIRSTREA.TTF in Resources */ = {isa = PBXBuildFile; fileRef = 4E235A5D18BF9441005F31C2 /* AIRSTREA.TTF */; };
 		4EDEF5BE18BA953A00D81B1D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4EDEF5BD18BA953A00D81B1D /* Foundation.framework */; };
 		4EDEF5C018BA953A00D81B1D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4EDEF5BF18BA953A00D81B1D /* CoreGraphics.framework */; };
 		4EDEF5C218BA953A00D81B1D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4EDEF5C118BA953A00D81B1D /* UIKit.framework */; };
@@ -62,6 +63,7 @@
 		4EF46A4A18BDE26E00D98747 /* pattern2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4EF46A4918BDE26E00D98747 /* pattern2.jpg */; };
 		4EF46A4D18BDE2F200D98747 /* AlbumsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EF46A4C18BDE2F200D98747 /* AlbumsView.m */; };
 		4EF46A4F18BDE49300D98747 /* pattern3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4EF46A4E18BDE49300D98747 /* pattern3.jpg */; };
+		4EF46A5D18BF10DA00D98747 /* ParallaxTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EF46A5C18BF10DA00D98747 /* ParallaxTableView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +77,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4E235A5D18BF9441005F31C2 /* AIRSTREA.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; name = AIRSTREA.TTF; path = ../../../Library/Fonts/AIRSTREA.TTF; sourceTree = "<group>"; };
 		4EDEF5BA18BA953A00D81B1D /* RecordCollection.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RecordCollection.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4EDEF5BD18BA953A00D81B1D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		4EDEF5BF18BA953A00D81B1D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -163,6 +166,8 @@
 		4EF46A4B18BDE2F200D98747 /* AlbumsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumsView.h; sourceTree = "<group>"; };
 		4EF46A4C18BDE2F200D98747 /* AlbumsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumsView.m; sourceTree = "<group>"; };
 		4EF46A4E18BDE49300D98747 /* pattern3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = pattern3.jpg; sourceTree = "<group>"; };
+		4EF46A5B18BF10DA00D98747 /* ParallaxTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParallaxTableView.h; sourceTree = "<group>"; };
+		4EF46A5C18BF10DA00D98747 /* ParallaxTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ParallaxTableView.m; sourceTree = "<group>"; };
 		7EFEB862B14B49B68BC01F41 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF7BC69AC0A44EA487F099A7 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -196,6 +201,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4E235A5C18BF93F6005F31C2 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				4E235A5D18BF9441005F31C2 /* AIRSTREA.TTF */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 		4EDEF5B118BA953A00D81B1D = {
 			isa = PBXGroup;
 			children = (
@@ -235,6 +248,7 @@
 		4EDEF5C318BA953A00D81B1D /* RecordCollection */ = {
 			isa = PBXGroup;
 			children = (
+				4E235A5C18BF93F6005F31C2 /* Resources */,
 				4EF46A4E18BDE49300D98747 /* pattern3.jpg */,
 				4EF46A4918BDE26E00D98747 /* pattern2.jpg */,
 				4EF46A4718BDDFD400D98747 /* pattern1.jpg */,
@@ -384,6 +398,8 @@
 				4EDEF62A18BB1BEF00D81B1D /* AlbumDetailsViewController.m */,
 				4EDEF62C18BB1DE500D81B1D /* AlbumDetailsView.h */,
 				4EDEF62D18BB1DE500D81B1D /* AlbumDetailsView.m */,
+				4EF46A5B18BF10DA00D98747 /* ParallaxTableView.h */,
+				4EF46A5C18BF10DA00D98747 /* ParallaxTableView.m */,
 			);
 			name = "Album Details";
 			sourceTree = "<group>";
@@ -492,6 +508,7 @@
 				4EF46A4F18BDE49300D98747 /* pattern3.jpg in Resources */,
 				4EF469CF18BDDBA700D98747 /* turntable.png in Resources */,
 				4EF46A4818BDDFD400D98747 /* pattern1.jpg in Resources */,
+				4E235A5E18BF9441005F31C2 /* AIRSTREA.TTF in Resources */,
 				4EDEF63A18BB3B6800D81B1D /* Player.xib in Resources */,
 				4EF469D118BDDDFF00D98747 /* headphones.png in Resources */,
 				4EDEF5D418BA953A00D81B1D /* Main_iPad.storyboard in Resources */,
@@ -557,6 +574,7 @@
 				4EDEF5FE18BAB43100D81B1D /* AlbumCell.m in Sources */,
 				4EDEF5CE18BA953A00D81B1D /* AppDelegate.m in Sources */,
 				4EF4697918BCA4A900D98747 /* UIView+StyleClass.m in Sources */,
+				4EF46A5D18BF10DA00D98747 /* ParallaxTableView.m in Sources */,
 				4EDEF60E18BAEF4B00D81B1D /* CoreDataHelper.m in Sources */,
 				4EF469C718BDCAFB00D98747 /* MenuItem.m in Sources */,
 				4EDEF66118BC8B8900D81B1D /* UIView+CSS.m in Sources */,

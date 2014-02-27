@@ -47,8 +47,15 @@ CGImageRef CGGenerateNoiseImage(CGSize size, CGFloat factor) {
 
 + (void)setup {
     [[UINavigationBar appearance] setBarTintColor:RGBCOLOR(44, 44, 44)];
-    [[UINavigationBar appearance] setTintColor:RGBCOLOR(44, 44, 44)];
-    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName : RGBCOLOR(190, 190, 190)}];
+    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+    UIFontDescriptor *titleDescriptor = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleHeadline];
+    titleDescriptor = [UIFontDescriptor fontDescriptorWithName:@"Airstream" size:[titleDescriptor pointSize] * 1.6];
+    UIFont *titleFont = [UIFont fontWithDescriptor:titleDescriptor size:0];
+    NSDictionary *navBarTextAttributes = @{
+                                           NSForegroundColorAttributeName : RGBCOLOR(190, 190, 190),
+                                           NSFontAttributeName: titleFont
+                                           };
+    [[UINavigationBar appearance] setTitleTextAttributes:navBarTextAttributes];
     [[UISearchBar appearance] setBarTintColor:[UIColor blackColor]];
     
 //    [[UIBarButtonItem appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: RGBCOLOR(190, 190, 190)}
@@ -77,7 +84,7 @@ CGImageRef CGGenerateNoiseImage(CGSize size, CGFloat factor) {
     border.width = 1.0f;
     border.sides = CSSBorderSideTop;
     CSSDropshadow *shadow = [[CSSDropshadow alloc] init];
-    shadow.color = [UIColor lightGrayColor];
+    shadow.color = [UIColor darkGrayColor];
     [[Player appearance] setBorder:border];
     [[Player appearance] setDropShadow:shadow];
     

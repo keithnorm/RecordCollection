@@ -23,4 +23,26 @@
     albumDetailsView.album = album;
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBar.alpha = 0.5f;
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    self.navigationController.navigationBar.alpha = 1.0f;
+}
+
+- (void)didScroll:(NSNumber *)offset {
+    if ([offset integerValue] >= 239) {
+        [UIView animateWithDuration:0.3 animations:^{
+            self.navigationController.navigationBar.alpha = 1.0f;
+        }];
+    } else {
+        [UIView animateWithDuration:0.3 animations:^{
+            self.navigationController.navigationBar.alpha = 0.5f;
+        }];
+    }
+}
+
 @end
