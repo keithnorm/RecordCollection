@@ -63,10 +63,11 @@ CGImageRef CGGenerateNoiseImage(CGSize size, CGFloat factor) {
     [[AlbumsView appearance] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"pattern3.jpg"]]];
     CSSBorder *imageBorder = [[CSSBorder alloc] init];
     imageBorder.color = [UIColor whiteColor];
+    [[AlbumCard appearance] setImageBorder:imageBorder];
+    //    [[AlbumCard appearance] setImageBorderRadius:imageBorderRadius];
     CSSBorderRadius *imageBorderRadius = [[CSSBorderRadius alloc] init];
     imageBorderRadius.radius = 15.0f;
-    [[AlbumCard appearance] setImageBorder:imageBorder];
-    [[AlbumCard appearance] setImageBorderRadius:imageBorderRadius];
+    [[UIImageView appearanceWhenContainedIn:[AlbumCard class], nil] setBorderRadius:imageBorderRadius];
     
     [[PlayPauseButton appearance] setControlButtonColor:[UIColor whiteColor]];
     [[PlayPauseButton appearance] setBackgroundColor:[UIColor clearColor]];

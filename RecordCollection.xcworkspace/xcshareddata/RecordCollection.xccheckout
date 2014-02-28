@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>E20DA4D1-2CF2-4CFB-97FD-1EBF546ACC21</string>
+	<key>IDESourceControlProjectName</key>
+	<string>RecordCollection</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>3662E608-FB53-423D-8C09-99C432E487EB</key>
+		<string>https://github.com/keithnorm/RecordCollection.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>RecordCollection.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>3662E608-FB53-423D-8C09-99C432E487EB</key>
+		<string>..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/keithnorm/RecordCollection.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>3662E608-FB53-423D-8C09-99C432E487EB</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>3662E608-FB53-423D-8C09-99C432E487EB</string>
+			<key>IDESourceControlWCCName</key>
+			<string>RecordCollection</string>
+		</dict>
+	</array>
+</dict>
+</plist>

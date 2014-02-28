@@ -35,6 +35,14 @@
     return self;
 }
 
+- (instancetype)initWithRadius:(CGFloat)radius {
+    self = [self init];
+    if (self) {
+        _radius = radius;
+    }
+    return self;
+}
+
 @end
 
 @implementation UIView (CSS)

@@ -23,6 +23,8 @@
 @property (nonatomic, assign) CGFloat radius;
 @property (nonatomic, assign) UIRectCorner corners;
 
+- (instancetype)initWithRadius:(CGFloat)radius;
+
 @end
 
 
