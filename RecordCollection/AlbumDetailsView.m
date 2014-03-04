@@ -8,7 +8,10 @@
 
 #import "AlbumDetailsView.h"
 #import "PlaybackManager.h"
+#import "PlayQueue.h"
 #import "UIView+Event.h"
+
+@import MediaPlayer;
 
 @interface AlbumDetailsView() <UITableViewDelegate, UITableViewDataSource, SPSessionDelegate>
 - (IBAction)tapAddToCollection:(id)sender;
@@ -37,7 +40,16 @@
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
     self = [super initWithCoder:aDecoder];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBeginPlayingTrack:) name:RCPlayerDidBeginPlayingTrackNotification object:nil];
     return self;
+}
+
+- (void)didBeginPlayingTrack:(NSNotification *)notification {
+    SPTrack *track = [[PlaybackManager sharedManager] currentTrack];
+    NSIndexPath *indexOfTrack = [NSIndexPath indexPathForRow:track.trackNumber - 1 inSection:0];
+    if ([track.album.spotifyURL isEqual:self.album.spotifyURL] && [self.trackList cellForRowAtIndexPath:indexOfTrack]) {
+        [self.trackList selectRowAtIndexPath:indexOfTrack animated:YES scrollPosition:UITableViewScrollPositionBottom];
+    }
 }
 
 - (void)awakeFromNib {
@@ -50,38 +62,62 @@
     self.trackList.contentInset = UIEdgeInsetsMake(0, 0, 50, 0);
 }
 
-- (void)setAlbum:(SPAlbum *)album {
+- (void)setAlbum:(id<AlbumPresenterProtocol>)album {
     _album = album;
-    if (self.albumBrowse) {
-        [self.albumBrowse removeObserver:self forKeyPath:@"loaded"];
+    
+    if ([album isKindOfClass:[SPAlbum class]]) {
+        self.albumBrowse = [SPAlbumBrowse browseAlbum:(SPAlbum *)album inSession:[SPSession sharedSession]];
+        __weak AlbumDetailsView *weakSelf = self;
+        [SPAsyncLoading waitUntilLoaded:self.albumBrowse timeout:3.0 then:^(NSArray *loadedItems, NSArray *notLoadedItems) {
+            [weakSelf refresh];
+        }];
+        [self refresh];
+    } else {
+        [SPAlbum albumWithAlbumURL:album.spotifyURL inSession:[SPSession sharedSession] callback:^(SPAlbum *album) {
+            self.albumBrowse = [SPAlbumBrowse browseAlbum:(SPAlbum *)album inSession:[SPSession sharedSession]];
+            __weak AlbumDetailsView *weakSelf = self;
+            _album = (id<AlbumPresenterProtocol>)album;
+            [SPAsyncLoading waitUntilLoaded:self.albumBrowse timeout:3.0 then:^(NSArray *loadedItems, NSArray *notLoadedItems) {
+                [weakSelf refresh];
+            }];
+        }];
     }
-    self.albumBrowse = [SPAlbumBrowse browseAlbum:album inSession:[SPSession sharedSession]];
-    [self.albumBrowse addObserver:self forKeyPath:@"loaded" options:NSKeyValueObservingOptionNew context:NULL];
-    [self refresh];
+}
+
+- (void)setTrack:(SPTrack *)track {
+    _track = track;
+    NSIndexPath *indexOfTrack = [NSIndexPath indexPathForRow:track.trackNumber - 1 inSection:0];
+    if (track) {
+        [[PlaybackManager sharedManager] playTrack:track callback:nil];
+        if ([self.trackList cellForRowAtIndexPath:indexOfTrack]) {
+            [self.trackList selectRowAtIndexPath:indexOfTrack animated:YES scrollPosition:UITableViewScrollPositionBottom];
+        }
+    }
 }
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if ([keyPath isEqualToString:@"loaded"]) {
-        [self refresh];
+    if (self.track && self.track.trackNumber < [self.trackList numberOfRowsInSection:0]) {
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.track.trackNumber - 1 inSection:0];
+        [self.trackList selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionBottom];
     }
 }
 
 - (void)refresh {
-    self.image.image = self.album.cover.image;
+    [SPAsyncLoading waitUntilLoaded:self.album.cover timeout:3.0 then:^(NSArray *loadedItems, NSArray *notLoadedItems) {
+        self.image.image = self.album.cover.image;
+    }];
+    
     [self.trackList reloadData];
-}
-
-- (void)dealloc {
-    [self.albumBrowse removeObserver:self forKeyPath:@"loaded"];
 }
 
 - (void)updateConstraints {
     [super updateConstraints];
     [self setNeedsDisplay];
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark UIScrollViewDelegate
@@ -129,9 +165,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     SPTrack *track = [self.albumBrowse.tracks objectAtIndex:indexPath.row];
-    [[PlaybackManager sharedManager] playTrack:track callback:^(NSError *error) {
-        NSLog(@"cool %@", error);
-    }];
+    [[PlaybackManager sharedManager] playTrack:track callback:nil];
 }
 
 - (IBAction)tapAddToCollection:(id)sender {

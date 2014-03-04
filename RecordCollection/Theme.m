@@ -18,6 +18,7 @@
 #import "AlbumsView.h"
 #import "AlbumCell.h"
 #import "AlbumCard.h"
+#import "OCAEditableCollectionViewFlowLayoutCell.h"
 
 #define RGBCOLOR(r, g, b)                   [UIColor colorWithRed : (r) / 255.0 green : (g) / 255.0 blue : (b) / 255.0 alpha : 1]
 #define RGBACOLOR(r, g, b, a)               [UIColor colorWithRed : (r) / 255.0 green : (g) / 255.0 blue : (b) / 255.0 alpha : (a)]
@@ -105,6 +106,10 @@ CGImageRef CGGenerateNoiseImage(CGSize size, CGFloat factor) {
     [[UILabel appearanceWhenContainedIn:[UITableViewCell class], nil]
      setTextAttributes:@{NSForegroundColorAttributeName:RGBCOLOR(146, 146, 146)}];
     [[MenuItem appearance] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageWithCGImage:CGGenerateNoiseImage(CGSizeMake(100, 100), 0.15f)]]];
+    
+    [[OCAEditableCellDeleteButton appearance] setBackgroundColor:[UIColor orangeColor]];
+    [[OCAEditableCellDeleteButton appearance] setStrokeColor:[UIColor whiteColor]];
+    [[UITableViewHeaderFooterView appearance] setTintColor:[UIColor whiteColor]];
 }
 
 + (void)styleCaption1Label:(UILabel *)label {

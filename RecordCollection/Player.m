@@ -11,6 +11,8 @@
 #import "PlayPauseButton.h"
 #import "UIView+StyleClass.h"
 #import "NSTimer+Blocks.h"
+#import "PlayQueue.h"
+#import "UIView+Event.h"
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
 
 @interface Player()
@@ -18,7 +20,8 @@
 @property (nonatomic, weak) IBOutlet UILabel *artistName;
 @property (nonatomic, weak) IBOutlet UILabel *songName;
 @property (nonatomic, weak) IBOutlet PlayPauseButton *playPauseButton;
-
+@property (nonatomic, strong) IBOutlet UIButton *nextButton;
+- (IBAction)onNextButton:(id)sender;
 
 @end
 
@@ -89,4 +92,7 @@
     [[SPSession sharedSession] setPlaying:![[SPSession sharedSession] isPlaying]];
 }
 
+- (IBAction)onNextButton:(id)sender {
+    [self fireEvent:@"userDidSelectPlayNext" withObject:self];
+}
 @end

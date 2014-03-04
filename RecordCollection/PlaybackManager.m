@@ -7,6 +7,11 @@
 //
 
 #import "PlaybackManager.h"
+#import "PlayQueue.h"
+
+@import MediaPlayer;
+
+NSString * const RCPlayerDidBeginPlayingTrackNotification = @"RCPlayerDidBeginPlayingTrackNotification";
 
 @interface PlaybackManager()
 
@@ -26,7 +31,34 @@
 
 - (void)playTrack:(SPTrack *)aTrack callback:(SPErrorableOperationCallback)block {
     [super playTrack:aTrack callback:block];
+    
+    NSMutableDictionary *songInfo = [[NSMutableDictionary alloc] init];
+    
+    [songInfo setObject:aTrack.name forKey:MPMediaItemPropertyTitle];
+    [songInfo setObject:[[aTrack.artists objectAtIndex:0] name] forKey:MPMediaItemPropertyArtist];
+    [songInfo setObject:aTrack.album.name forKey:MPMediaItemPropertyAlbumTitle];
+    
+    if (aTrack.album.cover.image) {
+        MPMediaItemArtwork *albumArt = [[MPMediaItemArtwork alloc] initWithImage:aTrack.album.cover.image];
+        [songInfo setObject:albumArt forKey:MPMediaItemPropertyArtwork];
+    }
+    [[MPNowPlayingInfoCenter defaultCenter] setNowPlayingInfo:songInfo];
+    [[PlayQueue sharedQueue] setCurrentTrack:aTrack];
     self.currentTrack = aTrack;
+    [[NSNotificationCenter defaultCenter] postNotificationName:RCPlayerDidBeginPlayingTrackNotification object:self];
+}
+
+- (void)sessionDidEndPlayback:(id<SPSessionPlaybackProvider>)aSession {
+    [self playNext];
+}
+
+- (void)playNext {
+    PlayQueue *queue = [PlayQueue sharedQueue];
+    if ([queue hasNext]) {
+        [self playTrack:[queue next] callback:^(NSError *error) {
+            NSLog(@"Error initiating playback: %@", [error localizedDescription]);
+        }];
+    }
 }
 
 @end

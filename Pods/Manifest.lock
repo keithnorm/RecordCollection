@@ -1,12 +1,34 @@
 PODS:
   - CocoaLibSpotify (2.4.5):
     - libspotify (= 12.1.64)
+  - FormatterKit (1.4.0):
+    - FormatterKit/AddressFormatter
+    - FormatterKit/ArrayFormatter
+    - FormatterKit/ColorFormatter
+    - FormatterKit/LocationFormatter
+    - FormatterKit/OrdinalNumberFormatter
+    - FormatterKit/TimeIntervalFormatter
+    - FormatterKit/UnitOfInformationFormatter
+    - FormatterKit/URLRequestFormatter
+  - FormatterKit/AddressFormatter (1.4.0)
+  - FormatterKit/ArrayFormatter (1.4.0)
+  - FormatterKit/ColorFormatter (1.4.0)
+  - FormatterKit/LocationFormatter (1.4.0)
+  - FormatterKit/OrdinalNumberFormatter (1.4.0)
+  - FormatterKit/TimeIntervalFormatter (1.4.0)
+  - FormatterKit/UnitOfInformationFormatter (1.4.0)
+  - FormatterKit/URLRequestFormatter (1.4.0)
   - libspotify (12.1.64)
-  - MSDynamicsDrawerViewController (1.5.1)
+  - MBProgressHUD (0.8)
+  - Reveal-iOS-SDK (1.0.3)
+  - Underscore.m (0.2.1)
 
 DEPENDENCIES:
   - CocoaLibSpotify (from `https://github.com/cosmer/cocoalibspotify.git`)
-  - MSDynamicsDrawerViewController
+  - FormatterKit
+  - MBProgressHUD (~> 0.8)
+  - Reveal-iOS-SDK
+  - Underscore.m
 
 EXTERNAL SOURCES:
   CocoaLibSpotify:
@@ -14,7 +36,10 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   CocoaLibSpotify: 6bb9c71c3cdd3aa54f899bdcc1e8e9d6e5b71137
+  FormatterKit: 475c602b6098d69c3255c65cfe6cb6a27c175f57
   libspotify: 83337b28ad17bd27a7e7d4ac353e89f72f87bd29
-  MSDynamicsDrawerViewController: 2409ca61449d8541a3ee640bfd2d230c3734d3c4
+  MBProgressHUD: 2bbc6f470111daf7f3eaa4eb12b8cbf01c4c0622
+  Reveal-iOS-SDK: f2525cb560a564fdc086316e89ec45ced6977fd3
+  Underscore.m: 593ea54a19d3cc4439387a83d36eb7ba6ffd1707
 
 COCOAPODS: 0.29.0

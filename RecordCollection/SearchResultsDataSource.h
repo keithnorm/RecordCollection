@@ -7,9 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CocoaLibSpotify/CocoaLibSpotify.h>
 
 @interface SearchResultsDataSource : NSObject<UITableViewDataSource>
 
-@property (nonatomic, strong) NSArray *searchResults;
+@property (nonatomic, strong) SPSearch *searchResults;
 
 @end

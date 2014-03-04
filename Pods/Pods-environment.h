@@ -12,11 +12,77 @@
 #define COCOAPODS_VERSION_MINOR_CocoaLibSpotify 4
 #define COCOAPODS_VERSION_PATCH_CocoaLibSpotify 5
 
-// MSDynamicsDrawerViewController
-#define COCOAPODS_POD_AVAILABLE_MSDynamicsDrawerViewController
-#define COCOAPODS_VERSION_MAJOR_MSDynamicsDrawerViewController 1
-#define COCOAPODS_VERSION_MINOR_MSDynamicsDrawerViewController 5
-#define COCOAPODS_VERSION_PATCH_MSDynamicsDrawerViewController 1
+// FormatterKit
+#define COCOAPODS_POD_AVAILABLE_FormatterKit
+#define COCOAPODS_VERSION_MAJOR_FormatterKit 1
+#define COCOAPODS_VERSION_MINOR_FormatterKit 4
+#define COCOAPODS_VERSION_PATCH_FormatterKit 0
+
+// FormatterKit/AddressFormatter
+#define COCOAPODS_POD_AVAILABLE_FormatterKit_AddressFormatter
+#define COCOAPODS_VERSION_MAJOR_FormatterKit_AddressFormatter 1
+#define COCOAPODS_VERSION_MINOR_FormatterKit_AddressFormatter 4
+#define COCOAPODS_VERSION_PATCH_FormatterKit_AddressFormatter 0
+
+// FormatterKit/ArrayFormatter
+#define COCOAPODS_POD_AVAILABLE_FormatterKit_ArrayFormatter
+#define COCOAPODS_VERSION_MAJOR_FormatterKit_ArrayFormatter 1
+#define COCOAPODS_VERSION_MINOR_FormatterKit_ArrayFormatter 4
+#define COCOAPODS_VERSION_PATCH_FormatterKit_ArrayFormatter 0
+
+// FormatterKit/ColorFormatter
+#define COCOAPODS_POD_AVAILABLE_FormatterKit_ColorFormatter
+#define COCOAPODS_VERSION_MAJOR_FormatterKit_ColorFormatter 1
+#define COCOAPODS_VERSION_MINOR_FormatterKit_ColorFormatter 4
+#define COCOAPODS_VERSION_PATCH_FormatterKit_ColorFormatter 0
+
+// FormatterKit/LocationFormatter
+#define COCOAPODS_POD_AVAILABLE_FormatterKit_LocationFormatter
+#define COCOAPODS_VERSION_MAJOR_FormatterKit_LocationFormatter 1
+#define COCOAPODS_VERSION_MINOR_FormatterKit_LocationFormatter 4
+#define COCOAPODS_VERSION_PATCH_FormatterKit_LocationFormatter 0
+
+// FormatterKit/OrdinalNumberFormatter
+#define COCOAPODS_POD_AVAILABLE_FormatterKit_OrdinalNumberFormatter
+#define COCOAPODS_VERSION_MAJOR_FormatterKit_OrdinalNumberFormatter 1
+#define COCOAPODS_VERSION_MINOR_FormatterKit_OrdinalNumberFormatter 4
+#define COCOAPODS_VERSION_PATCH_FormatterKit_OrdinalNumberFormatter 0
+
+// FormatterKit/TimeIntervalFormatter
+#define COCOAPODS_POD_AVAILABLE_FormatterKit_TimeIntervalFormatter
+#define COCOAPODS_VERSION_MAJOR_FormatterKit_TimeIntervalFormatter 1
+#define COCOAPODS_VERSION_MINOR_FormatterKit_TimeIntervalFormatter 4
+#define COCOAPODS_VERSION_PATCH_FormatterKit_TimeIntervalFormatter 0
+
+// FormatterKit/URLRequestFormatter
+#define COCOAPODS_POD_AVAILABLE_FormatterKit_URLRequestFormatter
+#define COCOAPODS_VERSION_MAJOR_FormatterKit_URLRequestFormatter 1
+#define COCOAPODS_VERSION_MINOR_FormatterKit_URLRequestFormatter 4
+#define COCOAPODS_VERSION_PATCH_FormatterKit_URLRequestFormatter 0
+
+// FormatterKit/UnitOfInformationFormatter
+#define COCOAPODS_POD_AVAILABLE_FormatterKit_UnitOfInformationFormatter
+#define COCOAPODS_VERSION_MAJOR_FormatterKit_UnitOfInformationFormatter 1
+#define COCOAPODS_VERSION_MINOR_FormatterKit_UnitOfInformationFormatter 4
+#define COCOAPODS_VERSION_PATCH_FormatterKit_UnitOfInformationFormatter 0
+
+// MBProgressHUD
+#define COCOAPODS_POD_AVAILABLE_MBProgressHUD
+#define COCOAPODS_VERSION_MAJOR_MBProgressHUD 0
+#define COCOAPODS_VERSION_MINOR_MBProgressHUD 8
+#define COCOAPODS_VERSION_PATCH_MBProgressHUD 0
+
+// Reveal-iOS-SDK
+#define COCOAPODS_POD_AVAILABLE_Reveal_iOS_SDK
+#define COCOAPODS_VERSION_MAJOR_Reveal_iOS_SDK 1
+#define COCOAPODS_VERSION_MINOR_Reveal_iOS_SDK 0
+#define COCOAPODS_VERSION_PATCH_Reveal_iOS_SDK 3
+
+// Underscore.m
+#define COCOAPODS_POD_AVAILABLE_Underscore_m
+#define COCOAPODS_VERSION_MAJOR_Underscore_m 0
+#define COCOAPODS_VERSION_MINOR_Underscore_m 2
+#define COCOAPODS_VERSION_PATCH_Underscore_m 1
 
 // libspotify
 #define COCOAPODS_POD_AVAILABLE_libspotify

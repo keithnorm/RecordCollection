@@ -13,6 +13,7 @@
 
 #pragma mark - FILES
 NSString *storeFilename = @"Record-Collection.sqlite";
+NSString *iCloudStoreFilename = @"iCloud.sqlite";
 
 + (instancetype)sharedHelper {
     static dispatch_once_t once;
@@ -61,6 +62,14 @@ NSString *storeFilename = @"Record-Collection.sqlite";
             URLByAppendingPathComponent:storeFilename];
 }
 
+- (NSURL *)iCloudStoreURL {
+    if (debug==1) {
+        NSLog(@"Running %@ '%@'", self.class, NSStringFromSelector(_cmd));
+    }
+    return [[self applicationStoresDirectory]
+            URLByAppendingPathComponent:iCloudStoreFilename];
+}
+
 #pragma mark - SETUP
 - (id)init {
     if (debug==1) {
@@ -101,6 +110,35 @@ NSString *storeFilename = @"Record-Collection.sqlite";
     else         {NSLog(@"Successfully added store: %@", _store);}
 
 }
+
+- (BOOL)loadiCloudStore {
+    if (debug==1) {
+        NSLog(@"Running %@ '%@'", self.class, NSStringFromSelector(_cmd));
+    }
+    if (_iCloudStore) {return YES;} // Don't load iCloud store if it's already loaded
+    
+    NSDictionary *options =
+    @{
+      NSMigratePersistentStoresAutomaticallyOption:@YES
+      ,NSInferMappingModelAutomaticallyOption:@YES
+      ,NSPersistentStoreUbiquitousContentNameKey:@"Grocery-Dude"
+      //,NSPersistentStoreUbiquitousContentURLKey:@"ChangeLogs" // Optional since iOS7
+      };
+    NSError *error;
+    _iCloudStore = [_coordinator addPersistentStoreWithType:NSSQLiteStoreType
+                                              configuration:nil
+                                                        URL:[self iCloudStoreURL]
+                                                    options:options
+                                                      error:&error];
+    if (_iCloudStore) {
+        NSLog(@"** The iCloud Store has been successfully configured at '%@' **",
+              _iCloudStore.URL.path);
+        return YES;
+    }
+    NSLog(@"** FAILED to configure the iCloud Store : %@ **", error);
+    return NO;
+}
+
 - (void)setupCoreData {
     if (debug==1) {
         NSLog(@"Running %@ '%@'", self.class, NSStringFromSelector(_cmd));
@@ -220,6 +258,23 @@ NSString *storeFilename = @"Record-Collection.sqlite";
             [alertView show];
         }
     }
+}
+
+- (BOOL)iCloudAccountIsSignedIn {
+    if (debug == 1) {
+        NSLog(@"Running %@ '%@'", self.class, NSStringFromSelector(_cmd));
+    }
+    id token = [[NSFileManager defaultManager] ubiquityIdentityToken];
+    if (token) {
+        NSLog(@"icloud signed in with token %@", token);
+        return YES;
+    }
+    NSLog(@"** iCloud is NOT SIGNED IN **");
+    NSLog(@"--> Is iCloud Documents and Data enabled for a valid iCloud account on your Mac & iOS Device or iOS Simulator?");
+    NSLog(@"--> Have you enabled the iCloud Capability in the Application Target?");
+    NSLog(@"--> Is there a CODE_SIGN_ENTITLEMENTS Xcode warning that needs fixing? You may need to specifically choose a developer instead of using Automatic selection");
+    NSLog(@"--> Are you using a Pre-iOS7 Simulator?");
+    return NO;
 }
 
 @end

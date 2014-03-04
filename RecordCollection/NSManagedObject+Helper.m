@@ -81,4 +81,8 @@
     return [fetchedObjects count] ? [fetchedObjects objectAtIndex:0] : nil;
 }
 
+- (void)destroy {
+    [self.managedObjectContext deleteObject:self];
+}
+
 @end

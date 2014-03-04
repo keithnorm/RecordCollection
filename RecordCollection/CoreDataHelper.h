@@ -15,8 +15,10 @@
 @property (nonatomic, readonly) NSManagedObjectModel         *model;
 @property (nonatomic, readonly) NSPersistentStoreCoordinator *coordinator;
 @property (nonatomic, readonly) NSPersistentStore            *store;
+@property (nonatomic, readonly) NSPersistentStore *iCloudStore;
 
 + (instancetype)sharedHelper;
 - (void)setupCoreData;
 - (void)saveContext;
+- (BOOL)iCloudAccountIsSignedIn;
 @end

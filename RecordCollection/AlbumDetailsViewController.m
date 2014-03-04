@@ -16,11 +16,17 @@
 
 @implementation AlbumDetailsViewController
 
-- (void)setAlbum:(SPAlbum *)album {
+- (void)setAlbum:(id<AlbumPresenterProtocol>)album {
     _album = album;
     self.title = album.name;
     AlbumDetailsView *albumDetailsView = (AlbumDetailsView *)self.view;
     albumDetailsView.album = album;
+}
+
+- (void)setTrack:(SPTrack *)track {
+    _track = track;
+    AlbumDetailsView *albumDetailsView = (AlbumDetailsView *)self.view;
+    albumDetailsView.track = track;
 }
 
 - (void)viewWillAppear:(BOOL)animated {

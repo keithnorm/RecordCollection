@@ -10,11 +10,13 @@
 
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
 
+extern NSString *const RCPlayerDidBeginPlayingTrackNotification;
+
 @interface PlaybackManager : SPPlaybackManager
 
 @property (nonatomic, strong) SPTrack *currentTrack;
 
 + (instancetype)sharedManager;
-
+- (void)playNext;
 
 @end

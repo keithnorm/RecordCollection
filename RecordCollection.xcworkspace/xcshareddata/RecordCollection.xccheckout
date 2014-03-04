@@ -10,6 +10,8 @@
 	<string>RecordCollection</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
+		<key>154A7C59-9102-45EA-914F-0EA8C879E8D0</key>
+		<string>ssh://github.groupondev.com/mobile-consumer/green-machine.git</string>
 		<key>3662E608-FB53-423D-8C09-99C432E487EB</key>
 		<string>https://github.com/keithnorm/RecordCollection.git</string>
 	</dict>
@@ -17,6 +19,8 @@
 	<string>RecordCollection.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
+		<key>154A7C59-9102-45EA-914F-0EA8C879E8D0</key>
+		<string>../../../Documents/work/mobile-iphone-consumer/green-machine</string>
 		<key>3662E608-FB53-423D-8C09-99C432E487EB</key>
 		<string>..</string>
 	</dict>
@@ -28,6 +32,14 @@
 	<string>3662E608-FB53-423D-8C09-99C432E487EB</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>154A7C59-9102-45EA-914F-0EA8C879E8D0</string>
+			<key>IDESourceControlWCCName</key>
+			<string>green-machine</string>
+		</dict>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>

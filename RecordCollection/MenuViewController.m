@@ -47,7 +47,7 @@
     self.searchDelegate = [[SearchResultsDelegate alloc] init];
     CGRect searchResultsFrame = CGRectOffset(self.view.bounds, 0, 44);
     searchResultsFrame.size.height = searchResultsFrame.size.height - 44;
-    self.searchResultsTableView = [[UITableView alloc] initWithFrame:searchResultsFrame];
+    self.searchResultsTableView = [[UITableView alloc] initWithFrame:searchResultsFrame style:UITableViewStylePlain];
     self.searchResultsTableView.hidden = YES;
     [self.view addSubview:self.searchResultsTableView];
     self.searchResults = @[];
@@ -76,12 +76,20 @@
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
     if (searchBar.text.length > 3) {
         if (self.currentSearch) {
-            [self.currentSearch removeObserver:self forKeyPath:@"loaded"];
+            self.currentSearch = nil;
         }
-        SPDispatchAsync(^{
-            self.currentSearch = [SPSearch liveSearchWithSearchQuery:searchBar.text inSession:[SPSession sharedSession]];
-            [self.currentSearch addObserver:self forKeyPath:@"loaded" options:NSKeyValueObservingOptionNew context:NULL];
-        });
+        self.currentSearch = [SPSearch liveSearchWithSearchQuery:searchBar.text inSession:[SPSession sharedSession]];
+        __weak MenuViewController *weakSelf = self;
+        [SPAsyncLoading waitUntilLoaded:self.currentSearch timeout:kSPAsyncLoadingDefaultTimeout then:^(NSArray *loadedItems, NSArray *notLoadedItems) {
+            if (loadedItems.count > 0) {
+//                [self searchDidFinish:loadedItems[0]];
+                weakSelf.searchDataSource.searchResults = weakSelf.currentSearch;
+                weakSelf.searchResultsTableView.hidden = NO;
+                [weakSelf.searchResultsTableView reloadData];
+            }
+            else {
+             }
+        }];
     }
 }
 
@@ -93,7 +101,7 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if ([keyPath isEqualToString:@"loaded"] && [object isKindOfClass:[SPSearch class]]) {
-        self.searchDataSource.searchResults = self.currentSearch.artists;
+//        self.searchDataSource.searchResults = self.currentSearch.artists;
         self.searchResultsTableView.hidden = NO;
         [self.searchResultsTableView reloadData];
     }

@@ -79,8 +79,12 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			sp_album *album = sp_link_as_album(link);
 			sp_album_add_ref(album);
 			newAlbum = [self albumWithAlbumStruct:album inSession:aSession];
+            if (!newAlbum.name) {
+                NSLog(@"hmmm");
+            }
 			sp_link_release(link);
 			sp_album_release(album);
+
 		}
 		if (block) dispatch_async(dispatch_get_main_queue(), ^() { block(newAlbum); });
 	});

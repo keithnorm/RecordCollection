@@ -2,7 +2,7 @@
 //  Album.m
 //  RecordCollection
 //
-//  Created by Keith Norman on 2/24/14.
+//  Created by Keith Norman on 3/3/14.
 //  Copyright (c) 2014 Keith Norman. All rights reserved.
 //
 
@@ -15,6 +15,7 @@
 @dynamic artistName;
 @dynamic cover;
 @dynamic name;
+@dynamic sortOrder;
 @dynamic spotifyUrl;
 @dynamic tracksCount;
 @dynamic user;

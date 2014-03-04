@@ -14,7 +14,6 @@
 
 @property (nonatomic, strong) AlbumCard *albumCard;
 
-
 @end
 
 @implementation AlbumCell
@@ -38,14 +37,32 @@
 
 - (void)commonInit {
     NSArray *views = [[NSBundle mainBundle] loadNibNamed:@"AlbumCard" owner:nil options:nil];
+    if (self.albumCard) {
+        [self.albumCard removeFromSuperview];
+        self.albumCard = nil;
+    }
     self.albumCard = [views objectAtIndex:0];
     [self.contentView addSubview:self.albumCard];
 }
 
-- (void)setAlbum:(SPAlbum *)album {
+- (void)setAlbum:(id<AlbumPresenterProtocol>)album {
     _album = album;
     self.albumCard.album = album;
 }
 
+- (void)setImage:(UIImage *)image {
+    self.albumCard.image = image;
+}
+
+- (void)dealloc {
+    self.albumCard = nil;
+    [self.albumCard removeFromSuperview];
+}
+
+- (void)prepareForReuse {
+    [super prepareForReuse];
+    self.albumCard.album = nil;
+    [self.albumCard refresh];
+}
 
 @end

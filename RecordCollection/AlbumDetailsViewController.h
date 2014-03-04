@@ -8,10 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
+#import "AlbumPresenterProtocol.h"
 
 @interface AlbumDetailsViewController : UIViewController
 
-@property (nonatomic, strong) SPAlbum *album;
+@property (nonatomic, strong) id<AlbumPresenterProtocol> album;
+@property (nonatomic, strong) SPTrack *track;
 
 @end
 

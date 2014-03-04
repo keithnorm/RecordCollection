@@ -54,7 +54,7 @@
 
 static NSMutableDictionary *loginControllerCache;
 
-+(SPLoginViewController *)loginControllerForSession:(SPSession *)session {
++(instancetype)loginControllerForSession:(SPSession *)session {
 	
 	if (session == nil) return nil;
 	
@@ -66,7 +66,8 @@ static NSMutableDictionary *loginControllerCache;
 	SPLoginViewController *controller = [loginControllerCache objectForKey:ptrValue];
 	
 	if (controller == nil) {
-		controller = [[SPLoginViewController alloc] initWithSession:session];
+        // hacked this here to be able to subclass this controller (kn)
+		controller = [[self alloc] initWithSession:session];
 		[loginControllerCache setObject:controller forKey:ptrValue];
 	}
 	

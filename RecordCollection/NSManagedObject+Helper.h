@@ -16,4 +16,6 @@
 + (NSArray *)findWithDict:(NSDictionary *)conditions;
 + (instancetype)findFirstWithDict:(NSDictionary *)conditions;
 
+- (void)destroy;
+
 @end

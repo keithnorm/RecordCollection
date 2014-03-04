@@ -7,6 +7,7 @@
 //
 
 #import "SearchResultsDataSource.h"
+#import <FormatterKit/TTTArrayFormatter.h>
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
 
 @interface SearchResultsDataSource()
@@ -18,22 +19,58 @@
 #pragma mark UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+    return [self.searchResults.artists count] ? 3 : 0;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.searchResults count];
+    NSUInteger rowCount = 0;
+    switch (section) {
+        case 0:
+            rowCount = [self.searchResults.artists count];
+            break;
+        case 1:
+            rowCount = [self.searchResults.tracks count];
+            break;
+        case 2:
+            rowCount = [self.searchResults.albums count];
+            break;
+        default:
+            break;
+    }
+    return rowCount;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    return [@[@"Artists", @"Tracks", @"Albums"] objectAtIndex:section];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSString *reuse = @"SearchResultsCell";
-    SPArtist *searchResultArtist = [self.searchResults objectAtIndex:indexPath.row];
     UITableViewCell *cell;
     cell = [tableView dequeueReusableCellWithIdentifier:reuse];
     if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuse];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuse];
     }
-    cell.textLabel.text = searchResultArtist.name;
+    id searchResultItem;
+    switch (indexPath.section) {
+        case 0:
+            searchResultItem = [self.searchResults.artists objectAtIndex:indexPath.row];
+            break;
+            
+        case 1: {
+            searchResultItem = [self.searchResults.tracks objectAtIndex:indexPath.row];
+            NSArray *artists = [[((SPTrack *)searchResultItem) artists] valueForKey:@"name"];
+            cell.detailTextLabel.text = [TTTArrayFormatter localizedStringFromArray:artists arrayStyle:TTTArrayFormatterSentenceStyle];
+            break;
+        }
+        
+        case 2:
+            searchResultItem = [self.searchResults.albums objectAtIndex:indexPath.row];
+            
+        default:
+            break;
+    }
+    cell.textLabel.text = [searchResultItem name];
     return cell;
 }
 

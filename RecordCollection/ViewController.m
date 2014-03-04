@@ -15,12 +15,19 @@
 #import "NSManagedObject+Helper.h"
 #import "SearchHeader.h"
 #import "AlbumDetailsViewController.h"
+#import "OCAEditableCollectionViewFlowLayout.h"
+#import "LoginViewController.h"
+#import "Underscore.h"
+#import "AlbumPresenter.h"
+#import "CoreDataHelper.h"
+#import <MBProgressHUD/MBProgressHUD.h>
 
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
 
+
 const NSUInteger kSearchTextLengthThreshold = 4;
 
-@interface ViewController () <SPSessionDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
+@interface ViewController () <SPSessionDelegate, UICollectionViewDataSource, UICollectionViewDelegate, OCAEditableCollectionViewDelegateFlowLayout, OCAEditableCollectionViewDataSource>
 
 @property (nonatomic, strong) SPToplist *topList;
 @property (nonatomic, strong) NSArray *albums;
@@ -44,15 +51,20 @@ const NSUInteger kSearchTextLengthThreshold = 4;
     if (user) {
         [session attemptLoginWithUserName:user.userName existingCredential:user.credentials];
     } else if (session.connectionState != SP_CONNECTION_STATE_LOGGED_IN) {
-        SPLoginViewController *controller = [SPLoginViewController loginControllerForSession:session];
+        LoginViewController *controller = [LoginViewController loginControllerForSession:session];
         [self.navigationController presentViewController:controller animated:YES completion:nil];
     }
     self.albumsCollectionView.contentInset = UIEdgeInsetsMake(0, 0, 50, 0);
+    self.albumsCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showTopAlbums) name:SPSessionLoginDidSucceedNotification object:nil];
+}
+
+- (void)viewDidLayoutSubviews {
+    
 }
 
 - (void)showTopAlbums {
@@ -75,6 +87,7 @@ const NSUInteger kSearchTextLengthThreshold = 4;
             self.albums = self.currentSearch.albums;
             [self.albumsCollectionView reloadData];
         }
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
     }
 }
 
@@ -85,10 +98,48 @@ const NSUInteger kSearchTextLengthThreshold = 4;
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"albumDetails"]) {
         NSIndexPath *indexPath = [self.albumsCollectionView indexPathForCell:sender];
-        SPAlbum *album = [self.albums objectAtIndex:indexPath.row];
+        id<AlbumPresenterProtocol> album = [self.albums objectAtIndex:indexPath.row];
         AlbumDetailsViewController *vc = segue.destinationViewController;
         vc.album = album;
     }
+}
+
+- (void)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout didBeginDraggingItemAtIndexPath:(NSIndexPath *)indexPath {
+    
+}
+
+- (void)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout willBeginDraggingItemAtIndexPath:(NSIndexPath *)indexPath {
+    
+}
+
+- (void)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout willEndDraggingItemAtIndexPath:(NSIndexPath *)indexPath {
+    
+}
+
+
+- (void)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout didEndDraggingItemAtIndexPath:(NSIndexPath *)indexPath {
+    
+}
+
+- (void)didBeginEditingForCollectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout {
+    UIBarButtonItem *doneEditingButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneEditing)];
+    self.navigationItem.rightBarButtonItem = doneEditingButton;
+}
+
+- (void)didEndEditingForCollectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout {
+    self.navigationItem.rightBarButtonItem = nil;
+}
+
+- (void)doneEditing {
+    OCAEditableCollectionViewFlowLayout *layout = ((OCAEditableCollectionViewFlowLayout *)self.albumsCollectionView.collectionViewLayout);
+    layout.editModeOn = NO;
+    [layout invalidateLayout];
+    [layout.delegate didEndEditingForCollectionView:self.albumsCollectionView layout:layout];
+}
+
+- (BOOL)shouldEnableEditingForCollectionView: (UICollectionView *)collectionView
+                                      layout: (UICollectionViewLayout *)collectionViewLayout {
+    return [self.searchText isEqualToString:@"My Collection"];
 }
 
 #pragma mark UICollectionViewDelegate
@@ -105,10 +156,46 @@ const NSUInteger kSearchTextLengthThreshold = 4;
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     AlbumCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"AlbumCell" forIndexPath:indexPath];
-    SPAlbum *album = [self.albums objectAtIndex:indexPath.row];
+    id<AlbumPresenterProtocol> album = [self.albums objectAtIndex:indexPath.row];
     cell.album = album;
+    if ([album isKindOfClass:[SPAlbum class]]) {
+        [SPAsyncLoading waitUntilLoaded:album.cover timeout:kSPAsyncLoadingDefaultTimeout then:^(NSArray *loadedItems, NSArray *notLoadedItems) {
+            AlbumCell *cell = (AlbumCell *)[collectionView cellForItemAtIndexPath:indexPath];
+            cell.image = album.cover.image;
+        }];
+    }
+    cell.deleteDelegate = (OCAEditableCollectionViewFlowLayout *)collectionView.collectionViewLayout;
     return cell;
 }
+
+- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
+    [((AlbumCell *)cell) setAlbum:nil];
+}
+
+- (void)collectionView:(UICollectionView *)collectionView willDeleteItemAtIndexPath:(NSIndexPath *)indexPath {
+    AlbumPresenter *albumPresenter = [self.albums objectAtIndex:indexPath.row];
+    Album *album = [Album findFirstWithDict:@{@"spotifyUrl": albumPresenter.spotifyURL}];
+    if (album) {
+        [album destroy];
+    }
+    NSMutableArray *mutableAlbums = [self.albums mutableCopy];
+    [mutableAlbums removeObject:albumPresenter];
+    self.albums = mutableAlbums;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView itemAtIndexPath:(NSIndexPath *)fromIndexPath didMoveToIndexPath:(NSIndexPath *)toIndexPath {
+    AlbumPresenter *albumPresenter = [self.albums objectAtIndex:fromIndexPath.row];
+    NSMutableArray *mutableAlbums = [self.albums mutableCopy];
+    [mutableAlbums removeObjectAtIndex:fromIndexPath.row];
+    [mutableAlbums insertObject:albumPresenter atIndex:toIndexPath.row];
+    for (NSUInteger i = 0; i < [mutableAlbums count]; i++) {
+        Album *anAlbum = [Album findFirstWithDict:@{@"spotifyUrl": [[mutableAlbums objectAtIndex:i] spotifyURL]}];
+        anAlbum.sortOrder = @(i);
+    }
+    self.albums = mutableAlbums;
+    [[[CoreDataHelper sharedHelper] context] save:nil];
+}
+
 
 #pragma mark Interaction Handling
 
@@ -126,17 +213,28 @@ const NSUInteger kSearchTextLengthThreshold = 4;
     if ([searchText isEqualToString:@"My Collection"]) {
         User *user = [User first];
         self.title = @"My Collection";
-        NSMutableArray *albums = [[NSMutableArray alloc] init];
-        for (Album *album in user.albums) {
-            NSLog(@"yo yo %@", album);
-            [SPAlbum albumWithAlbumURL:album.spotifyUrl inSession:[SPSession sharedSession] callback:^(SPAlbum *album) {
-                if (album) {
-                    [albums addObject:album];
-                    self.albums = albums;
-                    [self.albumsCollectionView reloadData];
-                }
-            }];
-        }
+        NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"sortOrder" ascending:YES];
+
+        NSArray *sortedAlbums = [user.albums sortedArrayUsingDescriptors:@[sort]];
+        
+        NSArray *presentedAlbums = Underscore.array(sortedAlbums).map(^AlbumPresenter *(Album *album) {
+            return [[AlbumPresenter alloc] initWithAlbum:album];
+        }).unwrap;
+
+//        for (Album *album in sortedAlbums) {
+//            [SPAlbum albumWithAlbumURL:album.spotifyUrl inSession:[SPSession sharedSession] callback:^(SPAlbum *album) {
+//                [albums addObject:album];
+//                NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"sortOrder" ascending:YES];
+//                if ([albums count] == [sortedAlbums count]) {
+//                    [SPAsyncLoading waitUntilLoaded:albums timeout:kSPAsyncLoadingDefaultTimeout then:^(NSArray *loadedItems, NSArray *notLoadedItems) {
+//                        self.albums = [albums sortedArrayUsingDescriptors:@[sort]];
+//                        [self.albumsCollectionView reloadData];
+//                    }];
+//                }
+//            }];
+//        }
+        self.albums = presentedAlbums;
+        [self.albumsCollectionView reloadData];
         return;
     }
     
@@ -145,7 +243,10 @@ const NSUInteger kSearchTextLengthThreshold = 4;
             [self.currentSearch removeObserver:self forKeyPath:@"loaded"];
         }
         self.currentSearch = [SPSearch searchWithSearchQuery:searchText inSession:[SPSession sharedSession]];
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         [self.currentSearch addObserver:self forKeyPath:@"loaded" options:NSKeyValueObservingOptionNew context:NULL];
+        self.albums = @[];
+        [self.albumsCollectionView reloadData];
         self.title = searchText;
     });
 }

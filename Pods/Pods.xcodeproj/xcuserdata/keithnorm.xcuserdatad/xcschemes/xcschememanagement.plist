@@ -9,7 +9,22 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-MSDynamicsDrawerViewController.xcscheme</key>
+		<key>Pods-FormatterKit.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-MBProgressHUD.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-Reveal-iOS-SDK.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-Underscore.m.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -27,22 +42,37 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>2874DEAC93F944C4BDDB0743</key>
+		<key>3644D76CD9474BE4B4CBB46B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>3F40426D30C14CCB8BC6003D</key>
+		<key>8674D27CCCF24A889D038E00</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>413CDBD7346644CD891F2439</key>
+		<key>DC55ACAB18DF4DC8B5A1C5BD</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>453352EFA2EB45E396749EB1</key>
+		<key>E2B83DF19D2C4124A9C8A758</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>E6213E88AD3C47979F3FEFB3</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>EAABED04F1B24908B93B32B4</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FFC59ECE7700411EA9391A7E</key>
 		<dict>
 			<key>primary</key>
 			<true/>

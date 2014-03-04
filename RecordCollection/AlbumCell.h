@@ -8,10 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
+#import "OCAEditableCollectionViewFlowLayoutCell.h"
+#import "AlbumPresenterProtocol.h"
 
-@interface AlbumCell : UICollectionViewCell
+@interface AlbumCell : OCAEditableCollectionViewFlowLayoutCell
 
-@property (nonatomic, strong) SPAlbum *album;
-
+@property (nonatomic, strong) id<AlbumPresenterProtocol> album;
+@property (nonatomic, strong) UIImage *image;
 
 @end

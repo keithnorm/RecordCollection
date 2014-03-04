@@ -17,6 +17,8 @@
 #import "ViewController.h"
 #import "MenuViewController.h"
 #import "Theme.h"
+#import "PlayQueue.h"
+#import "PlaybackManager.h"
 
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
 
@@ -81,16 +83,8 @@ static const size_t g_appkey_size = sizeof(g_appkey);
     [main.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[player]|" options:0 metrics:nil views:@{@"player": player}]];
     self.window.tintColor = [UIColor blackColor];
     
-    for (NSString* family in [UIFont familyNames])
-    {
-        NSLog(@"%@", family);
-        
-        for (NSString* name in [UIFont fontNamesForFamilyName: family])
-        {
-            NSLog(@"  %@", name);
-        }
-    }
-    
+    [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
+    [[CoreDataHelper sharedHelper] iCloudAccountIsSignedIn];
     return YES;
 }
 							
@@ -105,6 +99,16 @@ static const size_t g_appkey_size = sizeof(g_appkey);
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     [[NSUserDefaults standardUserDefaults] synchronize];
+    __block UIBackgroundTaskIdentifier identifier = [application   beginBackgroundTaskWithExpirationHandler:^{
+        [[UIApplication sharedApplication] endBackgroundTask:identifier];
+    }];
+    
+    [[SPSession sharedSession] flushCaches:^{
+        NSLog(@"Flush Cache");
+        
+        if (identifier != UIBackgroundTaskInvalid)
+            [[UIApplication sharedApplication] endBackgroundTask:identifier];
+    }];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -120,6 +124,17 @@ static const size_t g_appkey_size = sizeof(g_appkey);
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    __block UIBackgroundTaskIdentifier identifier = [application   beginBackgroundTaskWithExpirationHandler:^{
+        [[UIApplication sharedApplication] endBackgroundTask:identifier];
+    }];
+    
+    [[SPSession sharedSession] flushCaches:^{
+        NSLog(@"Flush Cache");
+        
+        if (identifier != UIBackgroundTaskInvalid)
+            [[UIApplication sharedApplication] endBackgroundTask:identifier];
+    }];
 }
 
 - (void)session:(SPSession *)session didGenerateLoginCredentials:(NSString *)credential forUserName:(NSString *)userName {
@@ -132,6 +147,10 @@ static const size_t g_appkey_size = sizeof(g_appkey);
     }
 }
 
+-(void)sessionDidChangeMetadata:(SPSession *)aSession {
+
+}
+
 - (void)didAddAlbumToCollection:(SPAlbum *)album {
     Album *alreadyAdded = [Album findFirstWithDict:@{@"spotifyUrl": album.spotifyURL}];
     if (alreadyAdded) {
@@ -142,10 +161,27 @@ static const size_t g_appkey_size = sizeof(g_appkey);
     Album *albumObj = [Album new];
     albumObj.name = album.name;
     albumObj.spotifyUrl = album.spotifyURL;
+    albumObj.cover = album.cover.image;
+    albumObj.artistName = album.artist.name;
     User *user = [User first];
     
     [user addAlbumsObject:albumObj];
     [[CoreDataHelper sharedHelper] saveContext];
+    
+    [[[SPSession sharedSession] userPlaylists] createPlaylistWithName:album.name callback:^(SPPlaylist *createdPlaylist) {
+        __block SPPlaylist *weakPlaylist = createdPlaylist;
+        SPAlbumBrowse *browse = [SPAlbumBrowse browseAlbum:album inSession:[SPSession sharedSession]];
+        [SPAsyncLoading waitUntilLoaded:browse timeout:kSPAsyncLoadingDefaultTimeout then:^(NSArray *loadedItems, NSArray *notLoadedItems) {
+            weakPlaylist = createdPlaylist;
+            [createdPlaylist addItems:browse.tracks atIndex:0 callback:^(NSError *error) {
+                [SPAsyncLoading waitUntilLoaded:weakPlaylist timeout:kSPAsyncLoadingDefaultTimeout then:^(NSArray *loadedItems, NSArray *notLoadedItems) {
+                    weakPlaylist.markedForOfflinePlayback = YES;
+                }];
+                
+            }];
+        }];
+    }];
+    
     [self.drawer peak];
     UIImage *cover = album.cover.image;
     UIImageView *coverView = [[UIImageView alloc] initWithImage:cover];
@@ -205,6 +241,10 @@ static const size_t g_appkey_size = sizeof(g_appkey);
     } repeats:NO];
 }
 
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    NSLog(@"changed %@", keyPath);
+}
+
 - (void)animationDidStop:(CAAnimation *)animation finished:(BOOL)finished {
     if (finished) {
         NSString *animationName = [animation valueForKey:@"animationName"];
@@ -221,6 +261,15 @@ static const size_t g_appkey_size = sizeof(g_appkey);
             }];
         }
     }
+}
+
+- (void)userDidSelectPlayNext:(id)sender {
+//    [self playNext];
+    [[PlaybackManager sharedManager] playNext];
+}
+
+- (void)session:(SPSession *)aSession didLogMessage:(NSString *)aMessage {
+    NSLog(@"CocoaLS DEBUG: %@", aMessage);
 }
 
 @end

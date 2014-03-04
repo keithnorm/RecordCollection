@@ -25,6 +25,8 @@
 #import "ICSDrawerController.h"
 #import "ICSDropShadowView.h"
 #import "ViewController.h"
+#import "AlbumDetailsViewController.h"
+#import <CocoaLibSpotify/CocoaLibSpotify.h>
 
 static const CGFloat kICSDrawerControllerDrawerDepth = 260.0f;
 static const CGFloat kICSDrawerControllerLeftViewInitialOffset = -60.0f;
@@ -595,6 +597,15 @@ typedef NS_ENUM(NSUInteger, ICSDrawerControllerState)
     [self close];
     ViewController *controller = [[((UINavigationController *)self.centerViewController) viewControllers] firstObject];
     controller.searchText = searchText;
+}
+
+- (void)selectTrackFromSearchResults:(SPTrack *)track {
+    [self close];
+    UINavigationController *controller = (UINavigationController *)self.centerViewController;
+    AlbumDetailsViewController *albumDetailsVC = (AlbumDetailsViewController *)[controller.storyboard instantiateViewControllerWithIdentifier:@"albumDetails"];
+    albumDetailsVC.album = (id<AlbumPresenterProtocol>)track.album;
+    albumDetailsVC.track = track;
+    [controller pushViewController:albumDetailsVC animated:YES];
 }
 
 @end
