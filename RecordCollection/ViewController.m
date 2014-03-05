@@ -12,6 +12,7 @@
 #import "AlbumCell.h"
 #import "User.h"
 #import "Album.h"
+#import "Album+BusinessLogic.h"
 #import "NSManagedObject+Helper.h"
 #import "SearchHeader.h"
 #import "AlbumDetailsViewController.h"
@@ -56,6 +57,15 @@ const NSUInteger kSearchTextLengthThreshold = 4;
     }
     self.albumsCollectionView.contentInset = UIEdgeInsetsMake(0, 0, 50, 0);
     self.albumsCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(somethingChanged) name:@"SomethingChanged" object:nil];
+}
+
+
+- (void)somethingChanged {
+    NSLog(@"something changed");
+    if ([self.searchText isEqualToString:@"My Collection"]) {
+        self.searchText = @"My Collection";
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -93,6 +103,7 @@ const NSUInteger kSearchTextLengthThreshold = 4;
 
 - (void)dealloc {
     [self.topList removeObserver:self forKeyPath:@"loaded"];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -178,6 +189,19 @@ const NSUInteger kSearchTextLengthThreshold = 4;
     if (album) {
         [album destroy];
     }
+    
+    SPPlaylistContainer *playlistContainer = [[SPSession sharedSession] userPlaylists];
+    [SPAsyncLoading waitUntilLoaded:playlistContainer timeout:kSPAsyncLoadingDefaultTimeout then:^(NSArray *loadedItems, NSArray *notLoadedItems) {
+        for (SPPlaylist *playlist in playlistContainer.playlists) {
+            [SPAsyncLoading waitUntilLoaded:playlist timeout:kSPAsyncLoadingDefaultTimeout then:^(NSArray *loadedItems, NSArray *notLoadedItems) {
+                if ([playlist.name isEqualToString:[album playlistName]]) {
+                    [[[SPSession sharedSession] userPlaylists] removeItem:playlist callback:^(NSError *error) {
+                        NSLog(@"cool dude");
+                    }];
+                }
+            }];
+        }
+    }];
     NSMutableArray *mutableAlbums = [self.albums mutableCopy];
     [mutableAlbums removeObject:albumPresenter];
     self.albums = mutableAlbums;

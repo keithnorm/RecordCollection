@@ -19,6 +19,7 @@
 		4E2DC0B118C57A9300ADB7B1 /* ArtistPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E2DC0B018C57A9300ADB7B1 /* ArtistPresenter.m */; };
 		4E2DC0B418C57AA000ADB7B1 /* CoverImagePresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E2DC0B318C57AA000ADB7B1 /* CoverImagePresenter.m */; };
 		4E42223418C24E7E0082D8E4 /* PlayQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E42223318C24E7E0082D8E4 /* PlayQueue.m */; };
+		4EA2391A18C6F1A20046AC6A /* Album+BusinessLogic.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EA2391918C6F1A20046AC6A /* Album+BusinessLogic.m */; };
 		4EDEF5BE18BA953A00D81B1D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4EDEF5BD18BA953A00D81B1D /* Foundation.framework */; };
 		4EDEF5C018BA953A00D81B1D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4EDEF5BF18BA953A00D81B1D /* CoreGraphics.framework */; };
 		4EDEF5C218BA953A00D81B1D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4EDEF5C118BA953A00D81B1D /* UIKit.framework */; };
@@ -92,8 +93,8 @@
 		4E2DC09418C402F900ADB7B1 /* OCAEditableCollectionViewFlowLayoutCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCAEditableCollectionViewFlowLayoutCell.m; sourceTree = "<group>"; };
 		4E2DC09518C402F900ADB7B1 /* OCAEditableLayoutAttributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCAEditableLayoutAttributes.h; sourceTree = "<group>"; };
 		4E2DC09618C402F900ADB7B1 /* OCAEditableLayoutAttributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCAEditableLayoutAttributes.m; sourceTree = "<group>"; };
-		4E2DC09A18C464A300ADB7B1 /* Model 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Model 3.xcdatamodel"; sourceTree = "<group>"; };
-		4E2DC09F18C56D4400ADB7B1 /* Model 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Model 4.xcdatamodel"; sourceTree = "<group>"; };
+		4E2DC09A18C464A300ADB7B1 /* Model 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 3.xcdatamodel"; sourceTree = "<group>"; };
+		4E2DC09F18C56D4400ADB7B1 /* Model 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 4.xcdatamodel"; sourceTree = "<group>"; };
 		4E2DC0A018C56F8C00ADB7B1 /* UIImageToNSDataTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIImageToNSDataTransformer.h; sourceTree = "<group>"; };
 		4E2DC0A118C56F8C00ADB7B1 /* UIImageToNSDataTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIImageToNSDataTransformer.m; sourceTree = "<group>"; };
 		4E2DC0A318C56FFF00ADB7B1 /* Album.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Album.h; sourceTree = "<group>"; };
@@ -111,6 +112,8 @@
 		4E42223018C13F6B0082D8E4 /* Reveal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Reveal.framework; path = "../../Documents/work/mobile-iphone-consumer/green-machine/ThirdParty/Reveal.framework"; sourceTree = "<group>"; };
 		4E42223218C24E7E0082D8E4 /* PlayQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayQueue.h; sourceTree = "<group>"; };
 		4E42223318C24E7E0082D8E4 /* PlayQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayQueue.m; sourceTree = "<group>"; };
+		4EA2391818C6F1A20046AC6A /* Album+BusinessLogic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Album+BusinessLogic.h"; sourceTree = "<group>"; };
+		4EA2391918C6F1A20046AC6A /* Album+BusinessLogic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Album+BusinessLogic.m"; sourceTree = "<group>"; };
 		4EDEF5BA18BA953A00D81B1D /* RecordCollection.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RecordCollection.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4EDEF5BD18BA953A00D81B1D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		4EDEF5BF18BA953A00D81B1D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -445,6 +448,8 @@
 				4EDEF61918BAF15900D81B1D /* NSManagedObject+Helper.m */,
 				4E2DC0A018C56F8C00ADB7B1 /* UIImageToNSDataTransformer.h */,
 				4E2DC0A118C56F8C00ADB7B1 /* UIImageToNSDataTransformer.m */,
+				4EA2391818C6F1A20046AC6A /* Album+BusinessLogic.h */,
+				4EA2391918C6F1A20046AC6A /* Album+BusinessLogic.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -673,6 +678,7 @@
 				4EDEF5FA18BAA9A400D81B1D /* NSTimer+Blocks.m in Sources */,
 				4E2DC0B118C57A9300ADB7B1 /* ArtistPresenter.m in Sources */,
 				4EDEF63D18BB3B8400D81B1D /* Player.m in Sources */,
+				4EA2391A18C6F1A20046AC6A /* Album+BusinessLogic.m in Sources */,
 				4EDEF65A18BC7C0800D81B1D /* PlayPauseButton.m in Sources */,
 				4EDEF62E18BB1DE500D81B1D /* AlbumDetailsView.m in Sources */,
 				4EDEF64418BC435900D81B1D /* SearchResultsDataSource.m in Sources */,

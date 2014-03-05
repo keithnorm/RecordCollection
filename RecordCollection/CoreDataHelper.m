@@ -85,6 +85,7 @@ NSString *iCloudStoreFilename = @"iCloud.sqlite";
                 initWithConcurrencyType:NSMainQueueConcurrencyType];
     [_context setPersistentStoreCoordinator:_coordinator];
     [self setupCoreData];
+    [self listenForStoreChanges];
     return self;
 }
 - (void)loadStore {
@@ -143,7 +144,54 @@ NSString *iCloudStoreFilename = @"iCloud.sqlite";
     if (debug==1) {
         NSLog(@"Running %@ '%@'", self.class, NSStringFromSelector(_cmd));
     }
-    [self loadStore];
+    if (![self loadiCloudStore]) {
+        [self setDefaultDataStoreAsInitialStore];
+        [self loadStore];
+    }
+}
+
+- (void)setDefaultDataAsImportedForStore:(NSPersistentStore*)aStore {
+    if (debug==1) {
+        NSLog(@"Running %@ '%@'", self.class, NSStringFromSelector(_cmd));
+    }
+    // get metadata dictionary
+    NSMutableDictionary *dictionary =
+    [NSMutableDictionary dictionaryWithDictionary:[[aStore metadata] copy]];
+    
+    if (debug==1) {
+        NSLog(@"__Store Metadata BEFORE changes__ \n %@", dictionary);
+    }
+    
+    // edit metadata dictionary
+    [dictionary setObject:@YES forKey:@"DefaultDataImported"];
+    
+    // set metadata dictionary
+    [self.coordinator setMetadata:dictionary forPersistentStore:aStore];
+    
+    if (debug==1) {NSLog(@"__Store Metadata AFTER changes__ \n %@", dictionary);}
+}
+
+- (void)setDefaultDataStoreAsInitialStore {
+    if (debug==1) {
+        NSLog(@"Running %@ '%@'", self.class, NSStringFromSelector(_cmd));
+    }
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    if (![fileManager fileExistsAtPath:self.storeURL.path]) {
+        NSURL *defaultDataURL =
+        [NSURL fileURLWithPath:[[NSBundle mainBundle]
+                                pathForResource:@"DefaultData" ofType:@"sqlite"]];
+        NSError *error;
+        if (![fileManager copyItemAtURL:defaultDataURL
+                                  toURL:self.storeURL
+                                  error:&error]) {
+            NSLog(@"DefaultData.sqlite copy FAIL: %@",
+                  error.localizedDescription);
+        }
+        else {
+            NSLog(@"A copy of DefaultData.sqlite was set as the initial store for %@",
+                  self.storeURL.path);
+        }
+    }
 }
 
 #pragma mark - SAVING
@@ -275,6 +323,59 @@ NSString *iCloudStoreFilename = @"iCloud.sqlite";
     NSLog(@"--> Is there a CODE_SIGN_ENTITLEMENTS Xcode warning that needs fixing? You may need to specifically choose a developer instead of using Automatic selection");
     NSLog(@"--> Are you using a Pre-iOS7 Simulator?");
     return NO;
+}
+
+- (void)listenForStoreChanges {
+    if (debug == 1) {
+        NSLog(@"Running %@ '%@'", self.class, NSStringFromSelector(_cmd));
+    }
+    
+    NSNotificationCenter *dc = [NSNotificationCenter defaultCenter];
+    [dc addObserver:self selector:@selector(storesWillChange:) name:NSPersistentStoreCoordinatorStoresWillChangeNotification object:_coordinator];
+    
+    [dc addObserver:self selector:@selector(storesDidChange:) name:NSPersistentStoreCoordinatorStoresDidChangeNotification object:_coordinator];
+    
+    [dc addObserver:self selector:@selector(persistentStoreDidImportUbiquitiousContentChanges:) name:NSPersistentStoreDidImportUbiquitousContentChangesNotification object:_coordinator];
+}
+
+- (void)resetContext:(NSManagedObjectContext*)moc {
+    [moc performBlockAndWait:^{
+        [moc reset];
+    }];
+}
+
+- (void)storesWillChange:(NSNotification *)n {
+    if (debug==1) {
+        NSLog(@"Running %@ '%@'", self.class, NSStringFromSelector(_cmd));
+    }
+    
+    [_context performBlockAndWait:^{
+        [_context save:nil];
+        [self resetContext:_context];
+    }];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"SomethingChanged" object:nil userInfo:nil];
+}
+
+- (void)storesDidChange:(NSNotification *)n {
+    if (debug==1) {
+        NSLog(@"Running %@ '%@'", self.class, NSStringFromSelector(_cmd));
+    }
+    // Refresh UI
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"SomethingChanged"
+                                                        object:nil
+                                                      userInfo:nil];
+}
+
+- (void)persistentStoreDidImportUbiquitiousContentChanges:(NSNotification*)n {
+    if (debug==1) {
+        NSLog(@"Running %@ '%@'", self.class, NSStringFromSelector(_cmd));
+    }
+    [_context performBlock:^{
+        [_context mergeChangesFromContextDidSaveNotification:n];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"SomethingChanged"
+                                                            object:nil];
+    }];
 }
 
 @end

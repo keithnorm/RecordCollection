@@ -12,6 +12,7 @@
 #import "CoreDataHelper.h"
 #import "User.h"
 #import "Album.h"
+#import "Album+BusinessLogic.h"
 #import "NSManagedObject+Helper.h"
 #import "NSTimer+Blocks.h"
 #import "ViewController.h"
@@ -168,7 +169,7 @@ static const size_t g_appkey_size = sizeof(g_appkey);
     [user addAlbumsObject:albumObj];
     [[CoreDataHelper sharedHelper] saveContext];
     
-    [[[SPSession sharedSession] userPlaylists] createPlaylistWithName:album.name callback:^(SPPlaylist *createdPlaylist) {
+    [[[SPSession sharedSession] userPlaylists] createPlaylistWithName:[albumObj playlistName] callback:^(SPPlaylist *createdPlaylist) {
         __block SPPlaylist *weakPlaylist = createdPlaylist;
         SPAlbumBrowse *browse = [SPAlbumBrowse browseAlbum:album inSession:[SPSession sharedSession]];
         [SPAsyncLoading waitUntilLoaded:browse timeout:kSPAsyncLoadingDefaultTimeout then:^(NSArray *loadedItems, NSArray *notLoadedItems) {
