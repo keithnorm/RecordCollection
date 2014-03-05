@@ -269,8 +269,40 @@ static const size_t g_appkey_size = sizeof(g_appkey);
     [[PlaybackManager sharedManager] playNext];
 }
 
+- (void)userDidSeek:(NSNumber *)position {
+    PlaybackManager *playbackManager = [PlaybackManager sharedManager];
+    [playbackManager seekToTrackPosition:[position floatValue]];
+}
+
 - (void)session:(SPSession *)aSession didLogMessage:(NSString *)aMessage {
     NSLog(@"CocoaLS DEBUG: %@", aMessage);
+}
+
+- (void)remoteControlReceivedWithEvent:(UIEvent *)event {
+    if (event.type == UIEventTypeRemoteControl) {
+        
+        switch (event.subtype) {
+                
+            case UIEventSubtypeRemoteControlPause:
+                [[SPSession sharedSession] setPlaying:NO];
+                break;
+                
+            case UIEventSubtypeRemoteControlPlay:
+                [[SPSession sharedSession] setPlaying:YES];
+                break;
+                
+            case UIEventSubtypeRemoteControlPreviousTrack:
+                [[PlaybackManager sharedManager] playPrev];
+                break;
+                
+            case UIEventSubtypeRemoteControlNextTrack:
+                [[PlaybackManager sharedManager] playNext];
+                break;
+                
+            default:
+                break;
+        }
+    }
 }
 
 @end

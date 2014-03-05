@@ -55,7 +55,7 @@ const NSUInteger kSearchTextLengthThreshold = 4;
         LoginViewController *controller = [LoginViewController loginControllerForSession:session];
         [self.navigationController presentViewController:controller animated:YES completion:nil];
     }
-    self.albumsCollectionView.contentInset = UIEdgeInsetsMake(0, 0, 50, 0);
+    self.albumsCollectionView.contentInset = UIEdgeInsetsMake(0, 0, 64, 0);
     self.albumsCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(somethingChanged) name:@"SomethingChanged" object:nil];
 }

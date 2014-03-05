@@ -44,4 +44,13 @@
     return [self.albumMeta.tracks objectAtIndex:self.currentTrackIndex++];
 }
 
+// added mainly to support MPNowPlayingInfoCenter controls
+- (BOOL)hasPrev {
+    return self.currentTrackIndex > 1;
+}
+- (SPTrack *)prev {
+    self.currentTrackIndex-=2;
+    return [self.albumMeta.tracks objectAtIndex:self.currentTrackIndex];
+}
+
 @end

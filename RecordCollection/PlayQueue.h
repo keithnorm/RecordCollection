@@ -19,5 +19,7 @@
 
 - (BOOL)hasNext;
 - (SPTrack *)next;
+- (BOOL)hasPrev;
+- (SPTrack *)prev;
 
 @end

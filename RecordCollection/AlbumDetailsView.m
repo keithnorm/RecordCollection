@@ -59,7 +59,7 @@
     UIView *tableHeader = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.trackList.bounds.size.width, self.image.bounds.size.height - 20)];
     self.trackList.backgroundColor = [UIColor clearColor];
     self.trackList.tableHeaderView = tableHeader;
-    self.trackList.contentInset = UIEdgeInsetsMake(0, 0, 50, 0);
+    self.trackList.contentInset = UIEdgeInsetsMake(0, 0, 64, 0);
 }
 
 - (void)setAlbum:(id<AlbumPresenterProtocol>)album {
@@ -88,7 +88,9 @@
     _track = track;
     NSIndexPath *indexOfTrack = [NSIndexPath indexPathForRow:track.trackNumber - 1 inSection:0];
     if (track) {
-        [[PlaybackManager sharedManager] playTrack:track callback:nil];
+        if (![track isEqual:[[PlaybackManager sharedManager] currentTrack]]) {
+            [[PlaybackManager sharedManager] playTrack:track callback:nil];
+        }
         if ([self.trackList cellForRowAtIndexPath:indexOfTrack]) {
             [self.trackList selectRowAtIndexPath:indexOfTrack animated:YES scrollPosition:UITableViewScrollPositionBottom];
         }

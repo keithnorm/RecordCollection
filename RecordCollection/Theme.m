@@ -9,6 +9,9 @@
 #import "Theme.h"
 #import "PlayPauseButton.h"
 #import "Player.h"
+#import "ScrubberBar.h"
+#import "NextButton.h"
+#import "ScrubberBarProgressBar.h"
 #import "UIView+CSS.h"
 #import "UIImage+Gradient.h"
 #import "UILabel+AppearanceFix.h"
@@ -72,14 +75,18 @@ CGImageRef CGGenerateNoiseImage(CGSize size, CGFloat factor) {
     
     [[PlayPauseButton appearance] setControlButtonColor:[UIColor whiteColor]];
     [[PlayPauseButton appearance] setBackgroundColor:[UIColor clearColor]];
-    NSArray *colors = [NSArray arrayWithObjects:(id)[[UIColor darkGrayColor] CGColor], (id)[[UIColor blackColor] CGColor], nil];
-    [[Player appearance] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage gradientWithColors:colors height:100]]];
-    [[UILabel appearanceWhenContainedIn:[Player class], nil] setTextColor:[UIColor whiteColor]];
-    [self styleCaption1Label:[UILabel appearanceWhenContainedIn:[Player class], nil]];
-    [[UILabel appearanceWhenContainedIn:[UITableViewCell class], nil] setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]];
-    UILabel *label;
+    [[NextButton appearance] setTintColor:[UIColor whiteColor]];
+    // cool way to set a gradient background
+//    NSArray *colors = [NSArray arrayWithObjects:(id)[[UIColor darkGrayColor] CGColor], (id)[[UIColor blackColor] CGColor], nil];
+//    [[Player appearance] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage gradientWithColors:colors height:100]]];
+    [[Player appearance] setBackgroundColor:RGBCOLOR(44, 44, 44)];
+    [[ScrubberBar appearance] setBackgroundColor:RGBCOLOR(218, 128, 111)];
+    [[ScrubberBarProgressBar appearance] setBackgroundColor:RGBCOLOR(255, 149, 128)];
     
-    label.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+    
+    [[UILabel appearanceWhenContainedIn:[Player class], nil] setTextColor:[UIColor whiteColor]];
+//    [self styleCaption1Label:[UILabel appearanceWhenContainedIn:[Player class], nil]];
+    [[UILabel appearanceWhenContainedIn:[UITableViewCell class], nil] setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]];
     
     CSSBorder *border = [[CSSBorder alloc] init];
     border.color = [UIColor darkGrayColor];
@@ -88,7 +95,8 @@ CGImageRef CGGenerateNoiseImage(CGSize size, CGFloat factor) {
     CSSDropshadow *shadow = [[CSSDropshadow alloc] init];
     shadow.color = [UIColor darkGrayColor];
     [[Player appearance] setBorder:border];
-    [[Player appearance] setDropShadow:shadow];
+    
+//    [[Player appearance] setDropShadow:shadow];
     
 //    [self stylePrimaryButton:[UIButton appearance]];
     

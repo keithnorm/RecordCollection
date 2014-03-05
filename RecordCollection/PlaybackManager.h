@@ -18,5 +18,6 @@ extern NSString *const RCPlayerDidBeginPlayingTrackNotification;
 
 + (instancetype)sharedManager;
 - (void)playNext;
+- (void)playPrev;
 
 @end

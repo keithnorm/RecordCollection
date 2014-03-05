@@ -20,6 +20,9 @@
 		4E2DC0B418C57AA000ADB7B1 /* CoverImagePresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E2DC0B318C57AA000ADB7B1 /* CoverImagePresenter.m */; };
 		4E42223418C24E7E0082D8E4 /* PlayQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E42223318C24E7E0082D8E4 /* PlayQueue.m */; };
 		4EA2391A18C6F1A20046AC6A /* Album+BusinessLogic.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EA2391918C6F1A20046AC6A /* Album+BusinessLogic.m */; };
+		4EA2391D18C6FE4D0046AC6A /* ScrubberBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EA2391C18C6FE4D0046AC6A /* ScrubberBar.m */; };
+		4EA2392018C6FE830046AC6A /* ScrubberBarProgressBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EA2391F18C6FE830046AC6A /* ScrubberBarProgressBar.m */; };
+		4EA2392318C70B1F0046AC6A /* NextButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EA2392218C70B1F0046AC6A /* NextButton.m */; };
 		4EDEF5BE18BA953A00D81B1D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4EDEF5BD18BA953A00D81B1D /* Foundation.framework */; };
 		4EDEF5C018BA953A00D81B1D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4EDEF5BF18BA953A00D81B1D /* CoreGraphics.framework */; };
 		4EDEF5C218BA953A00D81B1D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4EDEF5C118BA953A00D81B1D /* UIKit.framework */; };
@@ -114,6 +117,12 @@
 		4E42223318C24E7E0082D8E4 /* PlayQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayQueue.m; sourceTree = "<group>"; };
 		4EA2391818C6F1A20046AC6A /* Album+BusinessLogic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Album+BusinessLogic.h"; sourceTree = "<group>"; };
 		4EA2391918C6F1A20046AC6A /* Album+BusinessLogic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Album+BusinessLogic.m"; sourceTree = "<group>"; };
+		4EA2391B18C6FE4D0046AC6A /* ScrubberBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScrubberBar.h; sourceTree = "<group>"; };
+		4EA2391C18C6FE4D0046AC6A /* ScrubberBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScrubberBar.m; sourceTree = "<group>"; };
+		4EA2391E18C6FE830046AC6A /* ScrubberBarProgressBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScrubberBarProgressBar.h; sourceTree = "<group>"; };
+		4EA2391F18C6FE830046AC6A /* ScrubberBarProgressBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScrubberBarProgressBar.m; sourceTree = "<group>"; };
+		4EA2392118C70B1F0046AC6A /* NextButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NextButton.h; sourceTree = "<group>"; };
+		4EA2392218C70B1F0046AC6A /* NextButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NextButton.m; sourceTree = "<group>"; };
 		4EDEF5BA18BA953A00D81B1D /* RecordCollection.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RecordCollection.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4EDEF5BD18BA953A00D81B1D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		4EDEF5BF18BA953A00D81B1D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -494,6 +503,12 @@
 				4EDEF65918BC7C0800D81B1D /* PlayPauseButton.m */,
 				4E42223218C24E7E0082D8E4 /* PlayQueue.h */,
 				4E42223318C24E7E0082D8E4 /* PlayQueue.m */,
+				4EA2391B18C6FE4D0046AC6A /* ScrubberBar.h */,
+				4EA2391C18C6FE4D0046AC6A /* ScrubberBar.m */,
+				4EA2391E18C6FE830046AC6A /* ScrubberBarProgressBar.h */,
+				4EA2391F18C6FE830046AC6A /* ScrubberBarProgressBar.m */,
+				4EA2392118C70B1F0046AC6A /* NextButton.h */,
+				4EA2392218C70B1F0046AC6A /* NextButton.m */,
 			);
 			name = "Audio Player";
 			sourceTree = "<group>";
@@ -688,14 +703,17 @@
 				4EDEF61118BAEF5C00D81B1D /* Model.xcdatamodeld in Sources */,
 				4EDEF62718BB0F7500D81B1D /* SearchHeader.m in Sources */,
 				4EF46A4D18BDE2F200D98747 /* AlbumsView.m in Sources */,
+				4EA2392318C70B1F0046AC6A /* NextButton.m in Sources */,
 				4EDEF66718BC9B7F00D81B1D /* UIImage+Gradient.m in Sources */,
 				4EDEF61A18BAF15900D81B1D /* NSManagedObject+Helper.m in Sources */,
 				4EDEF62418BB0BCC00D81B1D /* MenuViewController.m in Sources */,
 				4EDEF62B18BB1BEF00D81B1D /* AlbumDetailsViewController.m in Sources */,
 				4EDEF60918BAD9A800D81B1D /* ICSDrawerController.m in Sources */,
 				4EF469CD18BDD4B200D98747 /* UILabel+AppearanceFix.m in Sources */,
+				4EA2392018C6FE830046AC6A /* ScrubberBarProgressBar.m in Sources */,
 				4E2DC0A918C5716300ADB7B1 /* LoginViewController.m in Sources */,
 				4E2DC09818C402F900ADB7B1 /* OCAEditableCollectionViewFlowLayoutCell.m in Sources */,
+				4EA2391D18C6FE4D0046AC6A /* ScrubberBar.m in Sources */,
 				4EDEF65E18BC843D00D81B1D /* Theme.m in Sources */,
 				4EDEF60118BAB47F00D81B1D /* AlbumCard.m in Sources */,
 			);

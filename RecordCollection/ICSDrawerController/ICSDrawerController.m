@@ -600,8 +600,19 @@ typedef NS_ENUM(NSUInteger, ICSDrawerControllerState)
 }
 
 - (void)selectTrackFromSearchResults:(SPTrack *)track {
-    [self close];
+    [self gotoTrack:track];
+}
+
+- (void)selectTrackFromPlayer:(SPTrack *)track {
+    [self gotoTrack:track];
+}
+
+- (void)gotoTrack:(SPTrack *)track {
+    if (self.drawerState == ICSDrawerControllerStateOpen) {
+        [self close];
+    }
     UINavigationController *controller = (UINavigationController *)self.centerViewController;
+    [controller popToRootViewControllerAnimated:NO];
     AlbumDetailsViewController *albumDetailsVC = (AlbumDetailsViewController *)[controller.storyboard instantiateViewControllerWithIdentifier:@"albumDetails"];
     albumDetailsVC.album = (id<AlbumPresenterProtocol>)track.album;
     albumDetailsVC.track = track;

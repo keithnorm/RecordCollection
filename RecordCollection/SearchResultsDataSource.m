@@ -55,6 +55,7 @@
     switch (indexPath.section) {
         case 0:
             searchResultItem = [self.searchResults.artists objectAtIndex:indexPath.row];
+            cell.detailTextLabel.text = nil;
             break;
             
         case 1: {
@@ -66,6 +67,7 @@
         
         case 2:
             searchResultItem = [self.searchResults.albums objectAtIndex:indexPath.row];
+            cell.detailTextLabel.text = nil;
             
         default:
             break;

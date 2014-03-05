@@ -61,4 +61,13 @@ NSString * const RCPlayerDidBeginPlayingTrackNotification = @"RCPlayerDidBeginPl
     }
 }
 
+- (void)playPrev {
+    PlayQueue *queue = [PlayQueue sharedQueue];
+    if ([queue hasPrev]) {
+        [self playTrack:[queue prev] callback:^(NSError *error) {
+            NSLog(@"Error initiating playback: %@", [error localizedDescription]);
+        }];
+    }
+}
+
 @end

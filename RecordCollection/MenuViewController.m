@@ -45,7 +45,7 @@
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.searchDataSource = [[SearchResultsDataSource alloc] init];
     self.searchDelegate = [[SearchResultsDelegate alloc] init];
-    CGRect searchResultsFrame = CGRectOffset(self.view.bounds, 0, 44);
+    CGRect searchResultsFrame = CGRectOffset(self.view.bounds, 0, 64);
     searchResultsFrame.size.height = searchResultsFrame.size.height - 44;
     self.searchResultsTableView = [[UITableView alloc] initWithFrame:searchResultsFrame style:UITableViewStylePlain];
     self.searchResultsTableView.hidden = YES;
@@ -91,6 +91,11 @@
              }
         }];
     }
+}
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+    NSString *searchText = searchBar.text;
+    [self.view fireEvent:@"performSearch" withObject:searchText];
 }
 
 - (void)dealloc {

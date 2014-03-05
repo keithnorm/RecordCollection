@@ -31,7 +31,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    self.navigationController.navigationBar.alpha = 0.5f;
+    self.navigationController.navigationBar.alpha = 0.7f;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -40,13 +40,13 @@
 }
 
 - (void)didScroll:(NSNumber *)offset {
-    if ([offset integerValue] >= 239) {
+    if ([offset integerValue] >= 236) {
         [UIView animateWithDuration:0.3 animations:^{
             self.navigationController.navigationBar.alpha = 1.0f;
         }];
     } else {
         [UIView animateWithDuration:0.3 animations:^{
-            self.navigationController.navigationBar.alpha = 0.5f;
+            self.navigationController.navigationBar.alpha = 0.7f;
         }];
     }
 }
