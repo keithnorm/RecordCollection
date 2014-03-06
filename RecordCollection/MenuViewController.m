@@ -7,8 +7,6 @@
 //
 
 #import "MenuViewController.h"
-#import "SearchResultsDataSource.h"
-#import "SearchResultsDelegate.h"
 #import "UIView+Event.h"
 #import "MenuItem.h"
 #import "UIView+StyleClass.h"
@@ -17,14 +15,9 @@
 
 @interface MenuViewController () <UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate>
 
-@property (nonatomic, strong) UITableView *searchResultsTableView;
-
 @property (nonatomic, strong) SPSearch *currentSearch;
 @property (nonatomic, strong) NSArray *searchResults;
 @property (nonatomic, strong) NSDictionary *navigationItems;
-@property (nonatomic, strong) SearchResultsDataSource *searchDataSource;
-@property (nonatomic, strong) SearchResultsDelegate *searchDelegate;
-
 
 @end
 

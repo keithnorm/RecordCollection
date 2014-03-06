@@ -23,6 +23,7 @@
 #include "appkey.c"
 
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
+#import <Crashlytics/Crashlytics.h>
 
 @interface AppDelegate() <SPSessionDelegate>
 
@@ -35,6 +36,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [Crashlytics startWithAPIKey:@"7b4f16d17c36f90270ae068e9040a5ee898b7ed9"];
     [Theme setup];
     NSError *error = nil;
     NSData *key = [[NSData alloc] initWithBytes:g_appkey length:g_appkey_size];

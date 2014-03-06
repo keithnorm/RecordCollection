@@ -22,6 +22,7 @@
 #import "AlbumPresenter.h"
 #import "CoreDataHelper.h"
 #import "NoAlbumsView.h"
+#import "IntroAutomator.h"
 #import <MBProgressHUD/MBProgressHUD.h>
 
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
@@ -32,13 +33,10 @@ const NSUInteger kSearchTextLengthThreshold = 4;
 @interface ViewController () <SPSessionDelegate, UICollectionViewDataSource, UICollectionViewDelegate, OCAEditableCollectionViewDelegateFlowLayout, OCAEditableCollectionViewDataSource>
 
 @property (nonatomic, strong) SPToplist *topList;
-@property (nonatomic, strong) NSArray *albums;
 @property (nonatomic, strong) SPSearch *currentSearch;
 @property (nonatomic, strong) NoAlbumsView *noAlbumsView;
 @property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
-
-// Outlets!
-@property (nonatomic, weak) IBOutlet UICollectionView *albumsCollectionView;
+@property (nonatomic, strong) IntroAutomator *intro;
 
 @end
 
@@ -109,13 +107,19 @@ const NSUInteger kSearchTextLengthThreshold = 4;
     } else {
         self.albums = @[];
         [self.albumsCollectionView reloadData];
-        self.noAlbumsView = [[[NSBundle mainBundle] loadNibNamed:@"NoAlbumsView" owner:nil options:nil] objectAtIndex:0];
-        self.noAlbumsView.translatesAutoresizingMaskIntoConstraints = NO;
-        [self.view addSubview:self.noAlbumsView];
-        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.noAlbumsView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterX multiplier:1.0f constant:0]];
-        
-        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.noAlbumsView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterY multiplier:1.0f constant:0]];
+        [self showNoAlbumsView];
     }
+}
+
+- (void)showNoAlbumsView {
+    self.noAlbumsView = [[[NSBundle mainBundle] loadNibNamed:@"NoAlbumsView" owner:nil options:nil] objectAtIndex:0];
+    self.noAlbumsView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:self.noAlbumsView];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.noAlbumsView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterX multiplier:1.0f constant:0]];
+    
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.noAlbumsView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterY multiplier:1.0f constant:0]];
+    
+    [self doneEditing];
 }
 
 
@@ -217,26 +221,40 @@ const NSUInteger kSearchTextLengthThreshold = 4;
 - (void)collectionView:(UICollectionView *)collectionView willDeleteItemAtIndexPath:(NSIndexPath *)indexPath {
     AlbumPresenter *albumPresenter = [self.albums objectAtIndex:indexPath.row];
     Album *album = [Album findFirstWithDict:@{@"spotifyUrl": albumPresenter.spotifyURL}];
-    if (album) {
-        [album destroy];
-    }
     
     SPPlaylistContainer *playlistContainer = [[SPSession sharedSession] userPlaylists];
+    __block SPPlaylist *matchedPlaylist;
+    
     [SPAsyncLoading waitUntilLoaded:playlistContainer timeout:kSPAsyncLoadingDefaultTimeout then:^(NSArray *loadedItems, NSArray *notLoadedItems) {
-        for (SPPlaylist *playlist in playlistContainer.playlists) {
-            [SPAsyncLoading waitUntilLoaded:playlist timeout:kSPAsyncLoadingDefaultTimeout then:^(NSArray *loadedItems, NSArray *notLoadedItems) {
+        [SPAsyncLoading waitUntilLoaded:playlistContainer.playlists timeout:kSPAsyncLoadingDefaultTimeout then:^(NSArray *loadedItems, NSArray *notLoadedItems) {
+            for (SPPlaylist *playlist in playlistContainer.playlists) {
+                NSLog(@"playlist name is %@ looking for %@", playlist.name, [album playlistName]);
                 if ([playlist.name isEqualToString:[album playlistName]]) {
-                    [[[SPSession sharedSession] userPlaylists] removeItem:playlist callback:^(NSError *error) {
-                        NSLog(@"cool dude");
+                    matchedPlaylist = playlist;
+                    [[[SPSession sharedSession] userPlaylists] removeItem:matchedPlaylist callback:^(NSError *error) {
+                        if (album) {
+                            [album destroy];
+                        }
                     }];
                 }
-            }];
-        }
+            }
+            
+            if (!matchedPlaylist) {
+                if (album) {
+                    [album destroy];
+                }
+            }
+            [[[CoreDataHelper sharedHelper] context] save:nil];
+        }];
     }];
     NSMutableArray *mutableAlbums = [self.albums mutableCopy];
     [mutableAlbums removeObject:albumPresenter];
     self.albums = mutableAlbums;
     [[[CoreDataHelper sharedHelper] context] save:nil];
+    
+    if (![self.albums count]) {
+        [self showNoAlbumsView];
+    }
 }
 
 - (void)collectionView:(UICollectionView *)collectionView itemAtIndexPath:(NSIndexPath *)fromIndexPath didMoveToIndexPath:(NSIndexPath *)toIndexPath {

@@ -629,10 +629,34 @@ typedef NS_ENUM(NSUInteger, ICSDrawerControllerState)
         [self open];
     }
     MenuViewController<UISearchBarDelegate> *menuViewController = (MenuViewController<UISearchBarDelegate> *)self.leftViewController;
-    NSString *searchText = @"Walk Off the Earth";
-    menuViewController.searchBar.text = searchText;
-    [menuViewController.searchBar becomeFirstResponder];
-    [menuViewController searchBar:menuViewController.searchBar textDidChange:searchText];
+    UISearchBar *searchBar = menuViewController.searchBar;
+
+    
+    __block SPToplist *topList = [SPToplist toplistForCurrentUserInSession:[SPSession sharedSession]];
+    [SPAsyncLoading waitUntilLoaded:topList timeout:kSPAsyncLoadingDefaultTimeout then:^(NSArray *loadedItems, NSArray *notLoadedItems) {
+        SPArtist *artist = (SPArtist *)[topList.artists firstObject];
+        NSString *searchText = artist.name;
+        [searchBar setText:searchText];
+        menuViewController.searchBar.text = searchText;
+        [menuViewController.searchBar becomeFirstResponder];
+        [menuViewController searchBar:menuViewController.searchBar textDidChange:searchText];
+        
+        [NSTimer scheduledTimerWithTimeInterval:0.2f block:^{
+            UITextField *textField;
+            NSMutableArray *subviews = [searchBar.subviews mutableCopy];
+            while ([subviews count]) {
+                UIView *subview = [subviews lastObject];
+                [subviews removeLastObject];
+                if ([subview isKindOfClass:[UITextField class]]) {
+                    textField = (UITextField *)subview;
+                    break;
+                }
+                [subviews addObjectsFromArray:subview.subviews];
+            }
+            UITextRange *range = [textField textRangeFromPosition:textField.beginningOfDocument toPosition:textField.endOfDocument];
+            [textField setSelectedTextRange:range];
+        } repeats:NO];
+    }];
 }
 
 - (void)userDidTapHeavyRotation:(id)sender {

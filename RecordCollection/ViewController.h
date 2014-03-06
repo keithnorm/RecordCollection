@@ -11,5 +11,9 @@
 @interface ViewController : UIViewController
 
 @property (nonatomic, strong) NSString *searchText;
+@property (nonatomic, strong) NSArray *albums;
+
+// Outlets!
+@property (nonatomic, weak) IBOutlet UICollectionView *albumsCollectionView;
 
 @end

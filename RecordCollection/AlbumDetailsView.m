@@ -78,7 +78,9 @@
             __weak AlbumDetailsView *weakSelf = self;
             _album = (id<AlbumPresenterProtocol>)album;
             [SPAsyncLoading waitUntilLoaded:self.albumBrowse timeout:3.0 then:^(NSArray *loadedItems, NSArray *notLoadedItems) {
-                [weakSelf refresh];
+                if (self) {
+                    [weakSelf refresh];
+                }
             }];
         }];
     }
@@ -106,11 +108,13 @@
 }
 
 - (void)refresh {
-    [SPAsyncLoading waitUntilLoaded:self.album.cover timeout:3.0 then:^(NSArray *loadedItems, NSArray *notLoadedItems) {
-        self.image.image = self.album.cover.image;
-    }];
-    
-    [self.trackList reloadData];
+    if (self && self.album) {
+        [SPAsyncLoading waitUntilLoaded:self.album.cover timeout:3.0 then:^(NSArray *loadedItems, NSArray *notLoadedItems) {
+            self.image.image = self.album.cover.image;
+        }];
+        
+        [self.trackList reloadData];
+    }
 }
 
 - (void)updateConstraints {

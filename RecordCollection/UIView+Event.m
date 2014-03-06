@@ -11,7 +11,7 @@
 @implementation UIView (Event)
 
 - (void)fireEvent:(NSString *)eventName withObject:(id)obj {
-    UIResponder *nextResponder = self.nextResponder;
+    UIResponder *nextResponder = self;
     SEL selector = NSSelectorFromString([NSString stringWithFormat:@"%@:", eventName]);
     while (nextResponder) {
         if ([nextResponder respondsToSelector:selector]) {

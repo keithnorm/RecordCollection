@@ -28,6 +28,8 @@
 		4ECAAE7C18C8300E0059D54B /* ContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4ECAAE7B18C8300D0059D54B /* ContainerView.m */; };
 		4ECAAE8118C833210059D54B /* MenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4ECAAE8018C833210059D54B /* MenuView.m */; };
 		4ECAAE8318C8442C0059D54B /* record-icon-white-300x300.png in Resources */ = {isa = PBXBuildFile; fileRef = 4ECAAE8218C8442C0059D54B /* record-icon-white-300x300.png */; };
+		4ECAAE8818C85FF90059D54B /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4ECAAE8718C85FF90059D54B /* Crashlytics.framework */; };
+		4ECAAE8B18C8646D0059D54B /* IntroAutomator.m in Sources */ = {isa = PBXBuildFile; fileRef = 4ECAAE8A18C8646D0059D54B /* IntroAutomator.m */; };
 		4EDEF5BE18BA953A00D81B1D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4EDEF5BD18BA953A00D81B1D /* Foundation.framework */; };
 		4EDEF5C018BA953A00D81B1D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4EDEF5BF18BA953A00D81B1D /* CoreGraphics.framework */; };
 		4EDEF5C218BA953A00D81B1D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4EDEF5C118BA953A00D81B1D /* UIKit.framework */; };
@@ -136,6 +138,9 @@
 		4ECAAE7F18C833210059D54B /* MenuView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuView.h; sourceTree = "<group>"; };
 		4ECAAE8018C833210059D54B /* MenuView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuView.m; sourceTree = "<group>"; };
 		4ECAAE8218C8442C0059D54B /* record-icon-white-300x300.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "record-icon-white-300x300.png"; sourceTree = "<group>"; };
+		4ECAAE8718C85FF90059D54B /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
+		4ECAAE8918C8646D0059D54B /* IntroAutomator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntroAutomator.h; sourceTree = "<group>"; };
+		4ECAAE8A18C8646D0059D54B /* IntroAutomator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IntroAutomator.m; sourceTree = "<group>"; };
 		4EDEF5BA18BA953A00D81B1D /* RecordCollection.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RecordCollection.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4EDEF5BD18BA953A00D81B1D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		4EDEF5BF18BA953A00D81B1D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -235,6 +240,7 @@
 			files = (
 				4EDEF63418BB357F00D81B1D /* AVFoundation.framework in Frameworks */,
 				4EDEF63218BB356900D81B1D /* AudioToolbox.framework in Frameworks */,
+				4ECAAE8818C85FF90059D54B /* Crashlytics.framework in Frameworks */,
 				4EDEF63018BB355900D81B1D /* CoreAudio.framework in Frameworks */,
 				4EDEF5C018BA953A00D81B1D /* CoreGraphics.framework in Frameworks */,
 				4EDEF5C218BA953A00D81B1D /* UIKit.framework in Frameworks */,
@@ -341,6 +347,7 @@
 		4EDEF5BC18BA953A00D81B1D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4ECAAE8718C85FF90059D54B /* Crashlytics.framework */,
 				4E42223018C13F6B0082D8E4 /* Reveal.framework */,
 				4EDEF64018BC3BFA00D81B1D /* Reveal.framework */,
 				4EDEF63318BB357F00D81B1D /* AVFoundation.framework */,
@@ -385,6 +392,8 @@
 				4EDEF5D618BA953A00D81B1D /* ViewController.m */,
 				4EDEF5D818BA953A00D81B1D /* Images.xcassets */,
 				4EDEF5C418BA953A00D81B1D /* Supporting Files */,
+				4ECAAE8918C8646D0059D54B /* IntroAutomator.h */,
+				4ECAAE8A18C8646D0059D54B /* IntroAutomator.m */,
 			);
 			path = RecordCollection;
 			sourceTree = "<group>";
@@ -571,6 +580,7 @@
 				4EDEF5B718BA953A00D81B1D /* Frameworks */,
 				4EDEF5B818BA953A00D81B1D /* Resources */,
 				FED0BF04D08748F691322D06 /* Copy Pods Resources */,
+				4ECAAE8618C85FCA0059D54B /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -673,6 +683,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		4ECAAE8618C85FCA0059D54B /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "./Crashlytics.framework/run 7b4f16d17c36f90270ae068e9040a5ee898b7ed9 f98de70a126f0b96ba8f9aea434fc8ae59f452d9af9d524be819f7617e71d8e1";
+		};
 		97D90C42214E4DA391D4DC68 /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -744,6 +767,7 @@
 				4E2DC0A218C56F8C00ADB7B1 /* UIImageToNSDataTransformer.m in Sources */,
 				4EDEF61118BAEF5C00D81B1D /* Model.xcdatamodeld in Sources */,
 				4EDEF62718BB0F7500D81B1D /* SearchHeader.m in Sources */,
+				4ECAAE8B18C8646D0059D54B /* IntroAutomator.m in Sources */,
 				4EF46A4D18BDE2F200D98747 /* AlbumsView.m in Sources */,
 				4EA2392318C70B1F0046AC6A /* NextButton.m in Sources */,
 				4EDEF66718BC9B7F00D81B1D /* UIImage+Gradient.m in Sources */,
@@ -904,6 +928,7 @@
 					"/Users/keithnorm/Downloads/Reveal\\ 3.app/Contents/SharedSupport/iOS-Libraries",
 					"/Users/keithnorm/Downloads/Reveal\\ 4.app/Contents/SharedSupport/iOS-Libraries",
 					"/Users/keithnorm/Documents/work/mobile-iphone-consumer/green-machine/ThirdParty",
+					/Users/keithnorm/Sites/RecordCollection,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RecordCollection/RecordCollection-Prefix.pch";
@@ -929,6 +954,7 @@
 					"/Users/keithnorm/Downloads/Reveal\\ 3.app/Contents/SharedSupport/iOS-Libraries",
 					"/Users/keithnorm/Downloads/Reveal\\ 4.app/Contents/SharedSupport/iOS-Libraries",
 					"/Users/keithnorm/Documents/work/mobile-iphone-consumer/green-machine/ThirdParty",
+					/Users/keithnorm/Sites/RecordCollection,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RecordCollection/RecordCollection-Prefix.pch";
