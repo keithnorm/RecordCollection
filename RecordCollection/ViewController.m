@@ -21,6 +21,7 @@
 #import "Underscore.h"
 #import "AlbumPresenter.h"
 #import "CoreDataHelper.h"
+#import "NoAlbumsView.h"
 #import <MBProgressHUD/MBProgressHUD.h>
 
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
@@ -70,7 +71,7 @@ const NSUInteger kSearchTextLengthThreshold = 4;
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showTopAlbums) name:SPSessionLoginDidSucceedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showMyCollection) name:SPSessionLoginDidSucceedNotification object:nil];
 }
 
 - (void)viewDidLayoutSubviews {
@@ -87,6 +88,26 @@ const NSUInteger kSearchTextLengthThreshold = 4;
         [self.topList addObserver:self forKeyPath:@"loaded" options:NSKeyValueObservingOptionNew context:NULL];
     });
 }
+
+- (void)showMyCollection {
+    User *user = [User first];
+    self.title = @"My Collection";
+    
+    if ([user.albums count]) {
+        NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"sortOrder" ascending:YES];
+        NSArray *sortedAlbums = [user.albums sortedArrayUsingDescriptors:@[sort]];
+        
+        NSArray *presentedAlbums = Underscore.array(sortedAlbums).map(^AlbumPresenter *(Album *album) {
+            return [[AlbumPresenter alloc] initWithAlbum:album];
+        }).unwrap;
+        self.albums = presentedAlbums;
+        [self.albumsCollectionView reloadData];
+    } else {
+        NoAlbumsView *noAlbumsView = [[[NSBundle mainBundle] loadNibNamed:@"NoAlbumsView" owner:nil options:nil] objectAtIndex:0];
+        [self.view addSubview:noAlbumsView];
+    }
+}
+
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if ([keyPath isEqualToString:@"loaded"] && [[change objectForKey:NSKeyValueChangeNewKey] boolValue]) {
@@ -235,30 +256,7 @@ const NSUInteger kSearchTextLengthThreshold = 4;
     }
     
     if ([searchText isEqualToString:@"My Collection"]) {
-        User *user = [User first];
-        self.title = @"My Collection";
-        NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"sortOrder" ascending:YES];
-
-        NSArray *sortedAlbums = [user.albums sortedArrayUsingDescriptors:@[sort]];
-        
-        NSArray *presentedAlbums = Underscore.array(sortedAlbums).map(^AlbumPresenter *(Album *album) {
-            return [[AlbumPresenter alloc] initWithAlbum:album];
-        }).unwrap;
-
-//        for (Album *album in sortedAlbums) {
-//            [SPAlbum albumWithAlbumURL:album.spotifyUrl inSession:[SPSession sharedSession] callback:^(SPAlbum *album) {
-//                [albums addObject:album];
-//                NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"sortOrder" ascending:YES];
-//                if ([albums count] == [sortedAlbums count]) {
-//                    [SPAsyncLoading waitUntilLoaded:albums timeout:kSPAsyncLoadingDefaultTimeout then:^(NSArray *loadedItems, NSArray *notLoadedItems) {
-//                        self.albums = [albums sortedArrayUsingDescriptors:@[sort]];
-//                        [self.albumsCollectionView reloadData];
-//                    }];
-//                }
-//            }];
-//        }
-        self.albums = presentedAlbums;
-        [self.albumsCollectionView reloadData];
+        [self showMyCollection];
         return;
     }
     

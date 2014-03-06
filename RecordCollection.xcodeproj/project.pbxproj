@@ -19,6 +19,8 @@
 		4E2DC0B118C57A9300ADB7B1 /* ArtistPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E2DC0B018C57A9300ADB7B1 /* ArtistPresenter.m */; };
 		4E2DC0B418C57AA000ADB7B1 /* CoverImagePresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E2DC0B318C57AA000ADB7B1 /* CoverImagePresenter.m */; };
 		4E42223418C24E7E0082D8E4 /* PlayQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E42223318C24E7E0082D8E4 /* PlayQueue.m */; };
+		4E9D303118C80EA4007D6B12 /* NoAlbumsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E9D303018C80EA4007D6B12 /* NoAlbumsView.m */; };
+		4E9D303318C80F6F007D6B12 /* NoAlbumsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E9D303218C80F6F007D6B12 /* NoAlbumsView.xib */; };
 		4EA2391A18C6F1A20046AC6A /* Album+BusinessLogic.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EA2391918C6F1A20046AC6A /* Album+BusinessLogic.m */; };
 		4EA2391D18C6FE4D0046AC6A /* ScrubberBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EA2391C18C6FE4D0046AC6A /* ScrubberBar.m */; };
 		4EA2392018C6FE830046AC6A /* ScrubberBarProgressBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EA2391F18C6FE830046AC6A /* ScrubberBarProgressBar.m */; };
@@ -115,6 +117,9 @@
 		4E42223018C13F6B0082D8E4 /* Reveal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Reveal.framework; path = "../../Documents/work/mobile-iphone-consumer/green-machine/ThirdParty/Reveal.framework"; sourceTree = "<group>"; };
 		4E42223218C24E7E0082D8E4 /* PlayQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayQueue.h; sourceTree = "<group>"; };
 		4E42223318C24E7E0082D8E4 /* PlayQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayQueue.m; sourceTree = "<group>"; };
+		4E9D302F18C80EA4007D6B12 /* NoAlbumsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoAlbumsView.h; sourceTree = "<group>"; };
+		4E9D303018C80EA4007D6B12 /* NoAlbumsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoAlbumsView.m; sourceTree = "<group>"; };
+		4E9D303218C80F6F007D6B12 /* NoAlbumsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoAlbumsView.xib; sourceTree = "<group>"; };
 		4EA2391818C6F1A20046AC6A /* Album+BusinessLogic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Album+BusinessLogic.h"; sourceTree = "<group>"; };
 		4EA2391918C6F1A20046AC6A /* Album+BusinessLogic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Album+BusinessLogic.m"; sourceTree = "<group>"; };
 		4EA2391B18C6FE4D0046AC6A /* ScrubberBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScrubberBar.h; sourceTree = "<group>"; };
@@ -427,6 +432,9 @@
 				4EDEF62618BB0F7500D81B1D /* SearchHeader.m */,
 				4EF46A4B18BDE2F200D98747 /* AlbumsView.h */,
 				4EF46A4C18BDE2F200D98747 /* AlbumsView.m */,
+				4E9D302F18C80EA4007D6B12 /* NoAlbumsView.h */,
+				4E9D303018C80EA4007D6B12 /* NoAlbumsView.m */,
+				4E9D303218C80F6F007D6B12 /* NoAlbumsView.xib */,
 			);
 			name = FavoriteAlbums;
 			sourceTree = "<group>";
@@ -610,6 +618,7 @@
 			files = (
 				4EF46A4F18BDE49300D98747 /* pattern3.jpg in Resources */,
 				4EF469CF18BDDBA700D98747 /* turntable.png in Resources */,
+				4E9D303318C80F6F007D6B12 /* NoAlbumsView.xib in Resources */,
 				4EF46A4818BDDFD400D98747 /* pattern1.jpg in Resources */,
 				4E235A5E18BF9441005F31C2 /* AIRSTREA.TTF in Resources */,
 				4EDEF63A18BB3B6800D81B1D /* Player.xib in Resources */,
@@ -696,6 +705,7 @@
 				4EA2391A18C6F1A20046AC6A /* Album+BusinessLogic.m in Sources */,
 				4EDEF65A18BC7C0800D81B1D /* PlayPauseButton.m in Sources */,
 				4EDEF62E18BB1DE500D81B1D /* AlbumDetailsView.m in Sources */,
+				4E9D303118C80EA4007D6B12 /* NoAlbumsView.m in Sources */,
 				4EDEF64418BC435900D81B1D /* SearchResultsDataSource.m in Sources */,
 				4EDEF64A18BC4F3200D81B1D /* UIView+Event.m in Sources */,
 				4EDEF5CA18BA953A00D81B1D /* main.m in Sources */,
