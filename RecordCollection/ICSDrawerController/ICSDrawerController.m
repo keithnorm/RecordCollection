@@ -26,6 +26,7 @@
 #import "ICSDropShadowView.h"
 #import "ViewController.h"
 #import "AlbumDetailsViewController.h"
+#import "MenuViewController.h"
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
 
 static const CGFloat kICSDrawerControllerDrawerDepth = 260.0f;
@@ -617,6 +618,10 @@ typedef NS_ENUM(NSUInteger, ICSDrawerControllerState)
     albumDetailsVC.album = (id<AlbumPresenterProtocol>)track.album;
     albumDetailsVC.track = track;
     [controller pushViewController:albumDetailsVC animated:YES];
+}
+
+- (void)userDidTapFindSweetTunes:(id)sender {
+    [self open];
 }
 
 @end

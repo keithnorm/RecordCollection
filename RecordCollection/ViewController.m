@@ -92,7 +92,7 @@ const NSUInteger kSearchTextLengthThreshold = 4;
 - (void)showMyCollection {
     User *user = [User first];
     self.title = @"My Collection";
-    
+    _searchText = @"My Collection";
     if ([user.albums count]) {
         NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"sortOrder" ascending:YES];
         NSArray *sortedAlbums = [user.albums sortedArrayUsingDescriptors:@[sort]];
@@ -226,6 +226,7 @@ const NSUInteger kSearchTextLengthThreshold = 4;
     NSMutableArray *mutableAlbums = [self.albums mutableCopy];
     [mutableAlbums removeObject:albumPresenter];
     self.albums = mutableAlbums;
+    [[[CoreDataHelper sharedHelper] context] save:nil];
 }
 
 - (void)collectionView:(UICollectionView *)collectionView itemAtIndexPath:(NSIndexPath *)fromIndexPath didMoveToIndexPath:(NSIndexPath *)toIndexPath {

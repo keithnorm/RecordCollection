@@ -7,19 +7,23 @@
 //
 
 #import "NoAlbumsView.h"
+#import "UIView+Event.h"
+
+@interface NoAlbumsView()
+
+@property (nonatomic, strong) IBOutlet UIButton *findSweetTunesButton;
+
+@end
 
 @implementation NoAlbumsView
 
-- (id)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        // Initialization code
-        UILabel *label = [[UILabel alloc] initWithFrame:self.bounds];
-        label.text = @"cool";
-        [self addSubview:label];
-    }
-    return self;
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    [self.findSweetTunesButton addTarget:self action:@selector(onTapSweetTunes:) forControlEvents:UIControlEventTouchUpInside];
+}
+
+- (void)onTapSweetTunes:(UIButton *)sender {
+    [self fireEvent:@"userDidTapFindSweetTunes" withObject:nil];
 }
 
 @end
