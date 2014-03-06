@@ -37,6 +37,10 @@ NSString * const RCPlayerDidBeginPlayingTrackNotification = @"RCPlayerDidBeginPl
     [songInfo setObject:aTrack.name forKey:MPMediaItemPropertyTitle];
     [songInfo setObject:[[aTrack.artists objectAtIndex:0] name] forKey:MPMediaItemPropertyArtist];
     [songInfo setObject:aTrack.album.name forKey:MPMediaItemPropertyAlbumTitle];
+    [songInfo setObject:@(aTrack.duration) forKey:MPMediaItemPropertyPlaybackDuration];
+    [songInfo setObject:@(self.trackPosition) forKey:MPNowPlayingInfoPropertyElapsedPlaybackTime];
+    [songInfo setObject:@(1) forKey:MPNowPlayingInfoPropertyPlaybackRate];
+
     
     if (aTrack.album.cover.image) {
         MPMediaItemArtwork *albumArt = [[MPMediaItemArtwork alloc] initWithImage:aTrack.album.cover.image];
