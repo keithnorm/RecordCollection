@@ -1,2 +1,4 @@
 .DS_Store
 Record-Collection.sqlite
+appkey.c
+RecordCollection/appkey.c

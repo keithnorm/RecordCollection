@@ -25,6 +25,9 @@
 		4EA2391D18C6FE4D0046AC6A /* ScrubberBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EA2391C18C6FE4D0046AC6A /* ScrubberBar.m */; };
 		4EA2392018C6FE830046AC6A /* ScrubberBarProgressBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EA2391F18C6FE830046AC6A /* ScrubberBarProgressBar.m */; };
 		4EA2392318C70B1F0046AC6A /* NextButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EA2392218C70B1F0046AC6A /* NextButton.m */; };
+		4ECAAE7C18C8300E0059D54B /* ContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4ECAAE7B18C8300D0059D54B /* ContainerView.m */; };
+		4ECAAE8118C833210059D54B /* MenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4ECAAE8018C833210059D54B /* MenuView.m */; };
+		4ECAAE8318C8442C0059D54B /* record-icon-white-300x300.png in Resources */ = {isa = PBXBuildFile; fileRef = 4ECAAE8218C8442C0059D54B /* record-icon-white-300x300.png */; };
 		4EDEF5BE18BA953A00D81B1D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4EDEF5BD18BA953A00D81B1D /* Foundation.framework */; };
 		4EDEF5C018BA953A00D81B1D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4EDEF5BF18BA953A00D81B1D /* CoreGraphics.framework */; };
 		4EDEF5C218BA953A00D81B1D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4EDEF5C118BA953A00D81B1D /* UIKit.framework */; };
@@ -128,6 +131,11 @@
 		4EA2391F18C6FE830046AC6A /* ScrubberBarProgressBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScrubberBarProgressBar.m; sourceTree = "<group>"; };
 		4EA2392118C70B1F0046AC6A /* NextButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NextButton.h; sourceTree = "<group>"; };
 		4EA2392218C70B1F0046AC6A /* NextButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NextButton.m; sourceTree = "<group>"; };
+		4ECAAE7A18C8300D0059D54B /* ContainerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContainerView.h; sourceTree = "<group>"; };
+		4ECAAE7B18C8300D0059D54B /* ContainerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContainerView.m; sourceTree = "<group>"; };
+		4ECAAE7F18C833210059D54B /* MenuView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuView.h; sourceTree = "<group>"; };
+		4ECAAE8018C833210059D54B /* MenuView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuView.m; sourceTree = "<group>"; };
+		4ECAAE8218C8442C0059D54B /* record-icon-white-300x300.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "record-icon-white-300x300.png"; sourceTree = "<group>"; };
 		4EDEF5BA18BA953A00D81B1D /* RecordCollection.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RecordCollection.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4EDEF5BD18BA953A00D81B1D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		4EDEF5BF18BA953A00D81B1D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -251,6 +259,7 @@
 		4E235A5C18BF93F6005F31C2 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4ECAAE8218C8442C0059D54B /* record-icon-white-300x300.png */,
 				4E235A5D18BF9441005F31C2 /* AIRSTREA.TTF */,
 			);
 			name = Resources;
@@ -290,6 +299,23 @@
 				4E2DC0B318C57AA000ADB7B1 /* CoverImagePresenter.m */,
 			);
 			name = Presenters;
+			sourceTree = "<group>";
+		};
+		4ECAAE7818C82FF60059D54B /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				4ECAAE7918C82FFC0059D54B /* Views */,
+			);
+			name = Utility;
+			sourceTree = "<group>";
+		};
+		4ECAAE7918C82FFC0059D54B /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				4ECAAE7A18C8300D0059D54B /* ContainerView.h */,
+				4ECAAE7B18C8300D0059D54B /* ContainerView.m */,
+			);
+			name = Views;
 			sourceTree = "<group>";
 		};
 		4EDEF5B118BA953A00D81B1D = {
@@ -332,6 +358,7 @@
 		4EDEF5C318BA953A00D81B1D /* RecordCollection */ = {
 			isa = PBXGroup;
 			children = (
+				4ECAAE7818C82FF60059D54B /* Utility */,
 				4E2DC0BB18C5C9BE00ADB7B1 /* RecordCollection.entitlements */,
 				4E2DC0A618C5715200ADB7B1 /* login */,
 				4E2DC09018C402DB00ADB7B1 /* Springboard Collection View */,
@@ -482,6 +509,8 @@
 				4EDEF64618BC4CCB00D81B1D /* SearchResultsDelegate.m */,
 				4EF469C518BDCAFB00D98747 /* MenuItem.h */,
 				4EF469C618BDCAFB00D98747 /* MenuItem.m */,
+				4ECAAE7F18C833210059D54B /* MenuView.h */,
+				4ECAAE8018C833210059D54B /* MenuView.m */,
 			);
 			name = Menu;
 			sourceTree = "<group>";
@@ -624,6 +653,7 @@
 				4EDEF63A18BB3B6800D81B1D /* Player.xib in Resources */,
 				4EF469D118BDDDFF00D98747 /* headphones.png in Resources */,
 				4EDEF5D418BA953A00D81B1D /* Main_iPad.storyboard in Resources */,
+				4ECAAE8318C8442C0059D54B /* record-icon-white-300x300.png in Resources */,
 				4EDEF5D918BA953A00D81B1D /* Images.xcassets in Resources */,
 				4EDEF5D118BA953A00D81B1D /* Main_iPhone.storyboard in Resources */,
 				4EF46A4A18BDE26E00D98747 /* pattern2.jpg in Resources */,
@@ -685,6 +715,7 @@
 				4EDEF5D718BA953A00D81B1D /* ViewController.m in Sources */,
 				4E2DC0B418C57AA000ADB7B1 /* CoverImagePresenter.m in Sources */,
 				4EDEF5FE18BAB43100D81B1D /* AlbumCell.m in Sources */,
+				4ECAAE8118C833210059D54B /* MenuView.m in Sources */,
 				4EDEF5CE18BA953A00D81B1D /* AppDelegate.m in Sources */,
 				4E2DC0A518C56FFF00ADB7B1 /* Album.m in Sources */,
 				4EF4697918BCA4A900D98747 /* UIView+StyleClass.m in Sources */,
@@ -709,6 +740,7 @@
 				4EDEF64418BC435900D81B1D /* SearchResultsDataSource.m in Sources */,
 				4EDEF64A18BC4F3200D81B1D /* UIView+Event.m in Sources */,
 				4EDEF5CA18BA953A00D81B1D /* main.m in Sources */,
+				4ECAAE7C18C8300E0059D54B /* ContainerView.m in Sources */,
 				4E2DC0A218C56F8C00ADB7B1 /* UIImageToNSDataTransformer.m in Sources */,
 				4EDEF61118BAEF5C00D81B1D /* Model.xcdatamodeld in Sources */,
 				4EDEF62718BB0F7500D81B1D /* SearchHeader.m in Sources */,

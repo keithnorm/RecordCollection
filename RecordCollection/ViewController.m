@@ -34,6 +34,7 @@ const NSUInteger kSearchTextLengthThreshold = 4;
 @property (nonatomic, strong) SPToplist *topList;
 @property (nonatomic, strong) NSArray *albums;
 @property (nonatomic, strong) SPSearch *currentSearch;
+@property (nonatomic, strong) NoAlbumsView *noAlbumsView;
 @property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
 
 // Outlets!
@@ -94,6 +95,9 @@ const NSUInteger kSearchTextLengthThreshold = 4;
     self.title = @"My Collection";
     _searchText = @"My Collection";
     if ([user.albums count]) {
+        if (self.noAlbumsView && self.noAlbumsView.superview) {
+            [self.noAlbumsView removeFromSuperview];
+        }
         NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"sortOrder" ascending:YES];
         NSArray *sortedAlbums = [user.albums sortedArrayUsingDescriptors:@[sort]];
         
@@ -103,8 +107,14 @@ const NSUInteger kSearchTextLengthThreshold = 4;
         self.albums = presentedAlbums;
         [self.albumsCollectionView reloadData];
     } else {
-        NoAlbumsView *noAlbumsView = [[[NSBundle mainBundle] loadNibNamed:@"NoAlbumsView" owner:nil options:nil] objectAtIndex:0];
-        [self.view addSubview:noAlbumsView];
+        self.albums = @[];
+        [self.albumsCollectionView reloadData];
+        self.noAlbumsView = [[[NSBundle mainBundle] loadNibNamed:@"NoAlbumsView" owner:nil options:nil] objectAtIndex:0];
+        self.noAlbumsView.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.view addSubview:self.noAlbumsView];
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.noAlbumsView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterX multiplier:1.0f constant:0]];
+        
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.noAlbumsView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterY multiplier:1.0f constant:0]];
     }
 }
 
@@ -246,6 +256,9 @@ const NSUInteger kSearchTextLengthThreshold = 4;
 #pragma mark Interaction Handling
 
 - (void)setSearchText:(NSString *)searchText {
+    if (self.noAlbumsView && self.noAlbumsView.superview) {
+        [self.noAlbumsView removeFromSuperview];
+    }
     _searchText = searchText;
     if ([[[self.navigationController viewControllers] objectAtIndex:0] isEqual:self]) {
         [self.navigationController popToViewController:self animated:NO];

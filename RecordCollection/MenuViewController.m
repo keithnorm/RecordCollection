@@ -12,11 +12,11 @@
 #import "UIView+Event.h"
 #import "MenuItem.h"
 #import "UIView+StyleClass.h"
+#import "MenuView.h"
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
 
 @interface MenuViewController () <UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate>
 
-@property (nonatomic, weak) IBOutlet UISearchBar *searchBar;
 @property (nonatomic, strong) UITableView *searchResultsTableView;
 
 @property (nonatomic, strong) SPSearch *currentSearch;
@@ -96,6 +96,10 @@
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
     NSString *searchText = searchBar.text;
     [self.view fireEvent:@"performSearch" withObject:searchText];
+}
+
+- (UISearchBar *)searchBar {
+    return ((MenuView *)self.view).searchBar;
 }
 
 - (void)dealloc {

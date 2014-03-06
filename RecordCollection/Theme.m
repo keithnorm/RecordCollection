@@ -21,6 +21,7 @@
 #import "AlbumsView.h"
 #import "AlbumCell.h"
 #import "AlbumCard.h"
+#import "NoAlbumsView.h"
 #import "OCAEditableCollectionViewFlowLayoutCell.h"
 
 #define RGBCOLOR(r, g, b)                   [UIColor colorWithRed : (r) / 255.0 green : (g) / 255.0 blue : (b) / 255.0 alpha : 1]
@@ -185,6 +186,36 @@ CGImageRef CGGenerateNoiseImage(CGSize size, CGFloat factor) {
     UIImageView *iconView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 24, 24)];
     iconView.image = icon;
     [menuItem addSubview:iconView];
+}
+
++ (void)styleSweetTunesButton:(UIButton *)button {
+    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    UIFontDescriptor *titleDescriptor = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleHeadline];
+    titleDescriptor = [UIFontDescriptor fontDescriptorWithName:@"Airstream" size:[titleDescriptor pointSize] * 1.6];
+    UIFont *titleFont = [UIFont fontWithDescriptor:titleDescriptor size:0];
+    button.titleLabel.font = titleFont;
+    NSArray *colors = [NSArray arrayWithObjects:(id)RGBCOLOR(209, 106, 90).CGColor, (id)RGBCOLOR(209, 106, 90).CGColor, nil];
+    [button setBackgroundImage:[UIImage gradientWithColors:colors height:button.bounds.size.height] forState:UIControlStateNormal];
+    button.contentEdgeInsets = UIEdgeInsetsMake(10, 10, 10, 10);
+    [button invalidateIntrinsicContentSize];
+    CSSBorderRadius *radius = [[CSSBorderRadius alloc] init];
+    radius.radius = 7.0f;
+    button.borderRadius = radius;
+}
+
++ (void)styleHeavyRotationButton:(UIButton *)button {
+    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    UIFontDescriptor *titleDescriptor = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleHeadline];
+    titleDescriptor = [UIFontDescriptor fontDescriptorWithName:@"Airstream" size:[titleDescriptor pointSize] * 1.6];
+    UIFont *titleFont = [UIFont fontWithDescriptor:titleDescriptor size:0];
+    button.titleLabel.font = titleFont;
+    NSArray *colors = [NSArray arrayWithObjects:(id)RGBCOLOR(190, 190, 190).CGColor, (id)RGBCOLOR(190, 190, 190).CGColor, nil];
+    [button setBackgroundImage:[UIImage gradientWithColors:colors height:button.bounds.size.height] forState:UIControlStateNormal];
+    button.contentEdgeInsets = UIEdgeInsetsMake(10, 10, 10, 10);
+    [button invalidateIntrinsicContentSize];
+    CSSBorderRadius *radius = [[CSSBorderRadius alloc] init];
+    radius.radius = 7.0f;
+    button.borderRadius = radius;
 }
 
 

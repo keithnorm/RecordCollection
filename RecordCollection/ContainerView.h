@@ -1,5 +1,5 @@
 //
-//  NoAlbumsView.h
+//  ContainerView.h
 //  RecordCollection
 //
 //  Created by Keith Norman on 3/5/14.
@@ -7,8 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ContainerView.h"
 
-@interface NoAlbumsView : UIView
+@interface ContainerView : UIView
 
 @end

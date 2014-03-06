@@ -27,6 +27,8 @@
 #import "ViewController.h"
 #import "AlbumDetailsViewController.h"
 #import "MenuViewController.h"
+#import "ViewController.h"
+#import "NSTimer+Blocks.h"
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
 
 static const CGFloat kICSDrawerControllerDrawerDepth = 260.0f;
@@ -595,7 +597,9 @@ typedef NS_ENUM(NSUInteger, ICSDrawerControllerState)
 }
 
 - (void)performSearch:(NSString *)searchText {
-    [self close];
+    if (self.drawerState == ICSDrawerControllerStateOpen) {
+        [self close];
+    }
     ViewController *controller = [[((UINavigationController *)self.centerViewController) viewControllers] firstObject];
     controller.searchText = searchText;
 }
@@ -621,7 +625,21 @@ typedef NS_ENUM(NSUInteger, ICSDrawerControllerState)
 }
 
 - (void)userDidTapFindSweetTunes:(id)sender {
-    [self open];
+    if (self.drawerState == ICSDrawerControllerStateClosed) {
+        [self open];
+    }
+    MenuViewController<UISearchBarDelegate> *menuViewController = (MenuViewController<UISearchBarDelegate> *)self.leftViewController;
+    NSString *searchText = @"Walk Off the Earth";
+    menuViewController.searchBar.text = searchText;
+    [menuViewController.searchBar becomeFirstResponder];
+    [menuViewController searchBar:menuViewController.searchBar textDidChange:searchText];
+}
+
+- (void)userDidTapHeavyRotation:(id)sender {
+    if (self.drawerState == ICSDrawerControllerStateOpen) {
+        [self close];
+    }
+    [self performSearch:@"Recently Played"];
 }
 
 @end
