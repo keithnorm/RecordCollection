@@ -43,7 +43,7 @@
                                     <outlet property="delegate" destination="Gp6-NG-lCc" id="jm6-GQ-f7l"/>
                                 </connections>
                             </tableView>
-                            <searchBar contentMode="redraw" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="evS-5f-Eba">
+                            <searchBar contentMode="redraw" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="evS-5f-Eba" customClass="SearchBar">
                                 <rect key="frame" x="0.0" y="20" width="768" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -157,7 +157,7 @@
                                 </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ajf-nI-f6F">
-                                <rect key="frame" x="718" y="714" width="30" height="30"/>
+                                <rect key="frame" x="718" y="704" width="30" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <state key="normal" title="+">
@@ -195,7 +195,7 @@
                             <constraint firstItem="TzH-yl-HCt" firstAttribute="top" secondItem="4Wy-SB-K4n" secondAttribute="top" id="SkO-Bu-KPb"/>
                             <constraint firstAttribute="trailing" secondItem="Ajf-nI-f6F" secondAttribute="trailing" constant="20" id="g6z-KY-1sA"/>
                             <constraint firstItem="TzH-yl-HCt" firstAttribute="leading" secondItem="4Wy-SB-K4n" secondAttribute="leading" id="hem-ca-SbP"/>
-                            <constraint firstItem="M0Y-5y-03o" firstAttribute="bottom" secondItem="Ajf-nI-f6F" secondAttribute="bottom" constant="24" id="nPf-kd-uan"/>
+                            <constraint firstItem="M0Y-5y-03o" firstAttribute="bottom" secondItem="Ajf-nI-f6F" secondAttribute="bottom" constant="34" id="nPf-kd-uan"/>
                             <constraint firstItem="M0Y-5y-03o" firstAttribute="top" secondItem="4Wy-SB-K4n" secondAttribute="top" id="q9Z-1U-SE6"/>
                         </constraints>
                         <connections>

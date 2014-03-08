@@ -34,6 +34,16 @@
 
 @implementation Player
 
++(instancetype)sharedPlayer {
+    static Player *player = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        player = [[[NSBundle mainBundle] loadNibNamed:@"Player" owner:self options:nil] objectAtIndex:0];
+        player.translatesAutoresizingMaskIntoConstraints = NO;
+    });
+    return player;
+}
+
 - (id)initWithCoder:(NSCoder *)aDecoder {
     self = [super initWithCoder:aDecoder];
     if (self) {

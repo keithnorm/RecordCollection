@@ -178,14 +178,20 @@ CGFloat fontScale;
 }
 
 + (void)styleIconButton:(UIButton *)button {
+    CGFloat fontSize;
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        fontSize = 30.0f;
+    } else {
+        fontSize = 15.0f;
+    }
     [button setBackgroundImage:[UIImage gradientWithColors:@[(id)[UIColor whiteColor].CGColor, (id)[UIColor lightGrayColor].CGColor] height:30] forState:UIControlStateNormal];
     
     [button setBackgroundImage:[UIImage gradientWithColors:@[(id)[UIColor lightGrayColor].CGColor, (id)[UIColor whiteColor].CGColor] height:30] forState:UIControlStateHighlighted];
-    [button setContentEdgeInsets:UIEdgeInsetsMake(5, 10, 5, 10)];
+    [button setContentEdgeInsets:UIEdgeInsetsMake(fontSize / 3.0f, fontSize / 1.5f, fontSize / 3.0f, fontSize / 1.5f)];
     [button setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
-    [button.titleLabel setFont:[UIFont fontWithName:@"Helvetica" size:15]];
+    [button.titleLabel setFont:[UIFont fontWithName:@"Helvetica" size:fontSize]];
     CSSBorderRadius *borderRadius = [[CSSBorderRadius alloc] init];
-    borderRadius.radius = 17;
+    borderRadius.radius = fontSize + 2.0f;
     borderRadius.corners = UIRectCornerAllCorners;
     
     [button invalidateIntrinsicContentSize];

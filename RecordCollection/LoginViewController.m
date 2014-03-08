@@ -7,12 +7,37 @@
 //
 
 #import "LoginViewController.h"
+#import <CocoaLibSpotify/CocoaLibSpotify.h>
+#import <CocoaLibSpotify/SPLoginLogicViewController.h>
 
 @interface LoginViewController ()
+
+@property (nonatomic, readwrite) SPSession *session;
 
 @end
 
 @implementation LoginViewController
+
+@synthesize session = _session;
+
+-(id)initWithSession:(SPSession *)aSession {
+	
+	self = [super initWithRootViewController:[[SPLoginLogicViewController alloc] initWithSession:aSession]];
+	
+	if (self) {
+		self.session = aSession;
+		self.navigationBar.barStyle = UIBarStyleBlack;
+		self.modalPresentationStyle = UIModalPresentationFormSheet;
+		self.dismissesAfterLogin = YES;
+		
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:NSSelectorFromString(@"sessionDidLogin:")
+													 name:SPSessionLoginDidSucceedNotification
+												   object:self.session];
+		
+	}
+	return self;
+}
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];

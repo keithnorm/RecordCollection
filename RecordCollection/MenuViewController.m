@@ -63,7 +63,6 @@
 #pragma mark UISearchBarDelegate
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
-    self.searchResultsTableView.hidden = NO;
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {

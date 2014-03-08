@@ -10,6 +10,6 @@
 
 @interface MenuView : UIView
 
-@property (nonatomic, weak) IBOutlet UISearchBar *searchBar;
+@property (nonatomic, strong) IBOutlet UISearchBar *searchBar;
 
 @end

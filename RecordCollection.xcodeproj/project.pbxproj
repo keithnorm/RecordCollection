@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		1CE60BE5F8444377BD96875D /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EFEB862B14B49B68BC01F41 /* libPods.a */; };
+		4E221F9A18CB8EE8001766FC /* SearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E221F9918CB8EE8001766FC /* SearchBar.m */; };
+		4E221F9D18CB93C0001766FC /* NSObject+SFExecuteOnDealloc.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E221F9C18CB93C0001766FC /* NSObject+SFExecuteOnDealloc.m */; };
+		4E221FA118CB946B001766FC /* NSObject+SFObservers.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E221FA018CB946B001766FC /* NSObject+SFObservers.m */; };
 		4E235A5E18BF9441005F31C2 /* AIRSTREA.TTF in Resources */ = {isa = PBXBuildFile; fileRef = 4E235A5D18BF9441005F31C2 /* AIRSTREA.TTF */; };
 		4E2DC09718C402F900ADB7B1 /* OCAEditableCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E2DC09218C402F900ADB7B1 /* OCAEditableCollectionViewFlowLayout.m */; };
 		4E2DC09818C402F900ADB7B1 /* OCAEditableCollectionViewFlowLayoutCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E2DC09418C402F900ADB7B1 /* OCAEditableCollectionViewFlowLayoutCell.m */; };
@@ -98,6 +101,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4E221F9818CB8EE8001766FC /* SearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchBar.h; sourceTree = "<group>"; };
+		4E221F9918CB8EE8001766FC /* SearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchBar.m; sourceTree = "<group>"; };
+		4E221F9B18CB93C0001766FC /* NSObject+SFExecuteOnDealloc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SFExecuteOnDealloc.h"; sourceTree = "<group>"; };
+		4E221F9C18CB93C0001766FC /* NSObject+SFExecuteOnDealloc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+SFExecuteOnDealloc.m"; sourceTree = "<group>"; };
+		4E221F9E18CB9410001766FC /* SFObservers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFObservers.h; sourceTree = "<group>"; };
+		4E221F9F18CB946B001766FC /* NSObject+SFObservers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SFObservers.h"; sourceTree = "<group>"; };
+		4E221FA018CB946B001766FC /* NSObject+SFObservers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+SFObservers.m"; sourceTree = "<group>"; };
 		4E235A5D18BF9441005F31C2 /* AIRSTREA.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; name = AIRSTREA.TTF; path = ../../../Library/Fonts/AIRSTREA.TTF; sourceTree = "<group>"; };
 		4E2DC09118C402F900ADB7B1 /* OCAEditableCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCAEditableCollectionViewFlowLayout.h; sourceTree = "<group>"; };
 		4E2DC09218C402F900ADB7B1 /* OCAEditableCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCAEditableCollectionViewFlowLayout.m; sourceTree = "<group>"; };
@@ -459,6 +469,11 @@
 				4EF469CC18BDD4B200D98747 /* UILabel+AppearanceFix.m */,
 				4ECAAE8E18CB042E0059D54B /* UIFont+Scale.h */,
 				4ECAAE8F18CB042E0059D54B /* UIFont+Scale.m */,
+				4E221F9B18CB93C0001766FC /* NSObject+SFExecuteOnDealloc.h */,
+				4E221F9C18CB93C0001766FC /* NSObject+SFExecuteOnDealloc.m */,
+				4E221F9E18CB9410001766FC /* SFObservers.h */,
+				4E221F9F18CB946B001766FC /* NSObject+SFObservers.h */,
+				4E221FA018CB946B001766FC /* NSObject+SFObservers.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -527,6 +542,8 @@
 				4EF469C618BDCAFB00D98747 /* MenuItem.m */,
 				4ECAAE7F18C833210059D54B /* MenuView.h */,
 				4ECAAE8018C833210059D54B /* MenuView.m */,
+				4E221F9818CB8EE8001766FC /* SearchBar.h */,
+				4E221F9918CB8EE8001766FC /* SearchBar.m */,
 			);
 			name = Menu;
 			sourceTree = "<group>";
@@ -743,6 +760,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4EDEF63818BB368B00D81B1D /* PlaybackManager.m in Sources */,
+				4E221FA118CB946B001766FC /* NSObject+SFObservers.m in Sources */,
 				4EDEF66418BC8BC800D81B1D /* CSSBorder.m in Sources */,
 				4EDEF5D718BA953A00D81B1D /* ViewController.m in Sources */,
 				4E2DC0B418C57AA000ADB7B1 /* CoverImagePresenter.m in Sources */,
@@ -759,6 +777,7 @@
 				4EF469C718BDCAFB00D98747 /* MenuItem.m in Sources */,
 				4EDEF66118BC8B8900D81B1D /* UIView+CSS.m in Sources */,
 				4E2DC0AE18C5799D00ADB7B1 /* AlbumPresenter.m in Sources */,
+				4E221F9A18CB8EE8001766FC /* SearchBar.m in Sources */,
 				4EDEF60A18BAD9A800D81B1D /* ICSDropShadowView.m in Sources */,
 				4EDEF65718BC631800D81B1D /* User.m in Sources */,
 				4EDEF64718BC4CCB00D81B1D /* SearchResultsDelegate.m in Sources */,
@@ -769,6 +788,7 @@
 				4EDEF65A18BC7C0800D81B1D /* PlayPauseButton.m in Sources */,
 				4EDEF62E18BB1DE500D81B1D /* AlbumDetailsView.m in Sources */,
 				4E9D303118C80EA4007D6B12 /* NoAlbumsView.m in Sources */,
+				4E221F9D18CB93C0001766FC /* NSObject+SFExecuteOnDealloc.m in Sources */,
 				4EDEF64418BC435900D81B1D /* SearchResultsDataSource.m in Sources */,
 				4EDEF64A18BC4F3200D81B1D /* UIView+Event.m in Sources */,
 				4EDEF5CA18BA953A00D81B1D /* main.m in Sources */,

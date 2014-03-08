@@ -21,6 +21,7 @@
 #import "PlayQueue.h"
 #import "PlaybackManager.h"
 #include "appkey.c"
+#import "Player.h"
 
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
 #import <Crashlytics/Crashlytics.h>
@@ -57,7 +58,7 @@
         self.drawer.leftViewController = menu;
         self.drawer.centerViewController = main;
         
-        UIView *player = [[[NSBundle mainBundle] loadNibNamed:@"Player" owner:nil options:nil] objectAtIndex:0];
+        Player *player = [Player sharedPlayer];
         player.translatesAutoresizingMaskIntoConstraints = NO;
         [main.view addSubview:player];
         [main.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[player]|" options:0 metrics:nil views:@{@"player": player}]];
@@ -85,11 +86,15 @@
         [[UIApplication sharedApplication] endBackgroundTask:identifier];
     }];
     
+    [self.window endEditing:YES];
+    
     [[SPSession sharedSession] flushCaches:^{
         NSLog(@"Flush Cache");
         
-        if (identifier != UIBackgroundTaskInvalid)
+        if (identifier != UIBackgroundTaskInvalid) {
             [[UIApplication sharedApplication] endBackgroundTask:identifier];
+            NSLog(@"ENDED");
+        }
     }];
 }
 
@@ -107,16 +112,6 @@
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     [[NSUserDefaults standardUserDefaults] synchronize];
-    __block UIBackgroundTaskIdentifier identifier = [application   beginBackgroundTaskWithExpirationHandler:^{
-        [[UIApplication sharedApplication] endBackgroundTask:identifier];
-    }];
-    
-    [[SPSession sharedSession] flushCaches:^{
-        NSLog(@"Flush Cache");
-        
-        if (identifier != UIBackgroundTaskInvalid)
-            [[UIApplication sharedApplication] endBackgroundTask:identifier];
-    }];
 }
 
 - (void)session:(SPSession *)session didGenerateLoginCredentials:(NSString *)credential forUserName:(NSString *)userName {

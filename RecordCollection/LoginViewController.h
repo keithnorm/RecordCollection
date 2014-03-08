@@ -10,4 +10,6 @@
 
 @interface LoginViewController : SPLoginViewController
 
+-(id)initWithSession:(SPSession *)aSession;
+
 @end

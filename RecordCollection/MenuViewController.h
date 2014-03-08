@@ -12,9 +12,9 @@
 
 @interface MenuViewController : UIViewController
 
-@property (nonatomic, weak) IBOutlet UITableView *navigationTable;
+@property (nonatomic, strong) IBOutlet UITableView *navigationTable;
 @property (nonatomic, strong) UITableView *searchResultsTableView;
-@property (nonatomic, weak) IBOutlet UISearchBar *searchBar;
+@property (nonatomic, strong) IBOutlet UISearchBar *searchBar;
 @property (nonatomic, strong) SearchResultsDataSource *searchDataSource;
 @property (nonatomic, strong) SearchResultsDelegate *searchDelegate;
 

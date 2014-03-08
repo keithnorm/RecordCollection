@@ -23,6 +23,7 @@
 #import "CoreDataHelper.h"
 #import "NoAlbumsView.h"
 #import "IntroAutomator.h"
+#import "Player.h"
 #import <MBProgressHUD/MBProgressHUD.h>
 
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
@@ -52,10 +53,11 @@ const NSUInteger kSearchTextLengthThreshold = 4;
     if (user) {
         [session attemptLoginWithUserName:user.userName existingCredential:user.credentials];
     } else if (session.connectionState != SP_CONNECTION_STATE_LOGGED_IN) {
-        LoginViewController *controller = [LoginViewController loginControllerForSession:session];
+        LoginViewController *controller = [[LoginViewController alloc] initWithSession:[SPSession sharedSession]];
         [self.navigationController presentViewController:controller animated:YES completion:nil];
     }
-    self.albumsCollectionView.contentInset = UIEdgeInsetsMake(0, 0, 64, 0);
+    Player *player = [Player sharedPlayer];
+    self.albumsCollectionView.contentInset = UIEdgeInsetsMake(0, 0, player.bounds.size.height, 0);
     self.albumsCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(somethingChanged) name:@"SomethingChanged" object:nil];
 }
@@ -133,6 +135,9 @@ const NSUInteger kSearchTextLengthThreshold = 4;
             [self.albumsCollectionView reloadData];
         }
         [MBProgressHUD hideHUDForView:self.view animated:YES];
+        if (self.noAlbumsView && self.noAlbumsView.superview) {
+            [self.noAlbumsView removeFromSuperview];
+        }
     }
 }
 
@@ -285,7 +290,7 @@ const NSUInteger kSearchTextLengthThreshold = 4;
 #pragma mark Interaction Handling
 
 - (void)setSearchText:(NSString *)searchText {
-    if (self.noAlbumsView && self.noAlbumsView.superview) {
+    if (self.noAlbumsView) {
         [self.noAlbumsView removeFromSuperview];
     }
     _searchText = searchText;

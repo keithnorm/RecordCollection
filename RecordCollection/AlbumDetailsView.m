@@ -11,6 +11,8 @@
 #import "PlayQueue.h"
 #import "UIView+Event.h"
 #import "Album.h"
+#import "Player.h"
+#import "UIView+StyleClass.h"
 #import "NSManagedObject+Helper.h"
 
 @import MediaPlayer;
@@ -61,12 +63,8 @@
     UIView *tableHeader = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.trackList.bounds.size.width, self.image.bounds.size.height - 20)];
     self.trackList.backgroundColor = [UIColor clearColor];
     self.trackList.tableHeaderView = tableHeader;
-    self.trackList.contentInset = UIEdgeInsetsMake(0, 0, 64, 0);
-    [self addObserver:self forKeyPath:@"image.frame" options:NSKeyValueObservingOptionNew context:NULL];
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    
+    Player *player = [Player sharedPlayer];
+    self.trackList.contentInset = UIEdgeInsetsMake(0, 0, player.bounds.size.height, 0);
 }
 
 - (void)setAlbum:(id<AlbumPresenterProtocol>)album {

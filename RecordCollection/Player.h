@@ -12,4 +12,6 @@
 
 @property (nonatomic, assign) CGFloat height UI_APPEARANCE_SELECTOR;
 
++(instancetype)sharedPlayer;
+
 @end

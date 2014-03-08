@@ -7,6 +7,8 @@
 //
 
 #import "UIView+CSS.h"
+#import "SFObservers.h"
+#import "NSObject+SFExecuteOnDealloc.h"
 #import <objc/runtime.h>
 
 @implementation CSSDropshadow
@@ -104,9 +106,14 @@
 - (void)setBorderRadius:(CSSBorderRadius *)borderRadius {
     BOOL observingBoundsChange = [objc_getAssociatedObject(self, @selector(observingBoundsChange)) boolValue];
     if (!observingBoundsChange) {
-        [self addObserver:self forKeyPath:@"bounds" options:NSKeyValueObservingOptionNew context:NULL];
+        [self sf_addObserver:self forKeyPath:@"bounds" options:NSKeyValueObservingOptionNew context:NULL];
         objc_setAssociatedObject(self, @selector(observingBoundsChange), @(YES), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
+    __weak id weakSelf = self;
+    [self performBlockOnDealloc:^(id obj) {
+        NSLog(@" DOIN IT AND DOIN IT AND DOIN IT WELL");
+        [weakSelf sf_removeObserver:self forKeyPath:@"bounds"];
+    }];
     UIBezierPath *maskPath;
         maskPath = [UIBezierPath bezierPathWithRoundedRect:self.bounds byRoundingCorners:borderRadius.corners cornerRadii:CGSizeMake(borderRadius.radius, borderRadius.radius)];
     CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
@@ -123,10 +130,6 @@
             [object setBorderRadius:borderRadius];
         }
     }
-}
-
-- (void)dealloc {
-
 }
 
 @end
