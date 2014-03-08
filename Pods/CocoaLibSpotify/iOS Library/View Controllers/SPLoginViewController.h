@@ -73,8 +73,7 @@
  @param session The session to create the SPLoginViewController instance for.
  @return The created SPLoginViewController instance.
  */
-// hacked this to return instancetype to be able to subclass this controller
-+(instancetype)loginControllerForSession:(SPSession *)session;
++(SPLoginViewController *)loginControllerForSession:(SPSession *)session;
 
 /** Returns whether the view controller allows the user to cancel the login process or not. Defaults to `YES`. */
 @property (nonatomic, readwrite) BOOL allowsCancel;

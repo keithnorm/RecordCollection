@@ -61,6 +61,9 @@
 @property (nonatomic, readwrite, strong) NSMutableDictionary *folderCache;
 @property (nonatomic, readwrite, strong) SPPlaylistContainerCallbackProxy *callbackProxy;
 
+@property (nonatomic, readwrite, strong) NSMutableArray *playlistAddCallbackStack;
+@property (nonatomic, readwrite, strong) NSMutableArray *playlistRemoveCallbackStack;
+
 @property (nonatomic, readwrite) sp_playlistcontainer *container;
 
 -(NSRange)rangeOfFolderInRootList:(SPPlaylistFolder *)folder;
@@ -79,10 +82,20 @@ static void playlist_added(sp_playlistcontainer *pc, sp_playlist *playlist, int 
 	if (!container) return;
 	
 	NSArray *newTree = [container createPlaylistTree];
+	SPPlaylist *newPlaylist = [SPPlaylist playlistWithPlaylistStruct:playlist inSession:container.session];
+	
+	void (^callback)(SPPlaylist *) = nil;
+	if (container.playlistAddCallbackStack.count > 0) {
+		callback = [container.playlistAddCallbackStack objectAtIndex:0];
+		[container.playlistAddCallbackStack removeObjectAtIndex:0];
+	}
+	
 	dispatch_async(dispatch_get_main_queue(), ^() {
 		container.playlists = newTree;
+		if (callback) callback(newPlaylist);
 	});
 }
+
 
 static void playlist_removed(sp_playlistcontainer *pc, sp_playlist *playlist, int position, void *userdata) {
 	
@@ -91,8 +104,16 @@ static void playlist_removed(sp_playlistcontainer *pc, sp_playlist *playlist, in
 	if (!container) return;
 	
 	NSArray *newTree = [container createPlaylistTree];
+	SPErrorableOperationCallback callback = nil;
+	
+	if (container.playlistRemoveCallbackStack.count > 0) {
+		callback = [container.playlistRemoveCallbackStack objectAtIndex:0];
+		[container.playlistRemoveCallbackStack removeObjectAtIndex:0];
+	}
+	
 	dispatch_async(dispatch_get_main_queue(), ^() {
 		container.playlists = newTree;
+		if (callback) callback(nil);
 	});
 }
 
@@ -139,6 +160,8 @@ static sp_playlistcontainer_callbacks playlistcontainer_callbacks = {
 @synthesize folderCache;
 @synthesize playlists;
 @synthesize callbackProxy;
+@synthesize playlistAddCallbackStack;
+@synthesize playlistRemoveCallbackStack;
 
 -(sp_playlistcontainer *)container {
 #if DEBUG
@@ -343,33 +366,24 @@ static sp_playlistcontainer_callbacks playlistcontainer_callbacks = {
 	return [NSArray arrayWithArray:playlistsInFolder];
 }
 
-- (void)createPlaylistWithName:(NSString *)name callback:(void (^)(SPPlaylist *))block
-{
-	NSParameterAssert(name.length > 0);
-    NSParameterAssert(block != nil);
-
-    name = [name stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    
+-(void)createPlaylistWithName:(NSString *)name callback:(void (^)(SPPlaylist *))block {
+	
 	SPDispatchAsync(^{
-		if (name.length == 0 || name.length > 255) {
-			dispatch_async(dispatch_get_main_queue(), ^() {
-                block(nil);
-            });
+		
+		if ([[name stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] == 0 ||
+			[name length] > 255) {
+			dispatch_async(dispatch_get_main_queue(), ^() { if (block) block(nil); });
 			return;
 		}
-
-		sp_playlist *playlistStruct = sp_playlistcontainer_add_new_playlist(self.container, name.UTF8String);
-        if (playlistStruct) {
-            SPPlaylist *playlist = [SPPlaylist playlistWithPlaylistStruct:playlistStruct inSession:self.session];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                block(playlist);
-            });
-        }
-        else {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                block(nil);
-            });
-        }
+		
+		if (block)
+			[self.playlistAddCallbackStack addObject:block];
+			
+		sp_playlist *newPlaylist = sp_playlistcontainer_add_new_playlist(self.container, [name UTF8String]);
+		if (newPlaylist == NULL && block) {
+			[self.playlistAddCallbackStack removeObject:block];
+			dispatch_async(dispatch_get_main_queue(), ^{ block(nil); });
+		}
 	});
 }
 
@@ -405,31 +419,36 @@ static sp_playlistcontainer_callbacks playlistcontainer_callbacks = {
 	
 }
 
-- (void)removePlaylist:(SPPlaylist *)playlist callback:(SPErrorableOperationCallback)block
-{
-    NSParameterAssert(playlist != nil);
-    NSParameterAssert(block != nil);
+-(void)removePlaylist:(SPPlaylist *)aPlaylist callback:(SPErrorableOperationCallback)block {
+	
+	if (aPlaylist == nil)
+		if (block) dispatch_async(dispatch_get_main_queue(), ^{ block([NSError spotifyErrorWithCode:SP_ERROR_INVALID_INDATA]); });
 	
 	SPDispatchAsync(^{
+		
+		NSUInteger playlistCount = sp_playlistcontainer_num_playlists(self.container);
+		
+		if (block)
+			[self.playlistRemoveCallbackStack addObject:block];
+		
 		NSError *error = [NSError spotifyErrorWithCode:SP_ERROR_INVALID_INDATA];
-        NSUInteger count = sp_playlistcontainer_num_playlists(self.container);
-		for (int i = 0; i < count; i++) {
-			sp_playlist *playlistStruct = sp_playlistcontainer_playlist(self.container, i);
-			if (playlistStruct == playlist.playlist) {
-				sp_error errorCode = sp_playlistcontainer_remove_playlist(self.container, i);
-				if (errorCode != SP_ERROR_OK) {
+		
+		for (int currentIndex = 0; currentIndex < playlistCount; currentIndex++) {
+			sp_playlist *playlist = sp_playlistcontainer_playlist(self.container, currentIndex);
+			if (playlist == aPlaylist.playlist) {
+				sp_error errorCode = sp_playlistcontainer_remove_playlist(self.container, currentIndex);
+				if (errorCode != SP_ERROR_OK)
 					error = [NSError spotifyErrorWithCode:errorCode];
-                }
-				else {
+				else
 					error = nil;
-                }
 				break;
 			}
 		}
 		
-        dispatch_async(dispatch_get_main_queue(), ^{
-            block(error);
-        });
+		if (error) {
+			[self.playlistRemoveCallbackStack removeObject:block];
+			dispatch_async(dispatch_get_main_queue(), ^{ block(error); });
+		}
 	});
 }
 
@@ -621,6 +640,11 @@ static sp_playlistcontainer_callbacks playlistcontainer_callbacks = {
         self.container = aContainer;
         sp_playlistcontainer_add_ref(self.container);
         self.session = aSession;
+		self.playlistAddCallbackStack = [NSMutableArray new];
+		self.playlistRemoveCallbackStack = [NSMutableArray new];
+		
+		if (self.session.loadingPolicy == SPAsyncLoadingImmediate)
+			dispatch_async(dispatch_get_main_queue(), ^() { [self startLoading]; });
     }
     return self;
 }

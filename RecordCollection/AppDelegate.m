@@ -36,28 +36,33 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [Crashlytics startWithAPIKey:@"7b4f16d17c36f90270ae068e9040a5ee898b7ed9"];
+//    [Crashlytics startWithAPIKey:@"7b4f16d17c36f90270ae068e9040a5ee898b7ed9"];
     [Theme setup];
     NSError *error = nil;
     NSData *key = [[NSData alloc] initWithBytes:g_appkey length:g_appkey_size];
-    if (![SPSession initializeSharedSessionWithApplicationKey:key userAgent:@"com.app.RecordCollection" error:&error]) {
+    if (![SPSession initializeSharedSessionWithApplicationKey:key userAgent:@"com.app.RecordCollection" loadingPolicy:SPAsyncLoadingImmediate error:&error]) {
         NSLog(@"Failed to create session: %@", error.description);
         abort();
     }
     [[SPSession sharedSession] setDelegate:self];
     
-    self.drawer = (ICSDrawerController *)self.window.rootViewController;
+    if (NO) {
+        
+    } else {
     
-    UIViewController<ICSDrawerControllerChild, ICSDrawerControllerPresenting> *menu = [self.window.rootViewController.storyboard instantiateViewControllerWithIdentifier:@"Menu"];
-    UIViewController<ICSDrawerControllerChild, ICSDrawerControllerPresenting> *main = [self.window.rootViewController.storyboard instantiateViewControllerWithIdentifier:@"Navigation"];
-    self.drawer.leftViewController = menu;
-    self.drawer.centerViewController = main;
-    
-    UIView *player = [[[NSBundle mainBundle] loadNibNamed:@"Player" owner:nil options:nil] objectAtIndex:0];
-    player.translatesAutoresizingMaskIntoConstraints = NO;
-    [main.view addSubview:player];
-    [main.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[player]|" options:0 metrics:nil views:@{@"player": player}]];
-    [main.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[player]|" options:0 metrics:nil views:@{@"player": player}]];
+        self.drawer = (ICSDrawerController *)self.window.rootViewController;
+        
+        UIViewController<ICSDrawerControllerChild, ICSDrawerControllerPresenting> *menu = [self.window.rootViewController.storyboard instantiateViewControllerWithIdentifier:@"Menu"];
+        UIViewController<ICSDrawerControllerChild, ICSDrawerControllerPresenting> *main = [self.window.rootViewController.storyboard instantiateViewControllerWithIdentifier:@"Navigation"];
+        self.drawer.leftViewController = menu;
+        self.drawer.centerViewController = main;
+        
+        UIView *player = [[[NSBundle mainBundle] loadNibNamed:@"Player" owner:nil options:nil] objectAtIndex:0];
+        player.translatesAutoresizingMaskIntoConstraints = NO;
+        [main.view addSubview:player];
+        [main.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[player]|" options:0 metrics:nil views:@{@"player": player}]];
+        [main.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[player]|" options:0 metrics:nil views:@{@"player": player}]];
+    }
     self.window.tintColor = [UIColor blackColor];
     
     [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];

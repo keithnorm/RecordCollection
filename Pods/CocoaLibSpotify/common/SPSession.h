@@ -146,6 +146,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 +(BOOL)initializeSharedSessionWithApplicationKey:(NSData *)appKey
 									   userAgent:(NSString *)userAgent
+								   loadingPolicy:(SPAsyncLoadingPolicy)policy
 										   error:(NSError **)error;
 
 /** The "debug" build ID of libspotify.
@@ -173,6 +174,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 -(id)initWithApplicationKey:(NSData *)appKey
 				  userAgent:(NSString *)userAgent
+			  loadingPolicy:(SPAsyncLoadingPolicy)policy
 					  error:(NSError **)error;
 
 /** Attempt to login to the Spotify service.
@@ -263,8 +265,6 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 -(void)setPreferredBitrate:(sp_bitrate)bitrate;
 
-- (void)setPreferredOfflineBitrate:(sp_bitrate)bitrate;
-
 ///----------------------------
 /// @name Properties
 ///----------------------------
@@ -285,6 +285,9 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /** Returns the user agent value the session was initialized with. */
 @property (nonatomic, copy, readonly) NSString *userAgent;
+
+/** Returns the loading policy of the session. */
+@property (nonatomic, readonly) SPAsyncLoadingPolicy loadingPolicy;
 
 ///----------------------------
 /// @name Social and Scrobbling
@@ -438,12 +441,26 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 -(void)imageForURL:(NSURL *)url callback:(void (^)(SPImage *image))block;
 
+/** Returns an SPPlaylist object representing the given URL, or `nil` if the URL is not a valid playlist URL.
+ 
+ @param url The URL of the playlist.
+ @param block The block to be called with the playlist, or `nil` if given an invalid URL.
+ */
+-(void)playlistForURL:(NSURL *)url callback:(void (^)(SPPlaylist *playlist))block;
+
 /** Returns an SPSearch object representing the given URL, or `nil` if the URL is not a valid search URL. 
  
  @param url The URL of the search query.
  @param block The block to be called with the search, or `nil` if given an invalid URL.
  */
 -(void)searchForURL:(NSURL *)url callback:(void (^)(SPSearch *search))block;
+
+/** Returns an SPTrack object representing the given URL, or `nil` if the URL is not a valid track URL. 
+ 
+ @param url The URL of the track.
+ @param block The block to be called with the track, or `nil` if given an invalid URL.
+ */
+-(void)trackForURL:(NSURL *)url callback:(void (^)(SPTrack *track))block;
 
 /** Returns an SPUser object representing the given URL, or `nil` if the URL is not a valid user URL. 
  
@@ -453,18 +470,42 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -(void)userForURL:(NSURL *)url callback:(void (^)(SPUser *user))block;
 
 /** Returns an object representation of the given Spotify URL.
+ 
+@warning This method *must* be called on the libSpotify thread. See the
+ "Threading" section of the library's readme for more information.
+
+ @param aSpotifyUrlOfSomeKind A Spotify URL (starting `spotify:`).
+ @param linkType An optional pointer to an `sp_linktype` that will be filled with the type of object returned.
+ @return Returns the created object, or nil if the URL is invalid.
+ */
+ -(id)objectRepresentationForSpotifyURL:(NSURL *)aSpotifyUrlOfSomeKind linkType:(sp_linktype *)linkType;
+
+/** Returns an object representation of the given Spotify URL.
 
  This method works just like -albumForURL:, -artistForURL: and so on, except that it works out 
  what the given URL represents and returns that for you.
  
- @param spotifyURL A Spotify URL (starting `spotify:`).
+ @param aSpotifyUrlOfSomeKind A Spotify URL (starting `spotify:`).
  @param block The block to be called with the `sp_linktype` and object representation of the URL, or `nil` if given an invalid URL.
  */
--(void)objectRepresentationForSpotifyURL:(NSURL *)spotifyURL callback:(void (^)(sp_linktype linkType, id objectRepresentation))block;
+-(void)objectRepresentationForSpotifyURL:(NSURL *)aSpotifyUrlOfSomeKind callback:(void (^)(sp_linktype linkType, id objectRepresentation))block;
 
 ///----------------------------
 /// @name Accessing Arbitrary Content
 ///----------------------------
+
+/** Create and cache an SPPlaylist for the given sp_playlist struct from the C LibSpotify API.
+ 
+ This method caches SPPlaylist objects using the same cache the +[SPPlaylist playlist...] 
+ convenience methods use.
+ 
+ @warning This method *must* be called on the libSpotify thread. See the
+ "Threading" section of the library's readme for more information.
+ 
+ @param playlist The sp_playlist struct.
+ @return Returns the created or cached SPPlaylist object.
+ */
+-(SPPlaylist *)playlistForPlaylistStruct:(sp_playlist *)playlist;
 
 /** Create and cache an SPPlaylistFolder for the given folder ID from the C LibSpotify API.
  
@@ -488,6 +529,19 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  @return Returns the created or cached SPUnknownPlaylist object.
  */
 -(SPUnknownPlaylist *)unknownPlaylistForPlaylistStruct:(sp_playlist *)playlist;
+
+/** Create and cache an SPTrack for the given sp_track struct from the C LibSpotify API.
+ 
+ This method caches SPTrack objects using the same cache the +[SPTrack track...] 
+ convenience methods use.
+ 
+ @warning This method *must* be called on the libSpotify thread. See the
+ "Threading" section of the library's readme for more information.
+ 
+ @param track The sp_track struct.
+ @return Returns the created or cached SPTrack object.
+ */
+-(SPTrack *)trackForTrackStruct:(sp_track *)track;
 
 /** Create and cache an SPUser for the given sp_user struct from the C LibSpotify API.
  

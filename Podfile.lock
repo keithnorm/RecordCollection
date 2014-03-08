@@ -24,18 +24,14 @@ PODS:
   - Underscore.m (0.2.1)
 
 DEPENDENCIES:
-  - CocoaLibSpotify (from `https://github.com/cosmer/cocoalibspotify.git`)
+  - CocoaLibSpotify
   - FormatterKit
   - MBProgressHUD (~> 0.8)
   - Reveal-iOS-SDK
   - Underscore.m
 
-EXTERNAL SOURCES:
-  CocoaLibSpotify:
-    :git: https://github.com/cosmer/cocoalibspotify.git
-
 SPEC CHECKSUMS:
-  CocoaLibSpotify: 6bb9c71c3cdd3aa54f899bdcc1e8e9d6e5b71137
+  CocoaLibSpotify: 1719f45abb505d14ef84cfe64500b7e4924714b9
   FormatterKit: 475c602b6098d69c3255c65cfe6cb6a27c175f57
   libspotify: 83337b28ad17bd27a7e7d4ac353e89f72f87bd29
   MBProgressHUD: 2bbc6f470111daf7f3eaa4eb12b8cbf01c4c0622

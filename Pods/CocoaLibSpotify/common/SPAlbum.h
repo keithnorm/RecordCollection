@@ -161,11 +161,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 @property (nonatomic, readonly) sp_albumtype type;
 
-/// \return The receiver's release year, or 0 if the
-/// album hasn't been browsed.
-///
-/// \note The year is loaded when the album is browsed,
-/// not when the album itself is loaded.
+/** Returns the release year of the album. */
 @property (nonatomic, readonly) NSUInteger year;
 
 @end

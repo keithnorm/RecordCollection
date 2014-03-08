@@ -47,6 +47,7 @@
             <connections>
                 <outlet property="albumName" destination="K3J-db-r9l" id="Uvw-St-i5c"/>
                 <outlet property="artistName" destination="CL7-Oi-Zcg" id="rae-aW-Um4"/>
+                <outlet property="imageHeightConstraint" destination="qq3-7u-GLN" id="Hd6-Ko-gIf"/>
                 <outlet property="imageView" destination="2q3-Au-IFs" id="urz-Bh-xH1"/>
             </connections>
         </view>

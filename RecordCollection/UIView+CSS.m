@@ -47,7 +47,7 @@
 
 @implementation UIView (CSS)
 
-@dynamic border, borderRadius, dropShadow, borderBottom, borderTop;
+@dynamic border, borderRadius, dropShadow, borderBottom, borderTop, observingBoundsChange;
 
 - (void)setBorderBottom:(CSSBorder *)borderBottom {
     borderBottom.sides = CSSBorderSideBottom;
@@ -102,7 +102,11 @@
 }
 
 - (void)setBorderRadius:(CSSBorderRadius *)borderRadius {
-    [self addObserver:self forKeyPath:@"bounds" options:NSKeyValueObservingOptionNew context:NULL];
+    BOOL observingBoundsChange = [objc_getAssociatedObject(self, @selector(observingBoundsChange)) boolValue];
+    if (!observingBoundsChange) {
+        [self addObserver:self forKeyPath:@"bounds" options:NSKeyValueObservingOptionNew context:NULL];
+        objc_setAssociatedObject(self, @selector(observingBoundsChange), @(YES), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    }
     UIBezierPath *maskPath;
         maskPath = [UIBezierPath bezierPathWithRoundedRect:self.bounds byRoundingCorners:borderRadius.corners cornerRadii:CGSizeMake(borderRadius.radius, borderRadius.radius)];
     CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];

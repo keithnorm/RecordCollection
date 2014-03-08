@@ -33,228 +33,257 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import "SPImage.h"
 #import "SPSession.h"
 #import "SPURLExtensions.h"
-#import "SPWeakValue.h"
 
-static NSCache *g_imageCache;
+@interface SPImageCallbackProxy : NSObject
+// SPImageCallbackProxy is here to bridge the gap between -dealloc and the 
+// playlist callbacks being unregistered, since that's done async.
+@property (nonatomic, readwrite, assign) __unsafe_unretained SPImage *image;
+@end
+
+@implementation SPImageCallbackProxy
+@synthesize image;
+@end
 
 @interface SPImage ()
 
-@property (nonatomic, strong) SPPlatformNativeImage *image;
-@property (nonatomic, strong) SPWeakValue *callbackValue;
+-(void) cacheSpotifyURL;
 
-@property (nonatomic) sp_image *spImage;
-@property (nonatomic, getter = isLoaded) BOOL loaded;
-
-- (void)releaseResources;
+@property (nonatomic, readwrite) const byte *imageId;
+@property (nonatomic, readwrite, strong) SPPlatformNativeImage *image;
+@property (nonatomic, readwrite) sp_image *spImage;
+@property (nonatomic, readwrite, getter=isLoaded) BOOL loaded;
+@property (nonatomic, readwrite, assign) __unsafe_unretained SPSession *session;
+@property (nonatomic, readwrite, copy) NSURL *spotifyURL;
+@property (nonatomic, readwrite, strong) SPImageCallbackProxy *callbackProxy;
 
 @end
 
-#pragma mark - LibSpotify
-
-static SPPlatformNativeImage *create_native_image(sp_image *image)
-{
-    NSCParameterAssert(image != NULL);
-    SPCAssertOnLibSpotifyThread();
-    
-    size_t size = 0;
-    const byte *data = sp_image_data(image, &size);
-    
-    if (size == 0) {
-        return nil;
-    }
-    
-    return [[SPPlatformNativeImage alloc] initWithData:[NSData dataWithBytes:data length:size]];
-}
-
-static void image_loaded(sp_image *image, void *userdata)
-{
-    NSCParameterAssert(image != NULL);
-
-	SPWeakValue *weakValue = (__bridge SPWeakValue *)userdata;
-    SPImage *imageValue = weakValue.value;
-	if (!imageValue) {
-        return;
-    }
-
+static void image_loaded(sp_image *image, void *userdata) {
+	
+	SPImageCallbackProxy *proxy = (__bridge SPImageCallbackProxy *)userdata;
+	if (!proxy.image) return;
+	
 	BOOL isLoaded = sp_image_is_loaded(image);
-
-	SPPlatformNativeImage *nativeImage = nil;
+	SPPlatformNativeImage *im = nil;
+	
 	if (isLoaded) {
-        nativeImage = create_native_image(image);
+		size_t size;
+		const byte *data = sp_image_data(proxy.image.spImage, &size);
+		
+		if (size > 0)
+			im = [[SPPlatformNativeImage alloc] initWithData:[NSData dataWithBytes:data length:size]];
 	}
 
 	dispatch_async(dispatch_get_main_queue(), ^{
-		imageValue.image = nativeImage;
-		imageValue.loaded = isLoaded;
-
-        [imageValue releaseResources];
+		proxy.image.image = im;
+		proxy.image.loaded = isLoaded;
 	});
 }
 
-/// This is a hack. There is no supported method to go directly from an
-/// image id to a spotify url. However, the unique portion of the url
-/// appears to be the image id encoded as a hex string.
-static NSURL *create_url_from_image_id(const byte *image_id)
-{
-    NSCParameterAssert(image_id != NULL);
-    
-    static const char hexchars[] = "0123456789abcdef";
-    
-    char *hexstring = calloc(2*SPImageIdLength + 1, 1);
-    for (NSUInteger i = 0, j = 0; i < SPImageIdLength; i++) {
-        const byte b = image_id[i];
-        hexstring[j++] = hexchars[b >> 4];
-        hexstring[j++] = hexchars[b & 0xF];
-    }
-
-    NSString *urlstring = [NSString stringWithUTF8String:hexstring];
-    urlstring = [@"spotify:image:" stringByAppendingString:urlstring];
-
-    free(hexstring);
-    
-    return [[NSURL alloc] initWithString:urlstring];
-}
-
-#pragma mark - SPImage
-
 @implementation SPImage {
-	BOOL _hasStartedLoading;
+	BOOL hasRequestedImage;
+	BOOL hasStartedLoading;
+	SPPlatformNativeImage *_image;
 }
 
-+ (void)initialize
-{
-    if (self == [SPImage class]) {
-        g_imageCache = [[NSCache alloc] init];
+static NSMutableDictionary *imageCache;
+
++(SPImage *)imageWithImageId:(const byte *)imageId inSession:(SPSession *)aSession {
+
+	SPAssertOnLibSpotifyThread();
+	
+    if (imageCache == nil) {
+        imageCache = [[NSMutableDictionary alloc] init];
     }
-}
-
-+ (SPImage *)imageWithImageId:(const byte *)imageId inSession:(SPSession *)session
-{
-    NSParameterAssert(imageId != nil);
     
-    NSURL *url = create_url_from_image_id(imageId);
-	return [self imageWithImageURL:url inSession:session];
-}
-
-+ (void)imageWithImageURL:(NSURL *)imageURL inSession:(SPSession *)session callback:(void (^)(SPImage *image))block
-{
-    NSParameterAssert(block != nil);
-    
-    SPImage *image = [self imageWithImageURL:imageURL inSession:session];
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        block(image);
-    });
-}
-
-+ (SPImage *)imageWithImageURL:(NSURL *)imageURL inSession:(SPSession *)session
-{
-    NSParameterAssert(imageURL != nil);
-    NSParameterAssert(session != nil);
-
-    if ([imageURL spotifyLinkType] != SP_LINKTYPE_IMAGE) {
+	if (imageId == NULL) {
 		return nil;
 	}
-    
-    SPImage *image = [g_imageCache objectForKey:imageURL];
-    if (image) {
-        return image;
-    }
-    
-    image = [[SPImage alloc] initWithImageURL:imageURL inSession:session];
-    [g_imageCache setObject:image forKey:imageURL];
-    
-    return image;
+	
+	NSData *imageIdAsData = [NSData dataWithBytes:imageId length:SPImageIdLength];
+	SPImage *cachedImage = [imageCache objectForKey:imageIdAsData];
+	
+	if (cachedImage != nil)
+		return cachedImage;
+	
+	cachedImage = [[SPImage alloc] initWithImageStruct:NULL
+											   imageId:imageId
+											 inSession:aSession];
+	[imageCache setObject:cachedImage forKey:imageIdAsData];
+	return cachedImage;
+}
+
++(void)imageWithImageURL:(NSURL *)imageURL inSession:(SPSession *)aSession callback:(void (^)(SPImage *image))block {
+	
+	if ([imageURL spotifyLinkType] != SP_LINKTYPE_IMAGE) {
+		if (block) block(nil);
+		return;
+	}
+	
+	SPDispatchAsync(^{
+		
+		SPImage *spImage = nil;
+		sp_link *link = [imageURL createSpotifyLink];
+		sp_image *image = sp_image_create_from_link(aSession.session, link);
+		
+		if (link != NULL)
+			sp_link_release(link);
+		
+		if (image != NULL) {
+			spImage = [self imageWithImageId:sp_image_image_id(image) inSession:aSession];
+			sp_image_release(image);
+		}
+		
+		if (block) dispatch_async(dispatch_get_main_queue(), ^() { block(spImage); });
+	});
 }
 
 #pragma mark -
 
-- (id)initWithImageURL:(NSURL *)url inSession:(SPSession *)session
-{
+-(id)initWithImageStruct:(sp_image *)anImage imageId:(const byte *)anId inSession:aSession {
+	
+	SPAssertOnLibSpotifyThread();
+	
     if ((self = [super init])) {
-        _session = session;
-        _spotifyURL = url;
-    }
+		
+		self.session = aSession;
+		self.imageId = anId;
+		
+		if (anImage != NULL) {
+			self.spImage = anImage;
+			sp_image_add_ref(self.spImage);
+			
+			self.callbackProxy = [[SPImageCallbackProxy alloc] init];
+			self.callbackProxy.image = self;
+			
+			sp_image_add_load_callback(self.spImage,
+									   &image_loaded,
+									   (__bridge void *)(self.callbackProxy));
+			
+			BOOL isLoaded = sp_image_is_loaded(self.spImage);
+			SPPlatformNativeImage *im = nil;
+			
+			if (isLoaded) {
+				size_t size;
+				const byte *data = sp_image_data(self.spImage, &size);
+				
+				if (size > 0)
+					im = [[SPPlatformNativeImage alloc] initWithData:[NSData dataWithBytes:data length:size]];
+			}
 
+			dispatch_async(dispatch_get_main_queue(), ^{
+				[self cacheSpotifyURL];
+				self.image = im;
+				self.loaded = isLoaded;
+			});
+        }
+    }
     return self;
 }
 
-- (void)startLoading
-{
-    SPAssertOnMainThread();
+-(sp_image *)spImage {
+#if DEBUG
+	SPAssertOnLibSpotifyThread();
+#endif 
+	return _spImage;
+}
 
-	if (_hasStartedLoading) {
-        return;
-    }
+@synthesize spImage = _spImage;
+@synthesize loaded;
+@synthesize session;
+@synthesize spotifyURL;
+@synthesize imageId;
+@synthesize callbackProxy;
 
-	_hasStartedLoading = YES;
-    
-    NSAssert(!self.spImage, @"Image struct already created");
-    NSAssert(!self.callbackValue, @"Image callback value already created");
-    
-    NSURL *spotifyURL = self.spotifyURL;
-    SPSession *session = self.session;
+-(SPPlatformNativeImage *)image {
+	if (_image == nil && !hasRequestedImage)
+		[self startLoading];
+	return _image;
+}
 
+-(void)setImage:(SPPlatformNativeImage *)anImage {
+	if (_image != anImage) {
+		_image = anImage;
+	}
+}
+
+#pragma mark -
+
+-(void)startLoading {
+
+	if (hasStartedLoading) return;
+	hasStartedLoading = YES;
+	
 	SPDispatchAsync(^{
-        sp_link *link = [spotifyURL createSpotifyLink];
-        if (link == NULL) {
-            return;
-        }
+		
+		if (self.spImage != NULL)
+			return;
+		
+		sp_image *newImage = sp_image_create(self.session.session, self.imageId);
+		self.spImage = newImage;
+		
+		if (self.spImage != NULL) {
+			[self cacheSpotifyURL];
+			
+			// Clear out previous proxy.
+			self.callbackProxy.image = nil;
+			self.callbackProxy = nil;
+			
+			self.callbackProxy = [[SPImageCallbackProxy alloc] init];
+			self.callbackProxy.image = self;
+			
+			sp_image_add_load_callback(self.spImage, &image_loaded, (__bridge void *)(self.callbackProxy));
+			BOOL isLoaded = sp_image_is_loaded(self.spImage);
+			SPPlatformNativeImage *im = nil;
+			
+			if (isLoaded) {
+				size_t size;
+				const byte *data = sp_image_data(self.spImage, &size);
+				
+				if (size > 0)
+					im = [[SPPlatformNativeImage alloc] initWithData:[NSData dataWithBytes:data length:size]];
+			}
+			
+			dispatch_async(dispatch_get_main_queue(), ^{
+				hasRequestedImage = YES;
+				self.image = im;
+				self.loaded = isLoaded;
+			});
+		}
+	});
+	
+}
 
-		sp_image *spImage = sp_image_create_from_link(session.session, link);
-        sp_link_release(link);
-        
-        if (spImage == NULL) {
-            return;
-        }
+-(void)dealloc {
 
-        BOOL isLoaded = sp_image_is_loaded(spImage);
-
-        SPPlatformNativeImage *nativeImage = nil;
-        if (isLoaded) {
-            nativeImage = create_native_image(spImage);
-            sp_image_release(spImage);
-
-            dispatch_async(dispatch_get_main_queue(), ^{
-                self.image = nativeImage;
-                self.loaded = isLoaded;
-            });
-        }
-        else {
-            SPWeakValue *callbackValue = [[SPWeakValue alloc] initWithValue:self];
-            sp_image_add_load_callback(spImage, &image_loaded, (__bridge void *)(callbackValue));
-
-            dispatch_async(dispatch_get_main_queue(), ^{
-                self.image = nativeImage;
-                self.loaded = isLoaded;
-                
-                self.spImage = spImage;
-                self.callbackValue = callbackValue;
-            });
-        }
+	sp_image *outgoing_image = _spImage;
+	SPImageCallbackProxy *outgoingProxy = self.callbackProxy;
+	self.callbackProxy.image = nil;
+	self.callbackProxy = nil;
+    
+    SPDispatchAsync(^() {
+		if (outgoing_image) sp_image_remove_load_callback(outgoing_image, &image_loaded, (__bridge void *)outgoingProxy);
+		if (outgoing_image) sp_image_release(outgoing_image);
 	});
 }
 
-- (void)releaseResources
-{
-    sp_image *image = self.spImage;
-    SPWeakValue *callbackValue = self.callbackValue;
+-(void)cacheSpotifyURL {
+	
+	SPDispatchAsync(^{
 
-    [callbackValue clear];
-
-    self.spImage = nil;
-    self.callbackValue = nil;
-
-    if (image) {
-        SPDispatchAsync(^() {
-            sp_image_remove_load_callback(image, &image_loaded, (__bridge void *)callbackValue);
-            sp_image_release(image);
-        });
-    }
-}
-
-- (void)dealloc
-{
-    [self releaseResources];
+		if (self.spotifyURL != NULL)
+			return;
+		
+		sp_link *link = sp_link_create_from_image(self.spImage);
+		
+		if (link != NULL) {
+			NSURL *url = [NSURL urlWithSpotifyLink:link];
+			sp_link_release(link);
+			dispatch_async(dispatch_get_main_queue(), ^{
+				self.spotifyURL = url;
+			});
+		}
+	});
 }
 
 @end

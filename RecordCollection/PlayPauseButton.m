@@ -36,6 +36,8 @@
 //        _controlButtonColor = [UIColor blackColor];
         SPSession *session = [SPSession sharedSession];
         [session addObserver:self forKeyPath:@"playing" options:NSKeyValueObservingOptionNew context:NULL];
+        _lineWidth = 4.0f;
+        _padding = UIEdgeInsetsZero;
     }
     return self;
 }
@@ -49,9 +51,9 @@
     UIGraphicsBeginImageContext(self.bounds.size);
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGMutablePathRef path = CGPathCreateMutable();
-    CGPathMoveToPoint(path, NULL, 0, 0);
-    CGPathAddLineToPoint(path, NULL, self.bounds.size.width, self.bounds.size.height / 2);
-    CGPathAddLineToPoint(path, NULL, 0, self.bounds.size.height);
+    CGPathMoveToPoint(path, NULL, self.padding.left, self.padding.top);
+    CGPathAddLineToPoint(path, NULL, self.bounds.size.width - self.padding.right, (self.bounds.size.height - self.padding.bottom) / 2);
+    CGPathAddLineToPoint(path, NULL, self.padding.left, self.bounds.size.height - self.padding.bottom);
     CGPathCloseSubpath(path);
     CGContextSetFillColorWithColor(context, self.controlButtonColor.CGColor);
     CGContextAddPath(context, path);
@@ -63,12 +65,12 @@
     UIGraphicsBeginImageContext(self.bounds.size);
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGMutablePathRef path = CGPathCreateMutable();
-    CGPathMoveToPoint(path, NULL, self.bounds.size.width / 3.0, 0);
-    CGPathAddLineToPoint(path, NULL, self.bounds.size.width / 3.0, self.bounds.size.height);
-    CGPathMoveToPoint(path, NULL, self.bounds.size.width * 2.0 / 3.0, 0);
-    CGPathAddLineToPoint(path, NULL, self.bounds.size.width * 2.0 / 3.0, self.bounds.size.height);
+    CGPathMoveToPoint(path, NULL, self.padding.left, self.padding.top);
+    CGPathAddLineToPoint(path, NULL, self.padding.left, self.bounds.size.height - self.padding.bottom);
+    CGPathMoveToPoint(path, NULL, (self.bounds.size.width * 2.0) / 3.0 - self.padding.right, self.padding.top);
+    CGPathAddLineToPoint(path, NULL, (self.bounds.size.width * 2.0) / 3.0  - self.padding.right, self.bounds.size.height - self.padding.bottom);
     CGContextSetStrokeColorWithColor(context, self.controlButtonColor.CGColor);
-    CGContextSetLineWidth(context, 4.0f);
+    CGContextSetLineWidth(context, self.lineWidth);
     CGContextAddPath(context, path);
     CGContextStrokePath(context);
     return UIGraphicsGetImageFromCurrentImageContext();
@@ -76,6 +78,16 @@
 
 - (void)setControlButtonColor:(UIColor *)controlButtonColor {
     _controlButtonColor = controlButtonColor;
+    [self setNeedsDisplay];
+}
+
+- (void)setLineWidth:(CGFloat)lineWidth {
+    _lineWidth = lineWidth;
+    [self setNeedsDisplay];
+}
+
+- (void)setPadding:(UIEdgeInsets)padding {
+    _padding = padding;
     [self setNeedsDisplay];
 }
 

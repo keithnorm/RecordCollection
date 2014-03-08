@@ -10,6 +10,8 @@
 #import "PlaybackManager.h"
 #import "PlayQueue.h"
 #import "UIView+Event.h"
+#import "Album.h"
+#import "NSManagedObject+Helper.h"
 
 @import MediaPlayer;
 
@@ -60,6 +62,11 @@
     self.trackList.backgroundColor = [UIColor clearColor];
     self.trackList.tableHeaderView = tableHeader;
     self.trackList.contentInset = UIEdgeInsetsMake(0, 0, 64, 0);
+    [self addObserver:self forKeyPath:@"image.frame" options:NSKeyValueObservingOptionNew context:NULL];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    
 }
 
 - (void)setAlbum:(id<AlbumPresenterProtocol>)album {
@@ -114,6 +121,9 @@
         }];
         
         [self.trackList reloadData];
+        if ([Album findFirstWithDict:@{@"spotifyUrl": self.album.spotifyURL}]) {
+            self.addToCollectionBtn.hidden = YES;
+        }
     }
 }
 
@@ -136,8 +146,8 @@
     CGFloat offset = scrollView.contentOffset.y;
     if (offset < 0) {
         CGRect imageFrame = self.image.frame;
-        imageFrame.size.height = 320 + -offset * .2;
-        imageFrame.size.width = 320 + -offset * .2;
+        imageFrame.size.height = self.bounds.size.width + -offset * .2;
+        imageFrame.size.width = self.bounds.size.width + -offset * .2;
         self.image.frame = imageFrame;
     }
     

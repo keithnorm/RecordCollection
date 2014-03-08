@@ -59,10 +59,27 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 @implementation SPAlbum
 
+static NSMutableDictionary *albumCache;
+
 +(SPAlbum *)albumWithAlbumStruct:(sp_album *)anAlbum inSession:(SPSession *)aSession {
     
 	SPAssertOnLibSpotifyThread();
-    return [[SPAlbum alloc] initWithAlbumStruct:anAlbum inSession:aSession];
+	
+    if (albumCache == nil) {
+        albumCache = [[NSMutableDictionary alloc] init];
+    }
+    
+    NSValue *ptrValue = [NSValue valueWithPointer:anAlbum];
+    SPAlbum *cachedAlbum = [albumCache objectForKey:ptrValue];
+    
+    if (cachedAlbum != nil) {
+        return cachedAlbum;
+    }
+    
+    cachedAlbum = [[SPAlbum alloc] initWithAlbumStruct:anAlbum inSession:aSession];
+    
+    [albumCache setObject:cachedAlbum forKey:ptrValue];
+    return cachedAlbum;
 }
 
 +(void)albumWithAlbumURL:(NSURL *)aURL inSession:(SPSession *)aSession callback:(void (^)(SPAlbum *album))block {
@@ -79,12 +96,8 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			sp_album *album = sp_link_as_album(link);
 			sp_album_add_ref(album);
 			newAlbum = [self albumWithAlbumStruct:album inSession:aSession];
-            if (!newAlbum.name) {
-                NSLog(@"hmmm");
-            }
 			sp_link_release(link);
 			sp_album_release(album);
-
 		}
 		if (block) dispatch_async(dispatch_get_main_queue(), ^() { block(newAlbum); });
 	});

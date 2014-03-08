@@ -44,6 +44,7 @@ static NSUInteger const SPImageIdLength = 20;
 ///----------------------------
 /// @name Creating and Initializing Images
 ///----------------------------
+
 /** Creates an SPImage from the given ID. 
  
  This convenience method creates an SPImage object if one doesn't exist, or 
@@ -69,6 +70,21 @@ static NSUInteger const SPImageIdLength = 20;
  */
 +(void)imageWithImageURL:(NSURL *)imageURL inSession:(SPSession *)aSession callback:(void (^)(SPImage *image))block;
 
+/** Initializes a new SPImage from the given struct and ID. 
+ 
+ @warning This method *must* be called on the libSpotify thread. See the
+ "Threading" section of the library's readme for more information.
+ 
+ @warning For better performance and built-in caching, it is recommended
+ you create SPImage objects using +[SPImage imageWithImageId:inSession:].
+ 
+ @param anImage The sp_image struct to create an SPImage for, or NULL if the image hasn't been loaded yet.
+ @param anId The ID of the image.
+ @param aSession The SPSession the image should exist in.
+ @return Returns the created SPImage object. 
+ */
+-(id)initWithImageStruct:(sp_image *)anImage imageId:(const byte *)anId inSession:(SPSession *)aSession;
+
 ///----------------------------
 /// @name Loading Images
 ///----------------------------
@@ -85,11 +101,25 @@ static NSUInteger const SPImageIdLength = 20;
 /** Returns an NSImage or UIImage representation of the image, or `nil` if the image has yet to be loaded. */
 @property (nonatomic, readonly, strong) SPPlatformNativeImage *image;
 
+/** Returns the ID of the image. */
+@property (nonatomic, readonly) const byte *imageId;
+
 /** Returns `YES` if the image has finished loading and all data is available. */ 
 @property (nonatomic, readonly, getter=isLoaded) BOOL loaded;
 
 /** Returns the session the image was loaded in. */
-@property (nonatomic, readonly, weak) SPSession *session;
+@property (nonatomic, readonly, assign) __unsafe_unretained SPSession *session;
+
+/** Returns the opaque structure used by the C LibSpotify API, or NULL if the image has yet to be loaded.
+ 
+ @warning This method *must* be called on the libSpotify thread. See the
+ "Threading" section of the library's readme for more information.
+ 
+ @warning This should only be used if you plan to directly use the 
+ C LibSpotify API. The behaviour of CocoaLibSpotify is undefined if you use the C
+ API directly on items that have CocoaLibSpotify objects associated with them. 
+ */
+@property (nonatomic, readonly) sp_image *spImage;
 
 /** Returns the Spotify URL of the image. */
 @property (nonatomic, readonly, copy) NSURL *spotifyURL;

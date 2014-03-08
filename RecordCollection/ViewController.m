@@ -150,6 +150,17 @@ const NSUInteger kSearchTextLengthThreshold = 4;
     }
 }
 
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        OCAEditableCollectionViewFlowLayout *layout = (OCAEditableCollectionViewFlowLayout *)self.albumsCollectionView.collectionViewLayout;
+        if (toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft || toInterfaceOrientation == UIInterfaceOrientationLandscapeRight) {
+            layout.itemSize = CGSizeMake(300.0f, 400.0f);
+        } else {
+            layout.itemSize = CGSizeMake(350.0f, 420.0f);
+        }
+    }
+}
+
 - (void)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout didBeginDraggingItemAtIndexPath:(NSIndexPath *)indexPath {
     
 }

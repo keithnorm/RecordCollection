@@ -23,11 +23,23 @@ NS_ENUM(NSUInteger, RCSearchTableSection) {
     SearchResultsDataSource *dataSource = (SearchResultsDataSource *)tableView.dataSource;
     switch (indexPath.section) {
         case RCSearchTableSectionArtists:
-        case RCSearchTableSectionAlbums:
-            [tableView fireEvent:@"performSearch" withObject:searchText];
+            if ([dataSource.searchResults.artists count]) {
+                [tableView fireEvent:@"performSearch" withObject:searchText];
+            } else if ([dataSource.searchResults.tracks count]) {
+                [tableView fireEvent:@"selectTrackFromSearchResults" withObject:[dataSource.searchResults.tracks objectAtIndex:indexPath.row]];
+            } else {
+                [tableView fireEvent:@"performSearch" withObject:searchText];
+            }
             break;
         case RCSearchTableSectionTracks:
-            [tableView fireEvent:@"selectTrackFromSearchResults" withObject:[dataSource.searchResults.tracks objectAtIndex:indexPath.row]];
+            if ([dataSource.searchResults.tracks count]) {
+                [tableView fireEvent:@"selectTrackFromSearchResults" withObject:[dataSource.searchResults.tracks objectAtIndex:indexPath.row]];
+            } else {
+                [tableView fireEvent:@"performSearch" withObject:searchText];
+            }
+            break;
+        case RCSearchTableSectionAlbums:
+            [tableView fireEvent:@"performSearch" withObject:searchText];
             break;
         default:
             break;

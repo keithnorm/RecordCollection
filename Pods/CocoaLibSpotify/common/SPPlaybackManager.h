@@ -86,9 +86,10 @@
 /// @name Controlling Playback
 ///----------------------------
 
-/// \return YES if a track is playing, NO otherwise.
-///
-/// \note This isn't a good indication of whether or not playback is paused.
+/** Returns `YES` if the track is currently playing, `NO` if not.
+ 
+ If currentTrack is not `nil`, playback is paused.
+ */
 @property (readwrite) BOOL isPlaying;
 
 /** Plays the given track.

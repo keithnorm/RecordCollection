@@ -19,5 +19,7 @@ typedef NS_ENUM(NSInteger, PlayerState) {
 @property (nonatomic, assign) PlayerState playState;
 
 @property (nonatomic, strong) UIColor *controlButtonColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic, assign) CGFloat lineWidth UI_APPEARANCE_SELECTOR;
+@property (nonatomic, assign) UIEdgeInsets padding UI_APPEARANCE_SELECTOR;
 
 @end

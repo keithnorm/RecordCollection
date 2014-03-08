@@ -71,18 +71,33 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 +(void)playlistWithPlaylistURL:(NSURL *)playlistURL inSession:(SPSession *)aSession callback:(void (^)(SPPlaylist *playlist))block;
 
+/** Initializes an SPPlaylist from the given opaque sp_playlist struct. 
+ 
+ @warning This method *must* be called on the libSpotify thread. See the
+ "Threading" section of the library's readme for more information.
+ 
+ @warning For better performance and built-in caching, it is recommended
+ you create SPPlaylist objects using +[SPPlaylist playlistWithPlaylistStruct:inSession:], 
+ +[SPPlaylist playlistWithPlaylistURL:inSession:callback:] or the instance methods on SPSession.
+ 
+ @param pl The sp_playlist struct to create an SPPlaylist for.
+ @param aSession The SPSession the playlist should exist in.
+ @return Returns the created SPPlaylist object. 
+ */
+-(id)initWithPlaylistStruct:(sp_playlist *)pl inSession:(SPSession *)aSession;
+
 ///----------------------------
 /// @name Properties
 ///----------------------------
 
 /** Returns the playlist's delegate object. */
-@property (nonatomic, readwrite, weak) id <SPPlaylistDelegate> delegate;
+@property (nonatomic, readwrite, assign) __unsafe_unretained id <SPPlaylistDelegate> delegate;
 
 /** Returns `YES` if the playlist has changes not yet recognised by the Spotify servers, otherwise `NO`. */
 @property (nonatomic, readonly) BOOL hasPendingChanges;
 
 /** Returns `YES` if the playlist is collaborative (can be edited by users other than the owner), otherwise `NO`. */
-@property (nonatomic, readonly, getter=isCollaborative) BOOL collaborative;
+@property (nonatomic, readwrite, getter=isCollaborative) BOOL collaborative;
 
 /** Returns `YES` if the playlist has finished loading and all data is available. */ 
 @property (nonatomic, readonly, getter=isLoaded) BOOL loaded;
@@ -130,10 +145,13 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 @property (nonatomic, readonly) sp_playlist *playlist;
 
 /** Returns the session object the playlist is loaded in. */
-@property (nonatomic, readonly, weak) SPSession *session;
+@property (nonatomic, readonly, assign) __unsafe_unretained SPSession *session;
 
 /** Returns the Spotify URI of the playlist profile, for example: `spotify:user:sarnesjo:playlist:3p2c7mmML3fIUh5fcZ8Hcq` */
 @property (nonatomic, readonly, copy) NSURL *spotifyURL;
+
+/** Returns the subscribers to the playlist as an array of Spotify usernames. */
+@property (nonatomic, readonly, strong) NSArray *subscribers;
 
 ///----------------------------
 /// @name Metadata
@@ -143,10 +161,10 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 @property (nonatomic, readonly, strong) SPImage *image;
 
 /** Returns the name of the playlist, or `nil` if the playlist hasn't loaded yet. */
-@property (nonatomic, readonly, copy) NSString *name;
+@property (nonatomic, readwrite, copy) NSString *name;
 
 /** Returns the custom description for the playlist, or `nil` if the playlist hasn't loaded yet or it doesn't have a custom description. */
-@property (nonatomic, readonly, copy) NSString *description;
+@property (nonatomic, readonly, copy) NSString *playlistDescription;
 
 ///----------------------------
 /// @name Working with Items
@@ -208,6 +226,12 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 @protocol SPPlaylistDelegate <NSObject>
 @optional
+
+/** Called when one or more items in the playlist updated their metadata. 
+ 
+ @param aPlaylist The playlist in which items updated their metadata.
+ */
+-(void)itemsInPlaylistDidUpdateMetadata:(SPPlaylist *)aPlaylist;
 
 ///----------------------------
 /// @name Item Removal

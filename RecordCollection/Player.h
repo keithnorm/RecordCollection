@@ -10,4 +10,6 @@
 
 @interface Player : UIView
 
+@property (nonatomic, assign) CGFloat height UI_APPEARANCE_SELECTOR;
+
 @end

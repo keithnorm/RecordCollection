@@ -53,11 +53,7 @@ extern inline void SPDispatchAsync(dispatch_block_t block);
 
  This helper macro assists debugging operations on the libSpotify thread.
  */
-#define SPAssertOnLibSpotifyThread() NSAssert(CFRunLoopGetCurrent() == [SPSession libSpotifyRunloop], @"Not on spotify thread!");
-#define SPCAssertOnLibSpotifyThread() NSCAssert(CFRunLoopGetCurrent() == [SPSession libSpotifyRunloop], @"Not on spotify thread!");
-
-#define SPAssertOnMainThread() NSAssert([NSThread isMainThread], @"Not on main thread!");
-#define SPCAssertOnMainThread() NSCAssert([NSThread isMainThread], @"Not on main thread!");
+#define SPAssertOnLibSpotifyThread() NSAssert(CFRunLoopGetCurrent() == [SPSession libSpotifyRunloop], @"Not on correct thread!");
 
 @class SPTrack;
 @protocol SPSessionPlaybackDelegate;

@@ -4,31 +4,31 @@
 //
 //  Created by Daniel Kennett on 2/19/11.
 /*
- Copyright (c) 2011, Spotify AB
- All rights reserved.
- 
- Redistribution and use in source and binary forms, with or without
- modification, are permitted provided that the following conditions are met:
- * Redistributions of source code must retain the above copyright
- notice, this list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright
- notice, this list of conditions and the following disclaimer in the
- documentation and/or other materials provided with the distribution.
- * Neither the name of Spotify AB nor the names of its contributors may
- be used to endorse or promote products derived from this software
- without specific prior written permission.
- 
- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- DISCLAIMED. IN NO EVENT SHALL SPOTIFY AB BE LIABLE FOR ANY DIRECT, INDIRECT,
- INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
- OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
- LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
- OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
- ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
+Copyright (c) 2011, Spotify AB
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+    * Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in the
+      documentation and/or other materials provided with the distribution.
+    * Neither the name of Spotify AB nor the names of its contributors may 
+      be used to endorse or promote products derived from this software 
+      without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL SPOTIFY AB BE LIABLE FOR ANY DIRECT, INDIRECT,
+INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT 
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, 
+OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 
 #import "SPTrack.h"
 #import "SPTrackInternal.h"
@@ -59,7 +59,7 @@
 @property (nonatomic, readwrite) sp_track *track;
 
 @property (nonatomic, readwrite, assign) __unsafe_unretained SPSession *session;
-
+	
 @end
 
 @implementation SPTrack (SPTrackInternal)
@@ -86,44 +86,19 @@
 
 @implementation SPTrack
 
-+ (SPTrack *)trackForTrackStruct:(sp_track *)spTrack inSession:(SPSession *)aSession
-{
-    return [[SPTrack alloc] initWithTrackStruct:spTrack inSession:aSession];
++(SPTrack *)trackForTrackStruct:(sp_track *)spTrack inSession:(SPSession *)aSession{
+	SPAssertOnLibSpotifyThread();
+    return [aSession trackForTrackStruct:spTrack];
 }
 
-+ (void)trackForTrackURL:(NSURL *)trackURL inSession:(SPSession *)aSession callback:(void (^)(SPTrack *track))block
-{
-    NSParameterAssert(trackURL != nil);
-    NSParameterAssert(block != nil);
-    
-	sp_linktype linkType = [trackURL spotifyLinkType];
-	if (linkType != SP_LINKTYPE_TRACK && linkType != SP_LINKTYPE_LOCALTRACK) {
-		block(nil);
-		return;
-	}
-	
-	SPDispatchAsync(^{
-		SPTrack *trackObj = nil;
-		sp_link *link = [trackURL createSpotifyLink];
-		if (link != NULL) {
-			sp_track *track = sp_link_as_track(link);
-			sp_track_add_ref(track);
-			trackObj = [SPTrack trackForTrackStruct:track inSession:aSession];
-            trackObj.spotifyURL = trackURL;
-			sp_track_release(track);
-			sp_link_release(link);
-		}
-        
-		dispatch_async(dispatch_get_main_queue(), ^() {
-            block(trackObj);
-        });
-	});
++(void)trackForTrackURL:(NSURL *)trackURL inSession:(SPSession *)aSession callback:(void (^)(SPTrack *track))block {
+	[aSession trackForURL:trackURL callback:block];
 }
 
 -(id)initWithTrackStruct:(sp_track *)tr inSession:(SPSession *)aSession {
 	
 	SPAssertOnLibSpotifyThread();
-    
+
     if ((self = [super init])) {
         self.session = aSession;
         self.track = tr;
@@ -134,19 +109,19 @@
         } else {
             [self loadTrackData];
         }
-        
+
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(sessionUpdatedMetadata:)
 													 name:SPSessionDidUpdateMetadataNotification
 												   object:self.session];
-    }
+    }   
     return self;
 }
 
 -(NSString *)description {
     return [NSString stringWithFormat:@"%@: %@", [super description], [self name]];
 }
-
+         
 -(BOOL)checkLoaded {
 	
 	SPAssertOnLibSpotifyThread();
@@ -155,7 +130,7 @@
 	
     if (isLoaded)
         [self loadTrackData];
-    
+
 	return isLoaded;
 }
 
@@ -230,15 +205,15 @@
 }
 
 -(void)sessionUpdatedMetadata:(NSNotification *)notification {
-    
+
 	SPDispatchAsync(^{
-        
+
 		BOOL newLocal = sp_track_is_local(self.session.session, self.track);
 		NSUInteger newPopularity = sp_track_popularity(self.track);
 		sp_track_availability newAvailability = sp_track_get_availability(self.session.session, self.track);
 		sp_track_offline_status newOfflineStatus = sp_track_offline_get_status(self.track);
 		BOOL newStarred = sp_track_is_starred(self.session.session, self.track);
-        
+
 		dispatch_async(dispatch_get_main_queue(), ^{
 			if (self.isLocal != newLocal) self.local = newLocal;
 			if (self.popularity != newPopularity) self.popularity = newPopularity;
@@ -256,7 +231,7 @@
 -(SPTrack *)playableTrack {
 	
 	if (!self.track) return nil;
-    
+
 	sp_track *linked = sp_track_get_playable(self.session.session, self.track);
 	if (!linked) return nil;
 	
@@ -265,7 +240,7 @@
 }
 
 #pragma mark -
-#pragma mark Properties
+#pragma mark Properties 
 
 @synthesize album;
 @synthesize artists;
@@ -286,7 +261,7 @@
 -(sp_track *)track {
 #if DEBUG
 	SPAssertOnLibSpotifyThread();
-#endif
+#endif 
 	return _track;
 }
 

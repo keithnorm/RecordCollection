@@ -15,6 +15,8 @@
 @property (nonatomic, weak) IBOutlet UILabel *albumName;
 @property (nonatomic, weak) IBOutlet UILabel *artistName;
 @property (nonatomic, weak) IBOutlet UILabel *tracksCount;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *imageHeightConstraint;
+
 
 @property (nonatomic, strong) SPAlbumBrowse *albumBrowse;
 
@@ -28,6 +30,8 @@
     self = [super initWithCoder:aDecoder];
     if (self) {
         _viewLoaded = NO;
+        self.translatesAutoresizingMaskIntoConstraints = NO;
+        
     }
     return self;
 }
@@ -64,7 +68,18 @@
 
 - (void)awakeFromNib {
     self.albumName.styleClass = @"strongLabel";
+    self.artistName.styleClass = @"caption1Label";
     self.viewLoaded = YES;
+}
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    [self setNeedsUpdateConstraints];
+}
+
+- (void)updateConstraints {
+    self.imageHeightConstraint.constant = self.bounds.size.width;
+    [super updateConstraints];
 }
 
 - (void)setImageBorder:(CSSBorder *)imageBorder {

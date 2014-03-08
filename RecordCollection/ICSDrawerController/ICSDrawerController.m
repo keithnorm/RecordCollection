@@ -617,10 +617,17 @@ typedef NS_ENUM(NSUInteger, ICSDrawerControllerState)
         [self close];
     }
     UINavigationController *controller = (UINavigationController *)self.centerViewController;
-    [controller popToRootViewControllerAnimated:NO];
     AlbumDetailsViewController *albumDetailsVC = (AlbumDetailsViewController *)[controller.storyboard instantiateViewControllerWithIdentifier:@"albumDetails"];
     albumDetailsVC.album = (id<AlbumPresenterProtocol>)track.album;
     albumDetailsVC.track = track;
+    UIViewController *topVC = [controller topViewController];
+    if ([topVC isKindOfClass:[AlbumDetailsViewController class]]) {
+        AlbumDetailsViewController *currentAlbumDetails = (AlbumDetailsViewController *)[controller topViewController];
+        if ([currentAlbumDetails.album.spotifyURL isEqual:track.album.spotifyURL]) {
+            return;
+        }
+    }
+    [controller popToRootViewControllerAnimated:NO];
     [controller pushViewController:albumDetailsVC animated:YES];
 }
 

@@ -22,6 +22,7 @@
 #import "AlbumCell.h"
 #import "AlbumCard.h"
 #import "NoAlbumsView.h"
+#import "UIFont+Scale.h"
 #import "OCAEditableCollectionViewFlowLayoutCell.h"
 
 #define RGBCOLOR(r, g, b)                   [UIColor colorWithRed : (r) / 255.0 green : (g) / 255.0 blue : (b) / 255.0 alpha : 1]
@@ -48,13 +49,20 @@ CGImageRef CGGenerateNoiseImage(CGSize size, CGFloat factor) {
     return image;
 }
 
+CGFloat fontScale;
+
 @implementation Theme
 
 + (void)setup {
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        fontScale = 1.3f;
+    } else {
+        fontScale = 1.0f;
+    }
     [[UINavigationBar appearance] setBarTintColor:RGBCOLOR(44, 44, 44)];
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
     UIFontDescriptor *titleDescriptor = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleHeadline];
-    titleDescriptor = [UIFontDescriptor fontDescriptorWithName:@"Airstream" size:[titleDescriptor pointSize] * 1.6];
+    titleDescriptor = [UIFontDescriptor fontDescriptorWithName:@"Airstream" size:[titleDescriptor pointSize] * 1.6 * fontScale];
     UIFont *titleFont = [UIFont fontWithDescriptor:titleDescriptor size:0];
     NSDictionary *navBarTextAttributes = @{
                                            NSForegroundColorAttributeName : RGBCOLOR(190, 190, 190),
@@ -76,6 +84,7 @@ CGImageRef CGGenerateNoiseImage(CGSize size, CGFloat factor) {
     
     [[PlayPauseButton appearance] setControlButtonColor:[UIColor whiteColor]];
     [[PlayPauseButton appearance] setBackgroundColor:[UIColor clearColor]];
+    [[PlayPauseButton appearance] setPadding:UIEdgeInsetsMake(0, 5, 0, 5)];
     [[NextButton appearance] setTintColor:[UIColor whiteColor]];
     // cool way to set a gradient background
 //    NSArray *colors = [NSArray arrayWithObjects:(id)[[UIColor darkGrayColor] CGColor], (id)[[UIColor blackColor] CGColor], nil];
@@ -87,7 +96,7 @@ CGImageRef CGGenerateNoiseImage(CGSize size, CGFloat factor) {
     
     [[UILabel appearanceWhenContainedIn:[Player class], nil] setTextColor:[UIColor whiteColor]];
 //    [self styleCaption1Label:[UILabel appearanceWhenContainedIn:[Player class], nil]];
-    [[UILabel appearanceWhenContainedIn:[UITableViewCell class], nil] setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]];
+    [[UILabel appearanceWhenContainedIn:[UITableViewCell class], nil] setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody scale:fontScale]];
     
     CSSBorder *border = [[CSSBorder alloc] init];
     border.color = [UIColor darkGrayColor];
@@ -119,24 +128,36 @@ CGImageRef CGGenerateNoiseImage(CGSize size, CGFloat factor) {
     [[OCAEditableCellDeleteButton appearance] setBackgroundColor:[UIColor orangeColor]];
     [[OCAEditableCellDeleteButton appearance] setStrokeColor:[UIColor whiteColor]];
     [[UITableViewHeaderFooterView appearance] setTintColor:[UIColor whiteColor]];
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        [self setupiPad];
+    }
+}
+
++ (void)setupiPad {
+    [[Player appearance] setHeight:140.0f];
+    [[PlayPauseButton appearance] setLineWidth:8.0f];
+    [[PlayPauseButton appearance] setPadding:UIEdgeInsetsMake(10, 10, 10, 13)];
 }
 
 + (void)styleCaption1Label:(UILabel *)label {
-    [label setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleCaption1]];
+    [label setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleCaption1 scale:fontScale]];
 }
 
 + (void)styleCaption2Label:(UILabel *)label {
-    [label setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleCaption2]];
+    [label setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleCaption2 scale:fontScale]];
 }
 
 + (void)styleHeaderLabel:(UILabel *)label {
-    [label setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleHeadline]];
+    [label setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleHeadline scale:fontScale]];
 }
 
 + (void)styleStrongLabel:(UILabel *)label {
     UIFontDescriptor *descriptor = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleCaption1];
     descriptor = [descriptor fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitBold];
     UIFont *font = [UIFont fontWithDescriptor:descriptor size:0];
+    CGFloat size = font.pointSize * fontScale;
+    font = [UIFont fontWithDescriptor:descriptor size:size];
     [label setFont:font];
 }
 
@@ -191,7 +212,7 @@ CGImageRef CGGenerateNoiseImage(CGSize size, CGFloat factor) {
 + (void)styleSweetTunesButton:(UIButton *)button {
     [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     UIFontDescriptor *titleDescriptor = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleHeadline];
-    titleDescriptor = [UIFontDescriptor fontDescriptorWithName:@"Airstream" size:[titleDescriptor pointSize] * 1.6];
+    titleDescriptor = [UIFontDescriptor fontDescriptorWithName:@"Airstream" size:[titleDescriptor pointSize] * 1.6 * fontScale];
     UIFont *titleFont = [UIFont fontWithDescriptor:titleDescriptor size:0];
     button.titleLabel.font = titleFont;
     NSArray *colors = [NSArray arrayWithObjects:(id)RGBCOLOR(209, 106, 90).CGColor, (id)RGBCOLOR(209, 106, 90).CGColor, nil];
@@ -206,7 +227,7 @@ CGImageRef CGGenerateNoiseImage(CGSize size, CGFloat factor) {
 + (void)styleHeavyRotationButton:(UIButton *)button {
     [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     UIFontDescriptor *titleDescriptor = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleHeadline];
-    titleDescriptor = [UIFontDescriptor fontDescriptorWithName:@"Airstream" size:[titleDescriptor pointSize] * 1.6];
+    titleDescriptor = [UIFontDescriptor fontDescriptorWithName:@"Airstream" size:[titleDescriptor pointSize] * 1.6 * fontScale];
     UIFont *titleFont = [UIFont fontWithDescriptor:titleDescriptor size:0];
     button.titleLabel.font = titleFont;
     NSArray *colors = [NSArray arrayWithObjects:(id)RGBCOLOR(190, 190, 190).CGColor, (id)RGBCOLOR(190, 190, 190).CGColor, nil];

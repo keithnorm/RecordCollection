@@ -54,7 +54,7 @@
 
 static NSMutableDictionary *loginControllerCache;
 
-+(instancetype)loginControllerForSession:(SPSession *)session {
++(SPLoginViewController *)loginControllerForSession:(SPSession *)session {
 	
 	if (session == nil) return nil;
 	
@@ -66,8 +66,7 @@ static NSMutableDictionary *loginControllerCache;
 	SPLoginViewController *controller = [loginControllerCache objectForKey:ptrValue];
 	
 	if (controller == nil) {
-        // hacked this here to be able to subclass this controller (kn)
-		controller = [[self alloc] initWithSession:session];
+		controller = [[SPLoginViewController alloc] initWithSession:session];
 		[loginControllerCache setObject:controller forKey:ptrValue];
 	}
 	
@@ -166,7 +165,7 @@ static NSMutableDictionary *loginControllerCache;
 				nav.navigationBar.barStyle = UIBarStyleBlack;
 				nav.modalPresentationStyle = UIModalPresentationFormSheet;
 				
-                [self presentViewController:nav animated:YES completion:nil];
+				[self presentModalViewController:nav animated:YES];
 			});
 		});
 		
@@ -270,7 +269,7 @@ static NSMutableDictionary *loginControllerCache;
 	if (parent == nil)
 		return;
 	
-    [parent presentViewController:self animated:NO completion:nil];
+	[parent presentModalViewController:self animated:NO];
 }
 
 @end
@@ -297,17 +296,17 @@ static NSMutableDictionary *loginControllerCache;
 		
 		vc.completionBlock = ^() {
 			if (self.dismissesAfterLogin) {
-				[targetViewController dismissViewControllerAnimated:YES completion:nil];
+				[targetViewController dismissModalViewControllerAnimated:YES];
 			}
 			[self.loginDelegate loginViewController:self didCompleteSuccessfully:success];
 		};
 		
-		[targetViewController dismissViewControllerAnimated:NO completion:nil];
-        [targetViewController presentViewController:nav animated:NO completion:nil];
+		[targetViewController dismissModalViewControllerAnimated:NO];
+		[targetViewController presentModalViewController:nav animated:NO];
 		return;
 	}
 	
-	[targetViewController dismissViewControllerAnimated:YES completion:nil];
+	[targetViewController dismissModalViewControllerAnimated:YES];
 	[self.loginDelegate loginViewController:self didCompleteSuccessfully:success];
 }
 
@@ -315,7 +314,7 @@ static NSMutableDictionary *loginControllerCache;
 	
 	if (page == SP_SIGNUP_PAGE_DONE) {
 		if (self.isShown && !self.waitingForFacebookPermissions) {
-			[self dismissViewControllerAnimated:YES completion:nil];
+			[self dismissModalViewControllerAnimated:YES];
 		}
 		self.didReceiveSignupFlow = NO;
 		return;

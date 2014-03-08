@@ -38,6 +38,7 @@
     self = [super initWithCoder:aDecoder];
     if (self) {
         [self setup];
+        self.translatesAutoresizingMaskIntoConstraints = NO;
     }
     return self;
 }
@@ -97,7 +98,7 @@
 }
 
 - (CGSize)intrinsicContentSize {
-    return CGSizeMake(320, 70);
+    return self.bounds.size;
 }
 
 - (void)tintColorDidChange {

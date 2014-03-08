@@ -48,10 +48,27 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 @implementation SPArtist
 
+static NSMutableDictionary *artistCache;
+
 +(SPArtist *)artistWithArtistStruct:(sp_artist *)anArtist inSession:(SPSession *)aSession {
     
 	SPAssertOnLibSpotifyThread();
-    return [[SPArtist alloc] initWithArtistStruct:anArtist inSession:aSession];
+	
+    if (artistCache == nil) {
+        artistCache = [[NSMutableDictionary alloc] init];
+    }
+    
+    NSValue *ptrValue = [NSValue valueWithPointer:anArtist];
+    SPArtist *cachedArtist = [artistCache objectForKey:ptrValue];
+    
+    if (cachedArtist != nil) {
+        return cachedArtist;
+    }
+    
+    cachedArtist = [[SPArtist alloc] initWithArtistStruct:anArtist inSession:aSession];
+    
+    [artistCache setObject:cachedArtist forKey:ptrValue];
+    return cachedArtist;
 }
 
 +(void)artistWithArtistURL:(NSURL *)aURL inSession:(SPSession *)aSession callback:(void (^)(SPArtist *artist))block {

@@ -43,6 +43,8 @@
     }
     self.albumCard = [views objectAtIndex:0];
     [self.contentView addSubview:self.albumCard];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[card]|" options:0 metrics:nil views:@{@"card": self.albumCard}]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[card]|" options:0 metrics:nil views:@{@"card": self.albumCard}]];
 }
 
 - (void)setAlbum:(id<AlbumPresenterProtocol>)album {

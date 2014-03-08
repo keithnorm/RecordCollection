@@ -1,6 +1,6 @@
 platform :ios, '7.0'
 
-pod 'CocoaLibSpotify', :git => 'https://github.com/cosmer/cocoalibspotify.git'
+pod 'CocoaLibSpotify'
 pod 'Reveal-iOS-SDK'
 pod 'FormatterKit'
 pod 'MBProgressHUD', '~> 0.8'

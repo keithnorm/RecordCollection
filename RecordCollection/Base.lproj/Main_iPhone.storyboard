@@ -76,7 +76,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KYi-ME-zH1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-52" y="-1543"/>
+            <point key="canvasLocation" x="220" y="-743"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="ufC-wZ-h7g">
@@ -188,6 +188,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="Rb1-JG-mjS" firstAttribute="top" secondItem="EKV-aS-GHO" secondAttribute="bottom" constant="-300" id="7qa-ue-GW3"/>
                             <constraint firstItem="EKV-aS-GHO" firstAttribute="bottom" secondItem="0ud-JN-7NI" secondAttribute="bottom" constant="14" id="AKR-yP-tCP"/>
                             <constraint firstItem="di7-T8-xQT" firstAttribute="top" secondItem="cdb-0X-8gN" secondAttribute="top" id="PwO-dJ-cJ4"/>
                             <constraint firstAttribute="trailing" secondItem="EKV-aS-GHO" secondAttribute="trailing" id="Xul-ot-mFe"/>
@@ -196,7 +197,6 @@
                             <constraint firstAttribute="trailing" secondItem="0ud-JN-7NI" secondAttribute="trailing" constant="20" id="s9n-Zh-c3t"/>
                             <constraint firstItem="di7-T8-xQT" firstAttribute="leading" secondItem="cdb-0X-8gN" secondAttribute="leading" id="vb0-2c-l4H"/>
                             <constraint firstAttribute="bottom" secondItem="di7-T8-xQT" secondAttribute="bottom" id="wdB-5h-wmQ"/>
-                            <constraint firstItem="Rb1-JG-mjS" firstAttribute="top" secondItem="EKV-aS-GHO" secondAttribute="bottom" constant="-300" id="zUa-7u-U8T"/>
                         </constraints>
                         <connections>
                             <outlet property="addToCollectionBtn" destination="0ud-JN-7NI" id="R2J-jq-1Yc"/>

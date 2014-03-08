@@ -36,4 +36,6 @@
 @property (nonatomic, strong) CSSDropshadow *dropShadow UI_APPEARANCE_SELECTOR;
 @property (nonatomic, strong) CSSBorderRadius *borderRadius UI_APPEARANCE_SELECTOR;
 
+@property (nonatomic, assign) BOOL observingBoundsChange;
+
 @end
