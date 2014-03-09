@@ -673,4 +673,8 @@ typedef NS_ENUM(NSUInteger, ICSDrawerControllerState)
     [self performSearch:@"Recently Played"];
 }
 
+- (void)dopeak:(id)obj {
+    [self peak];
+}
+
 @end

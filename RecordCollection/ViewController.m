@@ -24,6 +24,7 @@
 #import "NoAlbumsView.h"
 #import "IntroAutomator.h"
 #import "Player.h"
+#import "UIView+Event.h"
 #import <MBProgressHUD/MBProgressHUD.h>
 
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
@@ -220,7 +221,7 @@ const NSUInteger kSearchTextLengthThreshold = 4;
     AlbumCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"AlbumCell" forIndexPath:indexPath];
     id<AlbumPresenterProtocol> album = [self.albums objectAtIndex:indexPath.row];
     cell.album = album;
-    if ([album isKindOfClass:[SPAlbum class]]) {
+    if ([album isKindOfClass:[SPAlbum class]] && [album cover]) {
         [SPAsyncLoading waitUntilLoaded:album.cover timeout:kSPAsyncLoadingDefaultTimeout then:^(NSArray *loadedItems, NSArray *notLoadedItems) {
             AlbumCell *cell = (AlbumCell *)[collectionView cellForItemAtIndexPath:indexPath];
             cell.image = album.cover.image;

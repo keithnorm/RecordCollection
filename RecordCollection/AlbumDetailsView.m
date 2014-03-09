@@ -113,7 +113,7 @@
 }
 
 - (void)refresh {
-    if (self && self.album) {
+    if (self && self.album && [self.album cover]) {
         [SPAsyncLoading waitUntilLoaded:self.album.cover timeout:3.0 then:^(NSArray *loadedItems, NSArray *notLoadedItems) {
             self.image.image = self.album.cover.image;
         }];

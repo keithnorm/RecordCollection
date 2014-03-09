@@ -216,6 +216,8 @@
         [coverView.layer addAnimation:group forKey:@"savingAnimation"];
         
     } repeats:NO];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"SomethingChanged" object:nil];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
