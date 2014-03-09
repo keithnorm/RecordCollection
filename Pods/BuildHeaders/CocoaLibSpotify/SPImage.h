@@ -1,1 +1,0 @@
-../../CocoaLibSpotify/common/SPImage.h

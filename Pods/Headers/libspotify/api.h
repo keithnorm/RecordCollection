@@ -1,1 +1,0 @@
-../../libspotify/libspotify-12.1.64-iOS-universal/libspotify.framework/Versions/12.1.64/Headers/api.h
