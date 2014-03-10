@@ -17,8 +17,8 @@ p, li {
 }
 
 p {
-  margin-bottom: 20px;
-  font-family: 'Lago', sans-serif;
+  margin-bottom: 10px;
+  font-family: 'Lato', sans-serif;
   font-weight: 300;
 }
 
@@ -166,11 +166,6 @@ header h1 {
   right: 0;
 }
 
-#trust {
-  font-weight: bold;
-  font-family: "Lato", sans-serif;
-}
-
 .top-iphone {
   position: absolute;
   bottom: 0;
@@ -187,7 +182,6 @@ header h1 {
 
 .middle-section ul {
   margin-bottom: 60px;
-  margin-top: -10px;
 }
 
 .middle-description {
