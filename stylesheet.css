@@ -1,3 +1,251 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font: 62.5%/1.5 Arial, sans-serif;
+}
+
+h1, h2, h3, h4 {
+  font-weight: normal;
+}
+
+p, li {
+  font-size: 1.8rem;
+}
+
+p {
+  margin-bottom: 20px;
+}
+
+h3 {
+  font-size: 3.8em;
+  margin-bottom: 20px;
+}
+
+ul {
+  margin: 0 0 20px 60px;
+}
+
+a {
+  color: #2c2c2c;
+}
+
+footer ul {
+  margin: 0;
+}
+
+.content-wrap {
+  margin: 0 auto;
+  width: 90%;
+  max-width: 1200px;
+  position: relative;
+}
+
+header {
+  overflow: auto;
+  padding-right: 512px;
+}
+
+footer {
+  padding: 20px 0;
+  overflow: auto;
+}
+
+#logo {
+  float: left;
+  margin-right: 2%;
+  width: 20%;
+}
+
+header h1 {
+  width: 100%;
+  max-width: 353px;
+  min-height: 38px;
+  background: url("public/images/record-collection-logo-name.png") no-repeat;
+  overflow: hidden;
+  text-indent: -1000px;
+  overflow: hidden;
+  margin: 30px 0 2px 0;
+  background-size: 100%;
+}
+
+.logo-name {
+    float: left;
+    width: 70%;
+}
+
+#spotify-accolade {
+  width: 100%;
+  max-width: 237px;
+}
+
 .top-section {
-	background-image: url(public/images/background.jpg);
+	background: url("public/images/background4.jpg") top left no-repeat;
+  background-size: 100%;
+  height: 850px;
+}
+
+.top-section .content-wrap {
+  padding-top: 20px;
+}
+
+.top-description {
+  padding: 100px 580px 0 0;
+  max-width: 1000px;
+}
+
+.top-description h2 {
+  font-size: 4.2rem;
+  line-height: 1.3em;
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+.top-description p {
+  font-size: 1.4em;
+  color: #fff;
+}
+
+.top-ipad {
+  background: url("public/images/ipad-background.png") no-repeat;
+  width: 562px;
+  height: 757px;
+  position: relative;
+  right: -40px;
+}
+
+.ipad-collection-screenshot {
+  background: url("public/images/ipad-collection-screenshot.jpg") no-repeat;
+  width: 446px;
+  height: 596px;
+  position: absolute;
+  top: 62px;
+  left: 60px; 
+}
+
+.iphone-collection-screenshot {
+  background: url("public/images/iphone-collection-screenshot.jpg") no-repeat;
+  width: 226px;
+  height: 401px;
+  position: absolute;
+  top: 79px;
+  left: 20px;
+}
+
+.top-iphone {
+  background: url("public/images/iphone-background.png") no-repeat;
+  width: 262px;
+  height: 552px;
+}
+
+#app-store-link {
+  margin-bottom: 20px;
+  display: block;
+}
+
+#app-store-link img {
+  width: 100%;
+  max-width: 291px;
+}
+
+
+.ipad-iphone {
+  position: absolute;
+  top: 20px;
+  right: 0;
+}
+
+.top-iphone {
+  position: absolute;
+  bottom: 0;
+}
+
+.middle-section {
+  overflow: auto;
+  padding: 20px 0;
+}
+
+.middle-section .content-wrap {
+  overflow: auto;
+}
+
+.middle-section ul {
+  margin-bottom: 60px;
+}
+
+.middle-description {
+  padding: 70px 0 0 322px;
+}
+
+.footnote {
+  position: absolute;
+  bottom: 0;
+}
+
+.middle-iphone {
+  background: url("public/images/iphone-background.png") no-repeat;
+  width: 262px;
+  height: 552px;
+  float: left;
+  position: relative;
+}
+
+.iphone-nav-screenshot {
+  background: url("public/images/iphone-nav-screenshot.jpg") no-repeat;
+  width: 226px;
+  height: 401px;
+  position: absolute;
+  top: 79px;
+  left: 20px;
+}
+
+footer {
+  background: url("public/images/pattern3.jpg");
+  box-shadow: -1px 0 2px #000;
+}
+
+footer p, footer ul, footer li {
+  float: left;
+}
+
+footer p {
+  font-size: 1.2rem;
+  margin: 0 20px 0 0;
+}
+
+footer ul {
+  list-style: none;
+}
+
+footer a {
+  display: inline-block;
+}
+
+footer li {
+  margin-right: 5px;
+  width: 20px;
+  height: 24px;
+}
+
+footer img {
+  width: 20px;
+}
+
+@media (max-width: 1200px) {
+
+    .top-section {
+        background-size: 1200px 873px;
+    }
+
+}
+
+@media (max-width: 900px) {
+
+    .top-description h2 {
+        font-size: 3rem;
+    }
+
 }
