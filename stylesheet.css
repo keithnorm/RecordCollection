@@ -252,6 +252,11 @@ footer img {
 
 /* iPad or resized screen down to 900 */
 @media (max-width: 850px), (max-device-width : 1024px) {
+  
+    .top-section {
+      background-size: 1024px 745px;
+    }
+  
     .top-description h2, .top-description p {
         display: none;
     }
@@ -284,6 +289,7 @@ footer img {
       left: 50%;
       margin-left: -145px;
       padding: 0;
+      max-width: 100%;
     }
     
     .middle-description {
@@ -318,4 +324,108 @@ footer img {
       float: none;
     }
 
+}
+
+@media (max-device-width : 480px) and (-webkit-min-device-pixel-ratio: 2), (max-width: 550px) {
+  
+  p, li {
+    font-size: 3.6rem;
+  }
+  
+  footer p {
+    font-size: 2.4rem;
+  }
+  
+  footer img {
+    width: 40px;
+  }
+  
+  footer li {
+    width: 40px;
+  }
+  
+  header h1 {
+    background-image: url("public/images/record-collection-logo-name.png");
+    height: 38px;
+    background-size: 80%;
+  }
+  
+  .top-section { 
+    height: auto;
+  }
+  #app-store-link {
+    max-width: 100%;
+  }
+  #app-store-link img {
+    width: 100%;
+    max-width: 100%;
+  }
+  
+  .top-section .content-wrap {
+    padding-bottom: 0;
+  }
+  
+  .top-description {
+    display: block;
+    position: static;
+    margin-left: 0;
+    max-width: 100%;s
+  }
+  header {
+    text-align: center;
+    height: 227px;
+  }
+  
+  .top-iphone {
+    background-image: url("public/images/iphone-background@2x.png");
+    width: 552px;
+    height: 1102px
+  }
+  
+  .iphone-collection-screenshot {
+    background-image: url("public/images/iphone-collection-screenshot@2x.jpg");
+    width: 452px;
+    height: 802px;
+    top: 158px;
+    left: 38px;
+  }
+  
+  header h1 {
+    background-position: center;
+    background-size: 353px 38px;
+    margin: 0;
+    height: 227px;
+    max-width: 100%;
+    background: url("public/images/record-collection-logo-name@2x.png") no-repeat center;
+  }
+  
+  .top-section {
+    background-size: 1100px 800px;
+  }
+  
+  .top-ipad {
+    display: none;
+  } 
+  
+  .top-iphone {
+    display: block;
+    position: relative;
+    margin: 0 auto;
+  }
+  
+  .ipad-iphone {
+    margin-bottom: 20px;
+  }
+  
+  .middle-section {
+    padding: 0;
+  }
+  
+  .middle-description {
+    padding-top: 0;
+  }
+  
+  .middle-description h3, .middle-description p {
+    display: none;
+  }
 }
