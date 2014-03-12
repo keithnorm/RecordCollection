@@ -131,7 +131,6 @@
 		4E2DC0B218C57AA000ADB7B1 /* CoverImagePresenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoverImagePresenter.h; sourceTree = "<group>"; };
 		4E2DC0B318C57AA000ADB7B1 /* CoverImagePresenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoverImagePresenter.m; sourceTree = "<group>"; };
 		4E2DC0BB18C5C9BE00ADB7B1 /* RecordCollection.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = RecordCollection.entitlements; sourceTree = "<group>"; };
-		4E42223018C13F6B0082D8E4 /* Reveal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Reveal.framework; path = "../../Documents/work/mobile-iphone-consumer/green-machine/ThirdParty/Reveal.framework"; sourceTree = "<group>"; };
 		4E42223218C24E7E0082D8E4 /* PlayQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayQueue.h; sourceTree = "<group>"; };
 		4E42223318C24E7E0082D8E4 /* PlayQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayQueue.m; sourceTree = "<group>"; };
 		4E9D302F18C80EA4007D6B12 /* NoAlbumsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoAlbumsView.h; sourceTree = "<group>"; };
@@ -209,7 +208,6 @@
 		4EDEF63918BB3B6800D81B1D /* Player.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Player.xib; sourceTree = "<group>"; };
 		4EDEF63B18BB3B8400D81B1D /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
 		4EDEF63C18BB3B8400D81B1D /* Player.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Player.m; sourceTree = "<group>"; };
-		4EDEF64018BC3BFA00D81B1D /* Reveal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Reveal.framework; path = "../../Downloads/Reveal 4.app/Contents/SharedSupport/iOS-Libraries/Reveal.framework"; sourceTree = "<group>"; };
 		4EDEF64218BC435900D81B1D /* SearchResultsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResultsDataSource.h; sourceTree = "<group>"; };
 		4EDEF64318BC435900D81B1D /* SearchResultsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultsDataSource.m; sourceTree = "<group>"; };
 		4EDEF64518BC4CCB00D81B1D /* SearchResultsDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResultsDelegate.h; sourceTree = "<group>"; };
@@ -363,8 +361,6 @@
 			isa = PBXGroup;
 			children = (
 				4ECAAE8718C85FF90059D54B /* Crashlytics.framework */,
-				4E42223018C13F6B0082D8E4 /* Reveal.framework */,
-				4EDEF64018BC3BFA00D81B1D /* Reveal.framework */,
 				4EDEF63318BB357F00D81B1D /* AVFoundation.framework */,
 				4EDEF63118BB356900D81B1D /* AudioToolbox.framework */,
 				4EDEF62F18BB355900D81B1D /* CoreAudio.framework */,
@@ -904,6 +900,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
+				PROVISIONING_PROFILE = "AB6D9C02-564F-4C5A-BB43-0B0D987AF791";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -926,7 +923,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Keith Norman (CRPV3W47T9)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Keith Norman (CRPV3W47T9)";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -937,6 +935,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PROVISIONING_PROFILE = "AB6D9C02-564F-4C5A-BB43-0B0D987AF791";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;

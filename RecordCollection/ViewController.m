@@ -52,7 +52,7 @@ const NSUInteger kSearchTextLengthThreshold = 4;
     
     User *user = [User first];
     if (user) {
-        [session attemptLoginWithUserName:user.userName existingCredential:user.credentials];
+        [session attemptLoginWithUserName:user.userName existingCredential:[[NSUserDefaults standardUserDefaults] objectForKey:@"userCreds"]];
     } else if (session.connectionState != SP_CONNECTION_STATE_LOGGED_IN) {
         LoginViewController *controller = [[LoginViewController alloc] initWithSession:[SPSession sharedSession]];
         [self.navigationController presentViewController:controller animated:YES completion:nil];
@@ -74,6 +74,11 @@ const NSUInteger kSearchTextLengthThreshold = 4;
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showMyCollection) name:SPSessionLoginDidSucceedNotification object:nil];
+    if (![self.searchText isEqualToString:@"My Collection"]) {
+        if (self.noAlbumsView) {
+            [self.noAlbumsView removeFromSuperview];
+        }
+    }
 }
 
 - (void)viewDidLayoutSubviews {
@@ -92,12 +97,13 @@ const NSUInteger kSearchTextLengthThreshold = 4;
 }
 
 - (void)showMyCollection {
-    User *user = [User first];
+    User *user = [[User all] lastObject];
     self.title = @"My Collection";
     _searchText = @"My Collection";
     if ([user.albums count]) {
         if (self.noAlbumsView && self.noAlbumsView.superview) {
             [self.noAlbumsView removeFromSuperview];
+            self.noAlbumsView.hidden = YES;
         }
         NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"sortOrder" ascending:YES];
         NSArray *sortedAlbums = [user.albums sortedArrayUsingDescriptors:@[sort]];
@@ -293,6 +299,14 @@ const NSUInteger kSearchTextLengthThreshold = 4;
 - (void)setSearchText:(NSString *)searchText {
     if (self.noAlbumsView) {
         [self.noAlbumsView removeFromSuperview];
+        self.noAlbumsView.hidden = YES;
+    }
+    
+    for (UIView *subview in self.view.subviews) {
+        if ([subview isKindOfClass:[NoAlbumsView class]]) {
+            subview.hidden = YES;
+            [subview removeFromSuperview];
+        }
     }
     _searchText = searchText;
     if ([[[self.navigationController viewControllers] objectAtIndex:0] isEqual:self]) {

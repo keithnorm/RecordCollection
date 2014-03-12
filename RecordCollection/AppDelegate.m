@@ -37,7 +37,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-//    [Crashlytics startWithAPIKey:@"7b4f16d17c36f90270ae068e9040a5ee898b7ed9"];
+    [Crashlytics startWithAPIKey:@"7b4f16d17c36f90270ae068e9040a5ee898b7ed9"];
     [Theme setup];
     NSError *error = nil;
     NSData *key = [[NSData alloc] initWithBytes:g_appkey length:g_appkey_size];
@@ -115,11 +115,11 @@
 }
 
 - (void)session:(SPSession *)session didGenerateLoginCredentials:(NSString *)credential forUserName:(NSString *)userName {
+    [[NSUserDefaults standardUserDefaults] setObject:credential forKey:@"userCreds"];
     User *user = [User findFirstWithDict:@{@"userName": userName}];
     if (!user) {
         user = [User new];
         user.userName = userName;
-        user.credentials = credential;
         [[CoreDataHelper sharedHelper] saveContext];
     }
 }
