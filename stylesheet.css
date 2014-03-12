@@ -256,6 +256,11 @@ footer img {
     .top-section {
       background-size: 1024px 745px;
     }
+
+    #app-store-link img {
+      margin: 0 auto;
+      display: block;
+    }
   
     .top-description h2, .top-description p {
         display: none;
@@ -284,10 +289,6 @@ footer img {
     }
     
     .top-description {
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      margin-left: -145px;
       padding: 0;
       max-width: 100%;
     }
@@ -369,7 +370,7 @@ footer img {
     display: block;
     position: static;
     margin-left: 0;
-    max-width: 100%;s
+    max-width: 100%;
   }
   header {
     text-align: center;
