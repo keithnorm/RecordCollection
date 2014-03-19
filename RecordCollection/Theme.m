@@ -22,6 +22,7 @@
 #import "AlbumCell.h"
 #import "AlbumCard.h"
 #import "NoAlbumsView.h"
+#import "OpenDrawerBtn.h"
 #import "UIFont+Scale.h"
 #import "OCAEditableCollectionViewFlowLayoutCell.h"
 
@@ -128,6 +129,9 @@ CGFloat fontScale;
     [[OCAEditableCellDeleteButton appearance] setBackgroundColor:[UIColor orangeColor]];
     [[OCAEditableCellDeleteButton appearance] setStrokeColor:[UIColor whiteColor]];
     [[UITableViewHeaderFooterView appearance] setTintColor:[UIColor whiteColor]];
+    
+    [[OpenDrawerBtn appearance] setLineColor:RGBCOLOR(146, 146, 146)];
+    [[OpenDrawerBtn appearance] setBackgroundColor:[UIColor clearColor]];
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         [self setupiPad];

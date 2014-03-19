@@ -112,6 +112,8 @@
 - (void)open;
 
 - (void)peak;
+
+- (void)toggle;
 /**
  Closes the drawer.
 

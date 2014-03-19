@@ -14,6 +14,7 @@
 #import "Player.h"
 #import "UIView+StyleClass.h"
 #import "NSManagedObject+Helper.h"
+#import "User.h"
 
 @import MediaPlayer;
 
@@ -119,7 +120,7 @@
         }];
         
         [self.trackList reloadData];
-        if ([Album findFirstWithDict:@{@"spotifyUrl": self.album.spotifyURL}]) {
+        if ([[[[User first] albums] valueForKey:@"spotifyUrl"] containsObject:self.album.spotifyURL]) {
             self.addToCollectionBtn.hidden = YES;
         }
     }

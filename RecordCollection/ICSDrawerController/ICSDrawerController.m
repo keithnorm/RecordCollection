@@ -383,6 +383,14 @@ typedef NS_ENUM(NSUInteger, ICSDrawerControllerState)
     [self animateOpening];
 }
 
+- (void)toggle {
+    if (self.drawerState == ICSDrawerControllerStateClosed) {
+        [self open];
+    } else {
+        [self close];
+    }
+}
+
 - (void)peak {
     [self willOpen];
     // Calculate the final frames for the container views

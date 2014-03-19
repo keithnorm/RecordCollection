@@ -22,6 +22,7 @@
 		4E2DC0B118C57A9300ADB7B1 /* ArtistPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E2DC0B018C57A9300ADB7B1 /* ArtistPresenter.m */; };
 		4E2DC0B418C57AA000ADB7B1 /* CoverImagePresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E2DC0B318C57AA000ADB7B1 /* CoverImagePresenter.m */; };
 		4E42223418C24E7E0082D8E4 /* PlayQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E42223318C24E7E0082D8E4 /* PlayQueue.m */; };
+		4E629EFF18D97B000082E7C2 /* OpenDrawerBtn.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E629EFE18D97B000082E7C2 /* OpenDrawerBtn.m */; };
 		4E9D303118C80EA4007D6B12 /* NoAlbumsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E9D303018C80EA4007D6B12 /* NoAlbumsView.m */; };
 		4E9D303318C80F6F007D6B12 /* NoAlbumsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E9D303218C80F6F007D6B12 /* NoAlbumsView.xib */; };
 		4EA2391A18C6F1A20046AC6A /* Album+BusinessLogic.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EA2391918C6F1A20046AC6A /* Album+BusinessLogic.m */; };
@@ -133,6 +134,8 @@
 		4E2DC0BB18C5C9BE00ADB7B1 /* RecordCollection.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = RecordCollection.entitlements; sourceTree = "<group>"; };
 		4E42223218C24E7E0082D8E4 /* PlayQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayQueue.h; sourceTree = "<group>"; };
 		4E42223318C24E7E0082D8E4 /* PlayQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayQueue.m; sourceTree = "<group>"; };
+		4E629EFD18D97B000082E7C2 /* OpenDrawerBtn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenDrawerBtn.h; sourceTree = "<group>"; };
+		4E629EFE18D97B000082E7C2 /* OpenDrawerBtn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenDrawerBtn.m; sourceTree = "<group>"; };
 		4E9D302F18C80EA4007D6B12 /* NoAlbumsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoAlbumsView.h; sourceTree = "<group>"; };
 		4E9D303018C80EA4007D6B12 /* NoAlbumsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoAlbumsView.m; sourceTree = "<group>"; };
 		4E9D303218C80F6F007D6B12 /* NoAlbumsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoAlbumsView.xib; sourceTree = "<group>"; };
@@ -405,6 +408,8 @@
 				4EDEF5C418BA953A00D81B1D /* Supporting Files */,
 				4ECAAE8918C8646D0059D54B /* IntroAutomator.h */,
 				4ECAAE8A18C8646D0059D54B /* IntroAutomator.m */,
+				4E629EFD18D97B000082E7C2 /* OpenDrawerBtn.h */,
+				4E629EFE18D97B000082E7C2 /* OpenDrawerBtn.m */,
 			);
 			path = RecordCollection;
 			sourceTree = "<group>";
@@ -774,6 +779,7 @@
 				4EDEF66118BC8B8900D81B1D /* UIView+CSS.m in Sources */,
 				4E2DC0AE18C5799D00ADB7B1 /* AlbumPresenter.m in Sources */,
 				4E221F9A18CB8EE8001766FC /* SearchBar.m in Sources */,
+				4E629EFF18D97B000082E7C2 /* OpenDrawerBtn.m in Sources */,
 				4EDEF60A18BAD9A800D81B1D /* ICSDropShadowView.m in Sources */,
 				4EDEF65718BC631800D81B1D /* User.m in Sources */,
 				4EDEF64718BC4CCB00D81B1D /* SearchResultsDelegate.m in Sources */,
@@ -869,7 +875,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				ARCHS = armv7;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -903,6 +909,7 @@
 				PROVISIONING_PROFILE = "AB6D9C02-564F-4C5A-BB43-0B0D987AF791";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = armv7;
 			};
 			name = Debug;
 		};
@@ -910,7 +917,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				ARCHS = armv7;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -935,10 +942,12 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				ONLY_ACTIVE_ARCH = YES;
 				PROVISIONING_PROFILE = "AB6D9C02-564F-4C5A-BB43-0B0D987AF791";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
+				VALID_ARCHS = armv7;
 			};
 			name = Release;
 		};
@@ -946,7 +955,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FF7BC69AC0A44EA487F099A7 /* Pods.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
+				ARCHS = armv7;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = RecordCollection/RecordCollection.entitlements;
@@ -966,7 +975,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				VALID_ARCHS = "armv7 armv7s arm64";
+				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -975,7 +984,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FF7BC69AC0A44EA487F099A7 /* Pods.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
+				ARCHS = armv7;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = RecordCollection/RecordCollection.entitlements;
@@ -995,7 +1004,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				VALID_ARCHS = "armv7 armv7s arm64";
+				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

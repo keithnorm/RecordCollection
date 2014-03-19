@@ -25,6 +25,7 @@
 #import "IntroAutomator.h"
 #import "Player.h"
 #import "UIView+Event.h"
+#import "OpenDrawerBtn.h"
 #import <MBProgressHUD/MBProgressHUD.h>
 
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
@@ -48,7 +49,7 @@ const NSUInteger kSearchTextLengthThreshold = 4;
 {
     [super viewDidLoad];
     SPSession *session = [SPSession sharedSession];
-    self.title = @"Most Played";
+    self.title = @"My Collection";
     
     User *user = [User first];
     if (user) {
@@ -59,10 +60,12 @@ const NSUInteger kSearchTextLengthThreshold = 4;
     }
     Player *player = [Player sharedPlayer];
     self.albumsCollectionView.contentInset = UIEdgeInsetsMake(0, 0, player.bounds.size.height, 0);
+    
     self.albumsCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
+    UIBarButtonItem *drawerOpenBtn = [[UIBarButtonItem alloc] initWithCustomView:[[OpenDrawerBtn alloc] initWithFrame:CGRectMake(0, 0, 30, 20)]];
+    self.navigationItem.leftBarButtonItem = drawerOpenBtn;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(somethingChanged) name:@"SomethingChanged" object:nil];
 }
-
 
 - (void)somethingChanged {
     NSLog(@"something changed");
@@ -97,7 +100,7 @@ const NSUInteger kSearchTextLengthThreshold = 4;
 }
 
 - (void)showMyCollection {
-    User *user = [[User all] lastObject];
+    User *user = [User first];
     self.title = @"My Collection";
     _searchText = @"My Collection";
     if ([user.albums count]) {

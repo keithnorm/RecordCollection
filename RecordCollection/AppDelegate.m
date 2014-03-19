@@ -130,7 +130,7 @@
 
 - (void)didAddAlbumToCollection:(SPAlbum *)album {
     Album *alreadyAdded = [Album findFirstWithDict:@{@"spotifyUrl": album.spotifyURL}];
-    if (alreadyAdded) {
+    if (alreadyAdded && [[[User first] albums] containsObject:alreadyAdded]) {
         NSLog(@"already added");
         return;
     }
@@ -240,6 +240,10 @@
             }];
         }
     }
+}
+
+- (void)toggleDrawer:(id)obj {
+    [self.drawer toggle];
 }
 
 - (void)userDidSelectPlayNext:(id)sender {

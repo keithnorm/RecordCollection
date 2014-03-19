@@ -10,7 +10,7 @@
 #import "OCAEditableLayoutAttributes.h"
 #import "OCAEditableCollectionViewFlowLayout.h"
 
-#define MARGIN 10
+#define MARGIN 20
 
 @implementation OCAEditableCellDeleteButton
 
@@ -89,7 +89,7 @@ static UIImage *deleteButtonImg;
 {
     [super awakeFromNib];
     self.clipsToBounds = NO;
-    self.deleteButton = [[OCAEditableCellDeleteButton alloc] initWithFrame:CGRectMake(-10, -10, 32, 32)];
+    self.deleteButton = [[OCAEditableCellDeleteButton alloc] initWithFrame:CGRectMake(-10, -10, 64, 64)];
     // ...and the handler for button presses
     [self.deleteButton addTarget: self
                           action: @selector(didPressDeleteButton)

@@ -7,6 +7,8 @@
 //
 
 #import "CoreDataHelper.h"
+#import "User.h"
+#import "NSManagedObject+Helper.h"
 
 @implementation CoreDataHelper
 #define debug 1
@@ -371,6 +373,21 @@ NSString *iCloudStoreFilename = @"iCloud.sqlite";
     if (debug==1) {
         NSLog(@"Running %@ '%@'", self.class, NSStringFromSelector(_cmd));
     }
+    
+    // check for dupe user accounts
+    NSArray *users = [User all];
+    User *canonicalUser = [User first];
+    if ([users count] > 1) {
+        for (NSUInteger i = 1; i < [users count]; i++) {
+            User *dupeUser = [users objectAtIndex:i];
+            if ([dupeUser.userName isEqualToString:canonicalUser.userName]) {
+                [canonicalUser addAlbums:dupeUser.albums];
+                [dupeUser destroy];
+            }
+        }
+    }
+    [self saveContext];
+    
     [_context performBlock:^{
         [_context mergeChangesFromContextDidSaveNotification:n];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"SomethingChanged"
